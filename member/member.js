@@ -18,6 +18,7 @@ if (!nickname) {
 const memberNickname = document.getElementById("memberNickname");
 const totalPoint = document.getElementById("totalPoint");
 const historyList = document.getElementById("historyList");
+const boardPosition = document.getElementById("boardPosition");
 
 memberNickname.textContent = `${nickname}님`;
 
@@ -34,9 +35,17 @@ async function loadMember() {
     ]);
 
     // 회원정보
-    totalPoint.textContent = user
-        ? `${user.totalP ?? 0}점`
-        : "0점";
+    if (user) {
+
+        totalPoint.textContent = `${user.totalP ?? 0}점`;
+        boardPosition.textContent = `(보드게임 현 위치 ${user.last ?? 0})`;
+
+    } else {
+
+        totalPoint.textContent = "0점";
+        boardPosition.textContent = "(보드게임 현 위치 0)";
+
+    }
 
     // 히스토리
     historyList.innerHTML = "";
@@ -144,9 +153,9 @@ function addHistory(date, memo, point, plus) {
                 ${memo}
             </div>
 
-            <div class="historyPoint ${plus ? "plus" : "minus"}">
-                <span class="sign">${plus ? "+" : "-"}</span>
-                <span class="pointValue">${point}점</span>
+            <div class="historyPoint ${point >= 0 ? "plus" : "minus"}">
+                <span class="sign">${point >= 0 ? "+" : "-"}</span>
+                <span class="pointValue">${Math.abs(point)}점</span>
             </div>
 
         </div>
