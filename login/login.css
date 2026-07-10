@@ -3,7 +3,6 @@
 /* ===========================
    기본 설정
 =========================== */
-
 *{
     margin:0;
     padding:0;
@@ -31,15 +30,12 @@ body{
 }
 
 /* ===========================
-   메인
+   접속 화면
 =========================== */
-
 .container{
     width:100%;
     max-width:240px;
-
     text-align:center;
-
     margin-top:-240px;
 }
 
@@ -47,18 +43,15 @@ h1{
     font-size:36px;
     color:#FFF;
     font-weight:700;
-
     margin-bottom:30px;
-
     text-shadow:
         0 3px 10px rgba(0,0,0,.45);
 }
 
 
 /* ===========================
-   입력창
+   닉네임 입력창
 =========================== */
-
 input{
     width:100%;
     height:52px;
@@ -90,9 +83,8 @@ input:focus{
 
 
 /* ===========================
-   버튼
+   공통 버튼
 =========================== */
-
 button{
     width:100%;
     height:52px;
@@ -128,7 +120,6 @@ button:active{
 /* ===========================
    로그인 모달
 =========================== */
-
 .modal{
     position:fixed;
     inset:0;
@@ -138,6 +129,8 @@ button:active{
     align-items:center;
 
     background:rgba(0,0,0,.45);
+
+    z-index:9999;
 }
 
 .hidden{
@@ -151,28 +144,25 @@ button:active{
     padding:25px;
 
     background:#FFF;
-
     border-radius:15px;
 
     text-align:center;
 }
 
 .modalBox h2{
-    margin-bottom:30px;
+    margin-bottom:14px;
     color:#1E88E5;
+    font-weight:bold;
 }
 
 .modalBox input{
-    margin-bottom:10px;
-
-    background:#FFF;
-    border:1px solid #CCC;
-    color:#333;
+    margin-bottom:8px;
 }
 
 .modalButton{
     display:flex;
     gap:8px;
+    margin-top:-8px;    
 }
 
 .modalButton button{
@@ -198,24 +188,8 @@ button:active{
 
 
 /* ===========================
-   로그인 메시지
-=========================== */
-
-#loginMessage{
-    min-height:20px;
-    font-size:14px;
-    margin-bottom:15px;
-    
-    color:#ff0000;
-    font-weight:350;
-
-}
-
-
-/* ===========================
    관리자 로그인
 =========================== */
-
 .adminLink{
     position:absolute;
     top:20px;
@@ -236,6 +210,18 @@ button:active{
 .adminLink:hover{
     color:#FFEB3B;
     text-decoration:underline;
+}
+
+
+/* ===========================
+   로그인 메시지
+=========================== */
+#loginMessage,
+#adminMessage{
+    font-size:14px;
+    margin-bottom:15px;
+    color:#ff0000;
+    font-weight:350;
 }
 
 
@@ -289,4 +275,5 @@ button:active{
 
 .version{
     color:#999;
-} 
+    font-size:13px;
+}
