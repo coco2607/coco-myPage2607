@@ -1,8 +1,7 @@
 // admin.js
 
-import {
-    loadUsers
-} from "./adminFirebase.js";
+import {loadUsers} from "./adminFirebase.js";
+import { openStateModal } from "../mstate/mstate.js";
 
 // 관리자 로그인 확인
 const isAdmin = sessionStorage.getItem("isAdmin");
@@ -57,7 +56,7 @@ function render(list) {
                 </div>
 
                 <select
-                    class="stateSelect"
+                    class="stateSelect ${user.state === "외출" ? "outing" : ""}"
                     data-key="${user.nickname}">
 
                     <option value="활동"
@@ -70,14 +69,9 @@ function render(list) {
                         외출
                     </option>
 
-                    <option value="탈퇴"
-                        ${user.state === "탈퇴" ? "selected" : ""}>
-                        탈퇴
-                    </option>
-
-                    <option value="강퇴"
-                        ${user.state === "강퇴" ? "selected" : ""}>
-                        강퇴
+                    <option value="삭제"
+                        ${user.state === "삭제" ? "selected" : ""}>
+                        삭제
                     </option>
 
                 </select>
@@ -89,9 +83,21 @@ function render(list) {
                 </button>
 
             </div>
-
         `;
-
     });
 
+
+    // 저장 버튼 이벤트
+    document.querySelectorAll(".saveBtn").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const nickname = button.dataset.key;
+            const state = button
+                .parentElement
+                .querySelector(".stateSelect")
+                .value;
+            openStateModal(nickname, state);
+        });
+    });
 }

@@ -29,7 +29,7 @@ body{
     max-width:430px;
     height:100vh;
     margin:0 auto;
-    padding:24px 18px 110px;
+    padding:24px 18px 99px;
     display:flex;
     flex-direction:column;
 }
@@ -201,6 +201,14 @@ body{
     border-radius:0;
     background:#fff;
     font-size:13px;
+}
+
+/* 상태 : 외출 */
+.stateSelect.outing{
+    background:#FFE0B2;
+    border:1px solid #FB8C00;
+    color:#E65100;
+    font-weight:600;
 }
 
 /* 저장 버튼 */

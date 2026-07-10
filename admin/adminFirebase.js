@@ -43,7 +43,8 @@ export async function updateMemberState(nickname, state) {
     await update(
         ref(db, `users/${nickname}`),
         {
-            state
+            state,
+            totalP: 0
         }
     );
 
