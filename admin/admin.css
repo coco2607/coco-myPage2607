@@ -5,21 +5,23 @@
 /* ===========================
    기본
 =========================== */
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:"Pretendard", sans-serif;
+    font-family:"Pretendard",sans-serif;
 }
 
 html,
 body{
-    height:100%;
+    width:100%;
+    min-height:100%;
 }
 
 body{
-    background:#E8F5E9;
+    background:#FFF7CF;
+    color:#222;
+    overflow:hidden;
 }
 
 .container{
@@ -27,254 +29,242 @@ body{
     max-width:430px;
     height:100vh;
     margin:0 auto;
-    padding:20px 15px;
+    padding:24px 18px 110px;
     display:flex;
     flex-direction:column;
 }
-
 
 /* ===========================
    상단
 =========================== */
-
 .header{
-    margin-bottom:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+}
+
+.leftHeader{
+    display:flex;
+    flex-direction:column;
 }
 
 .hello{
-    font-size:15px;
-    color:#666;
-    margin-bottom:0px;
-}
-
-.titleRow{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    width:100%;
+    font-size:14px;
+    color:#777;
+    margin-bottom:2px;
+    justify-self:start;
+    margin-left:15px;
 }
 
 .title{
-    margin:0;
-    font-size:28px;
-    font-weight:bold;
-    color:#333;
+    font-size:25px;
+    font-weight:800;
+    color:#222;
+    justify-self:start;
+    margin-left:15px;
 }
 
-/* 다운로드 버튼 */
-.excelBtn{
-
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-
-    width:auto !important;
-    min-width:110px;
-    height:36px;
-    padding:0 14px;
-    margin:0;
-
-    border:none;
-    border-radius:8px;
-
-    background:#107C41;
-    color:#FFFFFF;
-
-    font-size:14px;
-    font-weight:bold;
-
-    cursor:pointer;
-    flex-shrink:0;
-
-    transition:.2s;
+.rightHeader{
+    display:flex;
+    align-items:flex-end;
 }
 
-.excelBtn:hover{
-    background:#0E6E39;
-}
-
-
-/* ===========================
-   검색
-=========================== */
-
-.searchBox{
+.excelLink{
     display:flex;
     align-items:center;
-    gap:10px;
-    margin-bottom:15px;
-}
-
-#totalCount{
-    font-size:18px;
-    font-weight:bold;
-    color:#444;
-    white-space:nowrap;
-}
-
-#searchInput{
-
-    flex:1;
-    height:40px;
-    padding:0 12px;
-    border:1px solid #CCCCCC;
-    border-radius:10px;
-    background:#FFFFFF;
-    font-size:15px;
-    outline:none;
-}
-
-#searchInput:focus{
-    border-color:#107C41;
-}
-
-/* ===========================
-   기록
-=========================== */
-
-/* 제목 */
-.historyHeader{
-    display:grid;
-    grid-template-columns:100px 1fr 70px 60px;
-    align-items:center;
-    padding:8px 15px;
-    background:#F1F8E9;
-    border:1px solid #DCEFD5;
-    border-bottom:none;
-    font-size:13px;
-    font-weight:bold;
-    color:#666;
-}
-
-.headerDate{
-    margin-left:8px;
-}
-
-.headerNick{
-    margin-left:8px;
-}
-
-.headerJoin{
-    margin-left:-19px;
-}
-
-/* 내용 */
-.historyList{
-    flex:1;
-    overflow-y:auto;
-    background:#FFFFFF;
-    border:1px solid #DCEFD5;
-    border-top:none;
-    border-radius:0 0 14px 14px;
-}
-
-.historyItem{
-    padding:12px 15px;
-    border-bottom:1px solid #EEEEEE;
-    transition:.2s;
-}
-
-.historyItem:last-child{
-    border-bottom:none;
-}
-
-.historyRow{
-    display:grid;
-    grid-template-columns:100px 1fr 70px 60px;
-    align-items:center;
-    gap:10px;
-}
-
-/* 날짜 */
-.historyDate{
-    display:flex;
-    flex-direction:column;
-    line-height:1;
-}
-
-/* 닉네임 */
-.historyNick{
-    font-size:15px;
-    font-weight:600;
-    margin-left:-5px;
-    color:#333;
-}
-
-/* 벙참 날짜 */
-.historyJoinDate{
-    font-size:14px;
-    margin-left:-2px;
-    color:#666;
-    text-align:center;
-}
-
-/* 개별 삭제 버튼 */
-.deleteBtn{
-    border:none;
-    background:none;
-    padding:0;
-
-    color:#D32F2F;
     font-size:14px;
     font-weight:700;
-
-    cursor:pointer;
-    transition:.2s;
+    color:#17753F;
+    text-decoration:none;
+    justify-self:end;
+    margin-right:15px;
 }
 
-.deleteBtn:hover{
-    color:#B71C1C;
+.excelLink:hover{
     text-decoration:underline;
 }
 
+.line{
+    border:none;
+    border-top:1px solid #E5DDA8;
+    margin:12px 0;
+}
+
+
 /* ===========================
-   삭제
+   회원관리
 =========================== */
-.deleteBox{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-shrink:0;
-
-    margin-top:15px;
-}
-
-#monthSelect{
+.memberBox{
     flex:1;
-    height:42px;
-    padding:0 10px;
-
-    border:1px solid #CCCCCC;
-    border-radius:10px;
-
-    background:#FFFFFF;
-
-    font-size:15px;
-    outline:none;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
 }
 
-#monthSelect:focus{
-    border-color:#107C41;
-}
-
-/* 전체 삭제 버튼 */
-#deleteMonthBtn{
-    display:inline-flex;
+.memberTop{
+    display:flex;
+    justify-content:space-between;
     align-items:center;
-    justify-content:center;
-    height:42px;
-    padding:0 16px;
+}
+
+.sectionTitle{
+    margin:0;
+    font-size:23px;
+    font-weight:600;
+    color:#555;
+    white-space:nowrap;
+    justify-self:start;
+    margin-left:15px;
+}
+
+
+/* ===========================
+   포인트 버튼
+=========================== */
+.pointHeader{
+    display:flex;
+    gap:10px;
+}
+
+.pointBtn{
+    width:110px;
+    height:38px;
     border:none;
     border-radius:10px;
-    background:#C62828;
-    color:#FFFFFF;
+    color:#fff;
     font-size:14px;
     font-weight:700;
-    white-space:nowrap;
     cursor:pointer;
     transition:.2s;
 }
 
-#deleteMonthBtn:hover{
-    background:#B71C1C;
+#plusBtn{
+    background:#43A047;
 }
+
+#plusBtn:hover{
+    background:#388E3C;
+}
+
+#minusBtn{
+    background:#EF5350;
+    justify-self:end;
+    margin-right:15px;
+}
+
+#minusBtn:hover{
+    background:#D84343;
+}
+
+
+/* ===========================
+   회원 목록
+=========================== */
+#memberList{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+}
+
+.memberItem{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    align-items:center;
+    padding:6px 18px;
+    column-gap:16px;
+    border-bottom:1px solid #EFE7BA;
+}
+
+/* 회원명 */
+.memberNick{
+    font-size:15px;
+    font-weight:700;
+    justify-self:start;
+    margin-left:15px;
+}
+
+/* 포인트 */
+.memberPoint{
+    font-size:16px;
+    font-weight:700;
+    justify-self:end;
+    margin-right:40px;    
+}
+
+/* 상태드롭다운 */
+.stateSelect{
+    width:58px;
+    height:24px;
+    justify-self:end;
+    margin-left:0px;
+    border:1px solid #D5D5D5;
+    border-radius:0;
+    background:#fff;
+    font-size:13px;
+}
+
+/* 저장 버튼 */
+.saveBtn{
+    width:58px;
+    height:24px;
+    justify-self:start;
+    margin-left:0px;
+    border:none;
+    border-radius:8px;
+    background:#1976D2;
+    color:#fff;
+    font-size:12px;
+    font-weight:500;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.saveBtn:hover{
+    background:#1565C0;
+}
+
+
+/* ===========================
+   하단 안내
+=========================== */
+.footerInfo{
+    position:fixed;
+    left:0;
+    bottom:0;
+    width:100%;
+    padding:10px;
+    background:rgba(255,255,255,.45);
+    border-top:1px solid #D9D9D9;
+    text-align:left;
+}
+
+.footerTitle{
+    margin-bottom:1px;
+    font-size:14.2px;
+    font-weight:bold;
+    color:#555;
+}
+
+.footerInfo a{
+    font-size:18.8px;
+    font-weight:bold;
+    color:#1976D2;
+    text-decoration:none;
+}
+
+.footerInfo a:hover{
+    text-decoration:underline;
+}
+
+.footerManager{
+    margin-top:6px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    color:#777;
+}
+
+.version{
+    color:#999;
+} 

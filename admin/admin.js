@@ -1,88 +1,92 @@
 // admin.js
 
 import {
-    loadUsers,
-    deleteUser,
-    deleteHistoryByMonth
+    loadUsers
 } from "./adminFirebase.js";
-
 
 // 관리자 로그인 확인
 const isAdmin = sessionStorage.getItem("isAdmin");
 
 if (isAdmin !== "true") {
-    alert("관리자만 접근 가능합니다.");
     location.href = "../login/login.html";
 }
 
-const historyList = document.getElementById("historyList");
-const totalCount = document.getElementById("totalCount");
-const searchInput = document.getElementById("searchInput");
+const memberList = document.getElementById("memberList");
 
-const monthSelect = document.getElementById("monthSelect");
-const deleteMonthBtn = document.getElementById("deleteMonthBtn");
-
-let historyData = [];
+let memberData = [];
 
 // 시작
 init();
-async function init(){
 
-    historyData = await loadUsers();
+async function init() {
 
-    // 최신순
-    totalCount.textContent =
-        `전체회원 ${historyData.length}명`;
-    render(historyData);
+    memberData = await loadUsers();
+
+    render(memberData);
+
 }
 
+// 회원 출력
+function render(list) {
 
-// 화면 출력
-function render(list){
+    memberList.innerHTML = "";
 
-    historyList.innerHTML = "";
+    if (list.length === 0) {
 
-    if(list.length === 0){
-
-        historyList.innerHTML = `
-            <div class="historyItem">
+        memberList.innerHTML = `
+            <div class="memberItem">
                 회원이 없습니다.
             </div>
         `;
+
         return;
     }
 
-    list.forEach(item => {
+    list.forEach(user => {
 
-        const joinDate = item.joinDate
-            ? item.joinDate.replace(/-/g, "/").substring(2)
-            : "정보없음";
+        memberList.innerHTML += `
 
-        historyList.innerHTML += `
+            <div class="memberItem">
 
-            <div class="historyItem">
-
-                <div class="historyRow">
-
-                    <div class="historyDate">
-                        ${joinDate}
-                    </div>
-
-                    <div class="historyNick">
-                        ${item.nickname}
-                    </div>
-
-                    <div class="historyJoinDate">
-                        ${item.lastPosition ?? "-"}
-                    </div>
-
-                    <button
-                        class="deleteBtn"
-                        data-key="${item.nickname}">
-                        삭제
-                    </button>
-
+                <div class="memberNick">
+                    ${user.nickname}
                 </div>
+
+                <div class="memberPoint">
+                    ${user.totalP ?? 0}P
+                </div>
+
+                <select
+                    class="stateSelect"
+                    data-key="${user.nickname}">
+
+                    <option value="활동"
+                        ${user.state === "활동" ? "selected" : ""}>
+                        활동
+                    </option>
+
+                    <option value="외출"
+                        ${user.state === "외출" ? "selected" : ""}>
+                        외출
+                    </option>
+
+                    <option value="탈퇴"
+                        ${user.state === "탈퇴" ? "selected" : ""}>
+                        탈퇴
+                    </option>
+
+                    <option value="강퇴"
+                        ${user.state === "강퇴" ? "selected" : ""}>
+                        강퇴
+                    </option>
+
+                </select>
+
+                <button
+                    class="saveBtn"
+                    data-key="${user.nickname}">
+                    저장
+                </button>
 
             </div>
 
@@ -91,39 +95,3 @@ function render(list){
     });
 
 }
-
-// 닉네임 검색
-searchInput.addEventListener("input", () => {
-
-    const keyword = searchInput.value.trim().toLowerCase();
-    const result = historyData.filter(item => {
-
-        const nickname = (item.nickname || "").toLowerCase();
-        return nickname.includes(keyword);
-    });
-    totalCount.textContent = `전체회원 ${result.length}명`;
-    render(result);
-});
-
-// 개별 삭제
-historyList.addEventListener("click", async (e) => {
-
-    if (!e.target.classList.contains("deleteBtn")) return;
-
-    const ok = confirm("이 기록을 삭제하시겠습니까?");
-    if (!ok) return;
-    await deleteUser(e.target.dataset.key);
-    init();
-});
-
-// 월별 삭제
-deleteMonthBtn.addEventListener("click", async () => {
-
-    const month = monthSelect.value;
-    const ok = confirm(`${month}의 기록을 모두 삭제하시겠습니까?`);
-
-    if (!ok) return;
-    const count = await deleteHistoryByMonth(month);
-    alert(`${count}건 삭제되었습니다.`);
-    init();
-});

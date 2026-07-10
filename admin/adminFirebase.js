@@ -4,7 +4,7 @@ import {
     db,
     ref,
     get,
-    remove
+    update
 } from "../firebase.js";
 
 // 관리자 로그인 확인
@@ -37,40 +37,14 @@ export async function loadUsers() {
 
 }
 
+// 회원 상태 저장
+export async function updateMemberState(nickname, state) {
 
-// 개별 삭제
-export async function deleteHistory(key) {
-    await remove(ref(db, `users/${key}`));
-}
-
-
-// 회원 삭제
-export async function deleteUser(nickname) {
-    await remove(ref(db, `users/${nickname}`));
-}
-
-
-// 월별 삭제
-export async function deleteHistoryByMonth(month) {
-
-    const snapshot = await get(ref(db, "history"));
-
-    if (!snapshot.exists()) {
-        return 0;
-    }
-
-    const data = snapshot.val();
-
-    let count = 0;
-
-    for (const key in data) {
-        
-        const item = data[key];
-
-        if (item.date && item.date.startsWith(month)) {
-            await remove(ref(db, `history/${key}`));
-            count++;
+    await update(
+        ref(db, `users/${nickname}`),
+        {
+            state
         }
-    }
-    return count;
+    );
+
 }
