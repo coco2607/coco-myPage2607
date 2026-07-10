@@ -65,7 +65,7 @@ async function loadMember() {
 
             addHistory(
                 data.joinDate,
-                "벙참 보드게임 참가",
+                "벙참 보드게임 참여",
                 data.tpoint,
                 true
             );
