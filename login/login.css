@@ -67,7 +67,8 @@ input{
     outline:none;
 
     color:#2c2c2c;
-    font-size:16px;
+    font-size:18px;
+    text-align:center;
 
     box-shadow:0 3px 10px rgba(0,0,0,.15);
 }
@@ -98,7 +99,7 @@ button{
     background:#2196F3;
     color:#FFF;
 
-    font-size:18px;
+    font-size:20px;
     font-weight:bold;
 
     cursor:pointer;
