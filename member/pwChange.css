@@ -1,0 +1,205 @@
+/* pwChange.css */
+
+
+/* ===========================
+   모달 공통
+=========================== */
+
+.modal{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.45);
+
+    z-index:1000;
+}
+
+.hidden{
+    display:none;
+}
+
+.modalBox{
+    width:90%;
+    max-width:340px;
+
+    padding:25px;
+
+    background:#FFF;
+
+    border-radius:16px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.18);
+}
+
+
+/* ===========================
+   제목
+=========================== */
+
+.modalBox h2{
+    margin-bottom:20px;
+
+    text-align:center;
+
+    font-size:22px;
+    font-weight:700;
+
+    color:#0e7bd4;
+}
+
+
+/* ===========================
+   입력창
+=========================== */
+
+.modalBox input{
+    width:100%;
+    height:46px;
+
+    padding:0 14px;
+    margin-bottom:14px;
+
+    border:1px solid #CCC;
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:.2s;
+}
+
+.modalBox input:focus{
+    border-color:#0e7bd4;
+    box-shadow:0 0 0 3px rgba(14,123,212,.15);
+}
+
+.inputError{
+    border:1px solid #E53935 !important;
+    background:#FFF6F6;
+}
+
+
+/* ===========================
+   오류메시지
+=========================== */
+
+.pwError{
+    display:none;
+    margin:8px 0 14px;
+    color:#E53935;
+
+    font-size:13px;
+    font-weight:600;
+
+    text-align:left;
+}
+
+
+/* ===========================
+   안내문구
+=========================== */
+
+.modalText{
+    margin:25px 0;
+    
+    text-align:center;
+
+    line-height:1.7;
+
+    font-size:16px;
+
+    color:#444;
+}
+
+.modalText strong{
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#0e7bd4;
+
+    font-size:18px;
+    font-weight:700;
+
+    word-break:break-all;
+}
+
+
+/* ===========================
+   버튼 공통
+=========================== */
+
+.modalButton{
+    display:flex;
+    gap:10px;
+}
+
+.modalButton button{
+    flex:1;
+    height:44px;
+
+    border:none;
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:15px;
+    font-weight:700;
+
+    transition:.2s;
+}
+
+
+/* ===========================
+   확인 버튼
+=========================== */
+#pwOk,
+#completeOk{
+    background:#0e7bd4;
+    color:#FFF;
+}
+
+#pwOk:hover,
+#completeOk:hover{
+    background:#0a66b0;
+}
+
+
+/* ===========================
+   취소 버튼
+=========================== */
+#pwCancel{
+    background:#E6E6E6;
+    color:#555;
+}
+
+#pwCancel:hover{
+    background:#D9D9D9;
+}
+
+
+/* ===========================
+   비밀번호 변경 버튼 내 글자
+=========================== */
+.completeModalBox{
+    max-width:340px;
+    padding:28px 24px;
+
+    display:flex;
+    flex-direction:column;
+}
+
+.completeModalBox p{
+    margin:0 0 30px;
+
+    text-align:center;
+
+    font-size:18px;
+    font-weight:600;
+    color:#333;
+}

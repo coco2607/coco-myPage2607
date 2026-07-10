@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>으차방 MyPage</title>
+
+    <link rel="stylesheet" href="member.css">
+    <link rel="stylesheet" href="pwChange.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- 상단 -->
+        <div class="topHeader">
+
+            <div class="leftBox">
+
+                <div class="hello">
+                    안녕하세요!
+                </div>
+
+                <h1 id="memberNickname">
+                    홍길동님
+                </h1>
+
+            </div>
+
+            <div class="rightBox">
+
+                <span id="changePasswordBtn" class="textLink">
+                    비밀번호 변경
+                </span>
+
+                <div class="point">
+                    누적포인트
+                    <span id="totalPoint">
+                        0점
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- 포인트 상세 -->
+        <div class="historyBox">
+
+            <div class="historyTitle">
+                포인트 상세내역
+            </div>
+            
+            <hr>
+
+            <div id="historyList">
+                <!-- JS에서 생성 -->
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- 비밀번호 변경 -->
+    <div id="pwModal" class="modal hidden">
+
+        <div class="modalBox">
+
+            <h2>비밀번호 변경</h2>
+
+            <input
+                type="password"
+                id="currentPw"
+                placeholder="현재 비밀번호">
+
+            <input
+                type="password"
+                id="newPw"
+                placeholder="새 비밀번호">
+
+            <input
+                type="password"
+                id="newPwCheck"
+                placeholder="새 비밀번호 확인">
+
+            <div id="pwError" class="pwError"></div>
+
+            <div class="modalButton">
+                <button id="pwOk">확인</button>
+                <button id="pwCancel">취소</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- 변경 완료 -->
+    <div id="completeModal" class="modal hidden">
+
+        <div class="modalBox completeModalBox">
+
+            <p>비밀번호가 변경되었습니다.</p>
+
+            <div class="modalButton">
+                <button id="completeOk">확인</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- 하단 안내 -->
+    <div class="footerInfo">
+        <div class="footerTitle">
+            카카오톡 오픈채팅
+        </div>
+
+        <a
+            href="https://open.kakao.com/o/g7b2DGti"
+            target="_blank">
+            8090 으차방
+        </a>
+
+        <div class="footerManager">
+            <span>운영관리담당 : 코코</span>
+            <span class="version">Ver 1.2</span>
+        </div>
+    </div>
+
+
+    <script type="module" src="member.js"></script>
+    <script type="module" src="pwChange.js"></script>
+
+</body>
+
+</html>

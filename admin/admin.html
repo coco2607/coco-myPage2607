@@ -1,0 +1,132 @@
+<!-- admin.html -->
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>관리자</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- 상단 -->
+        <div class="header">
+            <p class="hello">
+                안녕하세요!
+            </p>
+            <div class="titleRow">
+                <h2 class="title">
+                    관리자님
+                </h2>
+                <button
+                    id="excelBtn"
+                    class="excelBtn">
+                    💾 Excel 저장하기
+                </button>
+            </div>
+        </div>
+
+
+        <!-- 검색 -->
+        <div class="searchBox">
+
+            <span id="totalCount">
+                전체기록 0건
+            </span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="닉네임을 입력하세요.">
+
+        </div>
+
+
+        <!-- 기록 제목 -->
+        <div class="historyHeader">
+
+            <div class="headerDate">가입일</div>
+            <div class="headerNick">회원명</div>
+            <div class="headerJoin">말위치</div>
+            <div></div>
+
+        </div>
+
+
+        <!-- 기록 목록 -->
+        <div
+            id="historyList"
+            class="historyList">
+
+            <div class="historyItem">
+
+                <div class="historyRow">
+
+                    <div class="historyDate">
+                        <span class="date">26/07.07</span>
+                        <span class="time">18:32:15</span>
+                    </div>
+
+                    <div class="historyNick">
+                        홍길동
+                    </div>
+
+                    <div class="historyJoinDate">
+                        07/07
+                    </div>
+
+                    <button class="deleteBtn">
+                        삭제
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 삭제 -->
+        <div class="deleteBox">
+
+            <select id="monthSelect">
+                <option value="2026-01">2026년 01월</option>
+                <option value="2026-02">2026년 02월</option>
+                <option value="2026-03">2026년 03월</option>
+                <option value="2026-04">2026년 04월</option>
+                <option value="2026-05">2026년 05월</option>
+                <option value="2026-06">2026년 06월</option>
+                <option value="2026-07" selected>2026년 07월</option>
+                <option value="2026-08">2026년 08월</option>
+                <option value="2026-09">2026년 09월</option>
+                <option value="2026-10">2026년 10월</option>
+                <option value="2026-11">2026년 11월</option>
+                <option value="2026-12">2026년 12월</option>
+            </select>
+
+            <button id="deleteMonthBtn">
+                🗑️ 전체 삭제
+            </button>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script type="module" src="admin.js"></script>
+    <script type="module" src="excel.js"></script>
+
+</body>
+
+</html>

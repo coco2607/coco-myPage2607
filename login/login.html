@@ -1,0 +1,101 @@
+<!--login.html-->
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>으차방 MyPage</title>
+
+    <link rel="stylesheet" href="login.css">
+
+</head>
+
+<body>
+
+    <!-- 관리자 로그인 -->
+    <p id="adminLoginBtn" class="adminLink">
+        관리자 로그인
+    </p>
+
+    <div class="container">
+
+        <h1>으차방 MyPage</h1>
+        <input
+            type="text"
+            id="nickname"
+            placeholder="닉네임 2자를 입력하세요."
+            maxlength="2">
+        <button id="enterBtn">
+            로그인
+        </button>
+
+    </div>
+
+    <!-- 로그인 모달 -->
+    <div id="memberModal" class="modal hidden">
+        <div class="modalBox">
+            <h2>🔑 으차방 멤버 로그인</h2>
+            <input
+                type="password"
+                id="memberPassword"
+                placeholder="비밀번호를 입력하세요.">
+            <p id="loginMessage"></p>
+            <div class="modalButton">
+                <button id="memberOkBtn">
+                    확인
+                </button>
+                <button id="memberCancelBtn">
+                    닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 관리자 로그인 모달 -->
+    <div id="adminModal" class="modal hidden">
+        <div class="modalBox">
+            <h2>🔑 관리자 로그인</h2>
+
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="비밀번호를 입력하세요.">
+
+            <p id="adminMessage"></p>
+
+            <div class="modalButton">
+                <button id="adminOkBtn">확인</button>
+                <button id="adminCancelBtn">닫기</button>
+            </div>
+        </div>
+    </div> 
+
+    <!-- 하단 안내 -->
+    <div class="footerInfo">
+        <div class="footerTitle">
+            카카오톡 오픈채팅
+        </div>
+
+        <a
+            href="https://open.kakao.com/o/g7b2DGti"
+            target="_blank">
+            8090 으차방
+        </a>
+
+        <div class="footerManager">
+            <span>운영관리담당 : 코코</span>
+            <span class="version">Ver 1.2 ⓒ LINE</span>
+        </div>
+    </div>
+
+    <script type="module" src="login.js"></script>
+    <script type="module" src="../admin/adminLogin.js"></script>
+
+</body>
+
+</html>

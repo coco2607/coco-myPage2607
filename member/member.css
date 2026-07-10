@@ -1,0 +1,260 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+/* ===========================
+   기본
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Pretendard",sans-serif;
+}
+
+html,
+body{
+    height:100%;
+}
+
+body{
+    background:#e8f6ff;
+}
+
+
+/* ===========================
+   메인
+=========================== */
+
+.container{
+    width:100%;
+    max-width:430px;
+    height:100vh;
+
+    margin:0 auto;
+    padding:20px 15px 110px;
+
+    display:flex;
+    flex-direction:column;
+}
+
+
+/* ===========================
+   상단
+=========================== */
+
+.topHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    padding:0px 18px;
+    margin-bottom:0px;
+}
+
+.leftBox{
+    display:flex;
+    flex-direction:column;
+}
+
+.hello{
+    font-size:15.8px;
+    font-weight: 400;
+    color:#666;
+    margin-bottom:2px;
+}
+
+#memberNickname{
+    font-size:28px;
+    font-weight:bold;
+    color:#333;
+}
+
+.rightBox{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+}
+
+.textLink{
+    font-size:15px;
+    font-weight: 300;
+    color:#666;
+    cursor:pointer;
+    user-select:none;
+    transition:.2s;
+}
+
+.textLink:hover{
+    color:#0e7bd4;
+    text-decoration:underline;
+}
+
+.point{
+    margin-top:8px;
+
+    font-size:18px;
+    font-weight: 500;
+    color:#666;
+}
+
+#totalPoint{
+    margin-left:6px;
+
+    font-size:22px;
+    font-weight:bold;
+
+    color:#0e7bd4;
+}
+
+
+/* ===========================
+   구분선
+=========================== */
+
+hr{
+    margin:14px 0;
+
+    border:none;
+    border-top:1px solid #333;
+}
+
+
+/* ===========================
+   포인트 상세 제목
+=========================== */
+
+.historyTitle{
+    
+    font-size:18px;
+    font-weight:700;
+    padding:0px 18px;
+    color:#0e7bd4;
+    text-align:center;
+}
+
+#historyList{
+    flex:1;
+    margin-top:4px;
+    overflow-y:auto;
+    padding-bottom:10px;
+}
+
+
+/* ===========================
+   히스토리(상세내용)
+=========================== */
+
+.historyBox{
+    flex:1;
+
+    display:flex;
+    flex-direction:column;
+
+    min-height:0;
+}
+
+.historyItem{
+    padding:3px 18px;
+}
+
+.historyItem:last-child{
+    border-bottom:none;
+}
+
+.historyRow{
+    display:grid;
+    grid-template-columns:90px 1fr auto;
+    align-items:center;
+    gap:34px;
+}
+
+.historyDate{
+    font-size:12.5px;
+    color:#888;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings:"tnum";
+}
+
+.historyMemo{
+    font-size:14px;
+    color:#333;
+}
+
+.historyPoint{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+
+    white-space:nowrap;
+
+    font-size:14px;
+    font-weight:bold;
+    color:#0e7bd4;
+}
+
+.sign{
+    width: 4px;          /* +, - 자리 고정 */
+    text-align:center;
+    flex-shrink:0;
+}
+
+.pointValue{
+    width:35px;          /* 점수 자리 고정 */
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+}
+
+.historyPoint.minus{
+    color:#E53935;
+}
+
+/* ===========================
+   하단 안내
+=========================== */
+.footerInfo{
+    position:fixed;
+    left:0;
+    bottom:0;
+
+    width:100%;
+    padding:10px;
+
+    background:rgba(255,255,255,.65);
+    border-top:1px solid #D9D9D9;
+
+    text-align:left;
+}
+
+.footerTitle{
+    margin-bottom:1px;
+
+    font-size:14.2px;
+    font-weight:bold;
+    color:#555;
+}
+
+.footerInfo a{
+    font-size:18.8px;
+    font-weight:bold;
+
+    color:#1976D2;
+    text-decoration:none;
+}
+
+.footerInfo a:hover{
+    text-decoration:underline;
+}
+
+.footerManager{
+    margin-top:6px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    font-size:13px;
+    color:#777;
+}
+
+.version{
+    color:#999;
+}
