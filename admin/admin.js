@@ -27,6 +27,8 @@ async function init() {
 
 // 회원 출력
 function render(list) {
+    const memberCount = document.getElementById("memberCount");
+    memberCount.textContent = `(${list.length}명)`;
 
     memberList.innerHTML = "";
 

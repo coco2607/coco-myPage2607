@@ -4,7 +4,9 @@ import {
     db,
     ref,
     get,
-    update
+    update,
+    push,
+    set
 } from "../firebase.js";
 
 // 관리자 로그인 확인
@@ -17,6 +19,19 @@ export async function checkAdmin(password) {
     }
 
     return snapshot.val() === password;
+}
+
+// history 전체 가져오기
+export async function loadHistory() {
+
+    const snapshot = await get(ref(db, "history"));
+
+    if (!snapshot.exists()) {
+        return [];
+    }
+
+    return Object.values(snapshot.val());
+
 }
 
 // users 전체 가져오기
@@ -48,4 +63,29 @@ export async function updateMemberState(nickname, state) {
         }
     );
 
+}
+
+// 엑셀 업로드 history 추가
+export async function uploadHistory(historyList) {
+
+    for (const history of historyList) {
+        await set(
+            push(ref(db, "history")),
+            history
+        );
+    }
+}
+
+// 엑셀 업로드 users 업데이트
+export async function uploadUsers(userList) {
+
+    const updates = {};
+
+    for (const user of userList) {
+        const { nickname, ...data } = user;
+
+        if (!nickname) continue;
+        updates[nickname] = data;
+    }
+    await update(ref(db, "users"), updates);
 }

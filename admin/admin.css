@@ -92,6 +92,117 @@ body{
 
 
 /* ===========================
+   Excel 모달
+=========================== */
+.excelButton{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    flex:1;
+}
+
+.excelButton button{
+    flex:1;
+
+    width:100%;
+    padding:14px 0;
+
+    background:#17753F;
+    color:#fff;
+
+    border:none;
+    border-radius:10px;
+
+    font-size:16px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:background-color .2s ease;
+}
+
+.excelButton button:hover{
+    background:#146937;
+}
+
+.excelButton button:active{
+    background:#11582F;
+}
+
+
+/* 다운로드 모달 */
+.downloadBox{
+    width:320px;
+    padding:24px;
+}
+
+/* 다운로드 메시지*/
+.downloadTitle{
+    margin-bottom:14px;
+    text-align:center;
+    font-size:18px;
+    font-weight:500;
+    color:#333;
+}
+
+/* 다운로드 체크박스 */
+.downloadCheck{
+    display:flex;
+    flex-direction:column;
+    gap:10px;              /* history users 사이 */
+    margin-bottom:15px;    /* users와 버튼 사이 */
+}
+
+.downloadCheck label{
+    display:flex;
+    align-items:center;
+    gap:10px;              /* 체크박스와 글자 사이 */
+
+    font-size:16px;
+    font-weight:500;
+    color:#555;
+
+    cursor:pointer;
+}
+
+.downloadCheck input{
+    width:16px;
+    height:16px;
+}
+
+/* 다운로드 버튼 */
+.downloadButton button{
+    width:100%;
+    padding:14px 0;
+
+    background:#17753F;
+    color:#fff;
+
+    border:none;
+    border-radius:10px;
+
+    font-size:16px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:background-color .2s ease;
+}
+
+.downloadButton button:hover{
+    background:#146937;
+}
+
+.downloadButton button:active{
+    background:#11582F;
+}
+
+.hidden{
+    display:none;
+}
+
+/* ===========================
    회원관리
 =========================== */
 .memberBox{
@@ -109,7 +220,7 @@ body{
 
 .sectionTitle{
     margin:0;
-    font-size:23px;
+    font-size:22px;
     font-weight:600;
     color:#555;
     white-space:nowrap;
@@ -117,6 +228,13 @@ body{
     margin-left:15px;
 }
 
+.memberCount{
+    margin-left:-4px;
+    font-size:14px;
+    letter-spacing:-0.3px; 
+    font-weight:400;
+    color:#888;
+}
 
 /* ===========================
    포인트 버튼
@@ -155,7 +273,6 @@ body{
 #minusBtn:hover{
     background:#D84343;
 }
-
 
 /* ===========================
    회원 목록
