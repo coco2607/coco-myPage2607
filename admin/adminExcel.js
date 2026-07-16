@@ -102,6 +102,15 @@ excelDownloadBtn.addEventListener("click", () => {
 
 });
 
+// 다운로드 모달 바깥 클릭 시 닫기
+downloadModal.addEventListener("click", (e) => {
+
+    if (e.target === downloadModal) {
+        downloadModal.classList.add("hidden");
+    }
+
+});
+
 // 다운로드 시작
 downloadStartBtn.addEventListener("click", startDownload);
 
