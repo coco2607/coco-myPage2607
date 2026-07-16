@@ -1,0 +1,233 @@
+/* adpoint.css*/
+
+/* ===========================
+   포인트 모달
+=========================== */
+/* 제목 */
+#pointTitle{
+    text-align:center;
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+/* 적립 / 사용 */
+#pointTitle.plus{
+    color:#43A047;
+}
+
+#pointTitle.minus{
+    color:#E53935;
+}
+
+
+/* ===========================
+   입력 영역
+=========================== */
+.pointRow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    width:95%;
+    margin:0 auto;
+}
+
+/* 공통 */
+.pointRow input{
+    box-sizing:border-box;
+    height:34px;
+    padding:0 8px;
+    margin-bottom:8px;
+    border:1px solid #DDD;
+    border-radius:8px;
+    font-size:13px;
+}
+
+/* 닉네임 */
+.pointRow > :nth-child(1){
+    flex:1.5;
+    min-width:0;
+    text-align:center;
+}
+
+.pointRow > .dropdown:first-child .dropdownInput{
+    text-align:center;
+}
+
+/* 상세내용 */
+.pointRow > :nth-child(2){
+    flex:4;
+    min-width:0;
+}
+
+/* 포인트 */
+.pointRow input[type="number"]{
+    flex:0 0 60px;
+    width:50px;
+    text-align:center;
+    appearance:textfield;
+    -moz-appearance:textfield;
+}
+
+.pointRow input[type="number"]::-webkit-inner-spin-button,
+.pointRow input[type="number"]::-webkit-outer-spin-button{
+    -webkit-appearance:none;
+    margin:0;
+}
+
+
+/* ===========================
+   커스텀 드롭다운
+=========================== */
+.dropdown{
+    position:relative;
+    flex:4;
+    min-width:0;
+}
+
+.dropdownInput{
+    width:100%;
+    margin-bottom:0;
+}
+
+.dropdownList{
+    position:absolute;
+    top:36px;
+    left:0;
+    right:0;
+
+    max-height:180px;
+    overflow-y:auto;
+
+    background:#FFF;
+    border:1px solid #DDD;
+    border-radius:8px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+
+    display:none;
+
+    z-index:100;
+}
+
+.dropdownList.show{
+    display:block;
+}
+
+.dropdownItem{
+    padding:8px 10px;
+    font-size:13px;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.dropdownItem:hover{
+    background:#F5F5F5;
+}
+
+.dropdownItem.hidden{
+    display:none;
+}
+
+
+/* ===========================
+   버튼
+=========================== */
+.pointBtnBox{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:12px;
+}
+
+#pointApplyBtn,
+#pointCancelBtn{
+    width:124px;
+    height:38px;
+    border:none;
+    border-radius:8px;
+    color:#FFF;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+#pointApplyBtn{
+    background:#1976D2;
+}
+
+#pointApplyBtn:hover{
+    background:#1565C0;
+}
+
+#pointCancelBtn{
+    background:#BDBDBD;
+}
+
+#pointCancelBtn:hover{
+    background:#9E9E9E;
+}
+
+
+/* ===========================
+   적립/사용 재확인 버튼
+=========================== */
+/* 확인 목록 */
+.pointConfirmList{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin:18px 0;
+}
+
+/* 한 줄 */
+.pointConfirmRow{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    width:300px;      /* 원하는 크기로 조절 */
+    padding:4px 0;
+    font-size:14px;
+}
+
+/* 닉네임 */
+.pointConfirmRow span:nth-child(1){
+    width:38px;
+    font-weight:600;
+    text-align:left;
+    margin-left:20px;
+}
+
+/* 내용 */
+.pointConfirmRow span:nth-child(2){
+    width:120px;
+    text-align:left;
+}
+
+/* 포인트 */
+.pointConfirmRow span:nth-child(3){
+    width:30px;
+    font-weight:700;
+    text-align:left;
+    margin-left:20px;
+}
+
+/* 예 */
+#pointConfirmBtn{
+    background:#1976D2;
+    color:#fff;
+}
+
+#pointConfirmBtn:hover{
+    background:#1565C0;
+}
+
+/* 아니오 */
+#pointConfirmCancelBtn{
+    background:#BDBDBD;
+    color:#fff;
+}
+
+#pointConfirmCancelBtn:hover{
+    background:#9E9E9E;
+}

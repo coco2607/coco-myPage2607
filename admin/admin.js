@@ -2,6 +2,7 @@
 
 import {loadUsers} from "./adminFirebase.js";
 import { openStateModal } from "../mstate/mstate.js";
+import "../point/adpoint.js";
 
 // 관리자 로그인 확인
 const isAdmin = sessionStorage.getItem("isAdmin");
