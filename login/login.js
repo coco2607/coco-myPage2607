@@ -11,12 +11,18 @@ const memberPassword = document.getElementById("memberPassword");
 const memberOkBtn = document.getElementById("memberOkBtn");
 const memberCancelBtn = document.getElementById("memberCancelBtn");
 const loginMessage = document.getElementById("loginMessage");
+const alertModal = document.getElementById("alertModal");
+const alertCloseBtn = document.getElementById("alertCloseBtn");
 
 
 // 이벤트
 enterBtn.addEventListener("click", openLoginModal);
 memberCancelBtn.addEventListener("click", closeLoginModal);
 memberOkBtn.addEventListener("click", checkPassword);
+
+alertCloseBtn.addEventListener("click", () => {
+    alertModal.classList.add("hidden");
+});
 
 memberPassword.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
@@ -25,20 +31,28 @@ memberPassword.addEventListener("keydown", function (e) {
 });
 
 
+//경고메시지
+function alertMessage(message) {
+
+    document.getElementById("alertMessage").textContent = message;
+    alertModal.classList.remove("hidden");
+
+}
+
 // 입장하기
 function openLoginModal() {
 
     const name = trim(nickname.value);
 
     if (name === "") {
-        alert("닉네임 2자를 입력하세요.");
+        alertMessage("닉네임 입력하세요.");
         nickname.focus();
         return;
     }
 
     // 한글 2자만 허용
     if (!/^[가-힣]{2}$/.test(name)) {
-        alert("닉네임은 2자만 입력 가능합니다.");
+        alertMessage("닉네임 2자를 입력하세요.");
         nickname.focus();
         nickname.select();
         return;

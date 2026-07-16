@@ -188,6 +188,25 @@ button:active{
 }
 
 
+#alertMessage{
+    font-size:18px;
+    font-weight:300;
+    color:#333;
+    line-height:1.6;
+    white-space:pre-line;
+    word-break:keep-all;
+    margin-bottom:25px;
+}
+
+#alertCloseBtn{
+    background:#2196F3;
+    color:#FFF;
+}
+
+#alertCloseBtn:hover{
+    background:#1E88E5;
+}
+
 /* ===========================
    관리자 로그인
 =========================== */

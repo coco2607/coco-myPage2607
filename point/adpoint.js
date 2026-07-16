@@ -36,6 +36,11 @@ const minusPointMap = {
     "닉꾸아이템 교환": 40,
 };
 
+const plusEventList = [
+    "벙참 랭킹 보상",
+    "채팅 랭킹 보상"
+];
+
 let mode = "plus";
 let pointData = [];
 
@@ -100,7 +105,7 @@ function addRow() {
     // 내용
     const event = createDropdown({
         items: mode === "plus"
-            ? []            // 적립 목록 넣기
+            ? plusEventList
             : Object.keys(minusPointMap),
         placeholder: "내용",
         onSelect(item) {
@@ -248,7 +253,7 @@ pointConfirmBtn.addEventListener("click", async () => {
 
     } catch (err) {
 
-        alert(err.message);
+        (err.message);
 
     }
 
