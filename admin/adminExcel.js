@@ -45,6 +45,18 @@ document.addEventListener("keydown", (e) => {
 
 });
 
+// 모달 바깥 클릭(모바일 포함)
+excelModal.addEventListener("click", (e) => {
+
+    if (e.target === excelModal) {
+
+        excelModal.classList.add("hidden");
+        downloadModal.classList.add("hidden");
+
+    }
+
+});
+
 
 // ===========================
 // Upload

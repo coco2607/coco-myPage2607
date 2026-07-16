@@ -245,7 +245,7 @@ body{
 }
 
 .pointBtn{
-    width:110px;
+    width:95px;
     height:38px;
     border:none;
     border-radius:10px;
@@ -267,7 +267,7 @@ body{
 #minusBtn{
     background:#EF5350;
     justify-self:end;
-    margin-right:15px;
+    margin-right:8px;
 }
 
 #minusBtn:hover{
