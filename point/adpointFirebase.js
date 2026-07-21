@@ -49,9 +49,10 @@ export async function applyPoint(mode, pointData) {
         const totalPoint = currentPoint + changePoint;
 
         // ===========================
-        // totalP 업데이트
+        // users 업데이트
         // ===========================
         await update(userRef, {
+            date: getCurrentDate(),
             totalP: totalPoint
         });
 

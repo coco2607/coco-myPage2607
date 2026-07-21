@@ -43,10 +43,10 @@ export async function saveMemberState(nickname, state) {
         await push(
             ref(db, "history"),
             {
-                date,
+                date: date,
                 time,
                 nickname,
-                joinDate: date,
+                joinDate,
                 dice: 0,
                 start: 0,
                 end: 0,
@@ -66,7 +66,7 @@ export async function saveMemberState(nickname, state) {
         await update(
             ref(db, `users/${nickname}`),
             {
-                joinDate: date,
+                date: date,
                 state: "외출",
                 totalP: 0
             }
