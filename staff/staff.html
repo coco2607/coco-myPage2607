@@ -1,4 +1,4 @@
-<!-- admin.html -->
+<!-- staff.html -->
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -11,9 +11,9 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>관리자</title>
+    <title>운영자</title>
 
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="staff.css">
     <link rel="stylesheet" href="../mstate/mstate.css">
     <link rel="stylesheet" href="../point/adpoint.css">
 
@@ -33,44 +33,13 @@
                 </p>
 
                 <h2 class="title">
-                    관리자님
+                    운영자님
                 </h2>
 
             </div>
 
-            <div class="rightHeader">
-
-                <a
-                    href="#"
-                    id="excelBtn"
-                    class="excelLink">
-                    Excel UP/DOWN
-                </a>
-
-            </div>
-
         </div>
 
-        <!-- Excel 모달 -->
-        <div id="excelModal" class="modal hidden">
-
-            <div class="modalBox">
-
-                <div class="excelButton">
-
-                    <button id="excelUploadBtn">
-                        Excel Upload
-                    </button>
-
-                    <button id="excelDownloadBtn">
-                        Excel Download
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
 
         <hr class="line">
 
@@ -234,52 +203,7 @@
 
     </div>
 
-    <!-- Excel 파일 선택 -->
-    <input
-        type="file"
-        id="excelFile"
-        accept=".xlsb,.xlsm,.xlsx,.xls"
-        hidden>
-
-    <!-- Excel 다운로드 모달 -->
-    <div id="downloadModal" class="modal hidden">
-
-        <div class="modalBox downloadBox">
-
-        <p id="downloadTitle" class="downloadTitle">
-            다운로드 항목을 선택하세요.
-        </p>
-
-            <div class="downloadCheck">
-
-                <label>
-                    <input type="checkbox" id="historyCheck">
-                    history
-                </label>
-
-                <label>
-                    <input type="checkbox" id="usersCheck">
-                    users
-                </label>
-
-            </div>
-
-
-            <div class="downloadButton">
-
-                <button id="downloadStartBtn">
-                    Download
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <script type="module" src="admin.js"></script>
-    <script type="module" src="adminExcel.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script type="module" src="staff.js"></script>
 
 </body>
 

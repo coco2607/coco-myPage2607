@@ -11,12 +11,14 @@ const cancelBtn = document.getElementById("mstateCancel");
 
 let currentNickname = "";
 let currentState = "";
+let currentButton = null;
 
 // 모달 열기
-export function openStateModal(nickname, state) {
+export function openStateModal(nickname, state, button) {
 
     currentNickname = nickname;
     currentState = state;
+    currentButton = button;
 
     if (state === "삭제") {
 
@@ -41,14 +43,45 @@ function closeModal() {
 
 // 예
 confirmBtn.addEventListener("click", async () => {
-    await saveMemberState(
+
+    const changed = await saveMemberState(
         currentNickname,
         currentState
     );
 
     closeModal();
-    location.reload();
 
+    // 변경된 것이 없으면 종료
+    if (!changed) {
+        return;
+    }
+
+    const item = currentButton.parentElement;
+
+    // 삭제
+    if (currentState === "삭제") {
+
+        item.remove();
+
+        // 회원 수 갱신
+        const memberCount = document.getElementById("memberCount");
+        const count = document.querySelectorAll(".memberItem").length;
+        memberCount.textContent = `(${count}명)`;
+
+        return;
+    }
+
+    // 상태 선택박스
+    const select = item.querySelector(".stateSelect");
+
+    select.value = currentState;
+
+    if (currentState === "외출") {
+        select.classList.add("outing");
+        item.querySelector(".memberPoint").textContent = "0P";
+    } else {
+        select.classList.remove("outing");
+    }
 });
 
 // 아니오

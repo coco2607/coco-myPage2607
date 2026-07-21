@@ -40,42 +40,48 @@ adminPassword.addEventListener("keydown", (e) => {
 adminOkBtn.addEventListener("click", loginAdmin);
 
 
-// 관리자 로그인
+// 관리자 운영진 로그인
 async function loginAdmin() {
 
     const password = adminPassword.value.trim();
 
     if (password === "") {
-        adminMessage.textContent =
-            "비밀번호를 입력하세요.";
+        adminMessage.textContent = "비밀번호를 입력하세요.";
         adminPassword.focus();
         return;
     }
 
     try {
-        const success =
-            await checkAdmin(password);
 
-        if (!success) {
-            adminMessage.textContent =
-                "비밀번호가 올바르지 않습니다.";
+        const role = await checkAdmin(password);
+
+        if (!role) {
+            adminMessage.textContent = "비밀번호가 올바르지 않습니다.";
             adminPassword.select();
             return;
         }
 
-        // 로그인 성공
-        sessionStorage.setItem(
-            "isAdmin",
-            "true"
-        );
-        location.href =
-            "../admin/admin.html";
-    }
+        sessionStorage.removeItem("isAdmin");
+        sessionStorage.removeItem("isStaff");
 
+        if (role === "admin") {
+
+            sessionStorage.setItem("isAdmin", "true");
+            location.href = "../admin/admin.html";
+
+        }
+        else {
+
+            sessionStorage.setItem("isStaff", "true");
+            location.href = "../staff/staff.html";
+
+        }
+
+    }
     catch (err) {
 
         console.error(err);
-        adminMessage.textContent =
-            "로그인 중 오류가 발생했습니다.";
+        adminMessage.textContent = "로그인 중 오류가 발생했습니다.";
+
     }
 }

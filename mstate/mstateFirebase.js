@@ -22,8 +22,8 @@ export async function saveMemberState(nickname, state) {
     const point = user.totalP ?? 0;
 
     // 이미 외출 상태이면 중복 저장하지 않음
-    if (state === "외출" && user.state === "외출") {
-        return;
+    if ((user.state || "") === state) {
+        return false;
     }    
 
     const now = new Date();
@@ -70,7 +70,7 @@ export async function saveMemberState(nickname, state) {
                 totalP: 0
             }
         );
-        return;
+        return true;
     }
 
     // 삭제
@@ -86,19 +86,15 @@ export async function saveMemberState(nickname, state) {
             for (const key in history) {
 
                 if (history[key].nickname === nickname) {
-
                     await remove(ref(db, `history/${key}`));
-
                 }
-
             }
-
         }
 
         // users 삭제
         await remove(ref(db, `users/${nickname}`));
 
-        return;
+        return true;
     }    
 
     // 활동
@@ -108,4 +104,6 @@ export async function saveMemberState(nickname, state) {
             state
         }
     );
+
+    return true;
 }

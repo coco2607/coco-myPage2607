@@ -1,0 +1,268 @@
+/* staff.css */
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+/* ===========================
+   기본
+=========================== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Pretendard",sans-serif;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+    background:#FFF7CF;
+    color:#222;
+    overflow:hidden;
+}
+
+.container{
+    width:100%;
+    max-width:430px;
+    height:100vh;
+    margin:0 auto;
+    padding:24px 18px 99px;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   상단
+=========================== */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+}
+
+.leftHeader{
+    display:flex;
+    flex-direction:column;
+}
+
+.hello{
+    font-size:14px;
+    color:#777;
+    margin-bottom:2px;
+    justify-self:start;
+    margin-left:15px;
+}
+
+.title{
+    font-size:25px;
+    font-weight:800;
+    color:#222;
+    justify-self:start;
+    margin-left:15px;
+}
+
+.line{
+    border:none;
+    border-top:1px solid #E5DDA8;
+    margin:12px 0;
+}
+
+
+.hidden{
+    display:none;
+}
+
+/* ===========================
+   회원관리
+=========================== */
+.memberBox{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+}
+
+.memberTop{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.sectionTitle{
+    margin:0;
+    font-size:22px;
+    font-weight:600;
+    color:#555;
+    white-space:nowrap;
+    justify-self:start;
+    margin-left:15px;
+}
+
+.memberCount{
+    margin-left:-4px;
+    font-size:14px;
+    letter-spacing:-0.3px; 
+    font-weight:400;
+    color:#888;
+}
+
+/* ===========================
+   포인트 버튼
+=========================== */
+.pointHeader{
+    display:flex;
+    gap:10px;
+}
+
+.pointBtn{
+    width:95px;
+    height:38px;
+    border:none;
+    border-radius:10px;
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+}
+
+#plusBtn{
+    background:#43A047;
+}
+
+#plusBtn:hover{
+    background:#388E3C;
+}
+
+#minusBtn{
+    background:#EF5350;
+    justify-self:end;
+    margin-right:8px;
+}
+
+#minusBtn:hover{
+    background:#D84343;
+}
+
+/* ===========================
+   회원 목록
+=========================== */
+#memberList{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+}
+
+.memberItem{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    align-items:center;
+    padding:6px 18px;
+    column-gap:16px;
+    border-bottom:1px solid #EFE7BA;
+}
+
+/* 회원명 */
+.memberNick{
+    font-size:15px;
+    font-weight:700;
+    justify-self:start;
+    margin-left:15px;
+}
+
+/* 포인트 */
+.memberPoint{
+    font-size:16px;
+    font-weight:700;
+    justify-self:end;
+    margin-right:40px;    
+}
+
+/* 상태드롭다운 */
+.stateSelect{
+    width:58px;
+    height:24px;
+    justify-self:end;
+    margin-left:0px;
+    border:1px solid #D5D5D5;
+    border-radius:0;
+    background:#fff;
+    font-size:13px;
+}
+
+/* 상태 : 외출 */
+.stateSelect.outing{
+    background:#FFE0B2;
+    border:1px solid #FB8C00;
+    color:#E65100;
+    font-weight:600;
+}
+
+/* 저장 버튼 */
+.saveBtn{
+    width:58px;
+    height:24px;
+    justify-self:start;
+    margin-left:0px;
+    border:none;
+    border-radius:8px;
+    background:#1976D2;
+    color:#fff;
+    font-size:12px;
+    font-weight:500;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.saveBtn:hover{
+    background:#1565C0;
+}
+
+
+/* ===========================
+   하단 안내
+=========================== */
+.footerInfo{
+    position:fixed;
+    left:0;
+    bottom:0;
+    width:100%;
+    padding:10px;
+    background:rgba(255,255,255,.45);
+    border-top:1px solid #D9D9D9;
+    text-align:left;
+}
+
+.footerTitle{
+    margin-bottom:1px;
+    font-size:14.2px;
+    font-weight:bold;
+    color:#555;
+}
+
+.footerInfo a{
+    font-size:18.8px;
+    font-weight:bold;
+    color:#1976D2;
+    text-decoration:none;
+}
+
+.footerInfo a:hover{
+    text-decoration:underline;
+}
+
+.footerManager{
+    margin-top:6px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    color:#777;
+}
+
+.version{
+    color:#999;
+} 

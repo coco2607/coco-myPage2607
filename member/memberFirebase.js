@@ -47,8 +47,7 @@ export async function loadHistory(nickname) {
     });
 
     // 최신순
-    list.sort((a, b) => new Date(b.joinDate) - new Date(a.joinDate));
-
+    list.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     return list;
 }
 

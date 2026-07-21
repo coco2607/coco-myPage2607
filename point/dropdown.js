@@ -1,17 +1,17 @@
 // dropdown.js
 
-// ===========================
 // 커스텀 드롭다운 생성
-// ===========================
 export function createDropdown(options) {
 
     const {
         items = [],
         placeholder = "내용",
-        onSelect = null
+        onSelect = null,
+        onInput = null
     } = options;
 
-    // 전체 박스
+
+    // 래퍼
     const wrapper = document.createElement("div");
     wrapper.className = "dropdown";
 
@@ -21,89 +21,142 @@ export function createDropdown(options) {
     input.placeholder = placeholder;
     input.className = "dropdownInput";
 
-    // 목록
+    wrapper.appendChild(input);
+
+
+    // 드롭다운 목록
+    // body에 생성
     const list = document.createElement("div");
     list.className = "dropdownList";
 
-    wrapper.appendChild(input);
-    wrapper.appendChild(list);
+    document.body.appendChild(list);
 
-    // 목록 생성
-    renderList("");
 
-    // -----------------------
-    // 목록 다시 그림
-    // -----------------------
-    function renderList() {
+    // 목록 다시 그리기
+    function renderList(keyword = "") {
 
         list.innerHTML = "";
 
-        items.forEach(item => {
+        const text = keyword.trim().toLowerCase();
 
-            const div = document.createElement("div");
-            div.className = "dropdownItem";
-            div.textContent = item;
+        items
+            .filter(item => item.toLowerCase().includes(text))
+            .forEach(item => {
 
-            div.addEventListener("click", () => {
+                const div = document.createElement("div");
+                div.className = "dropdownItem";
+                div.textContent = item;
 
-                input.value = item;
-                list.classList.remove("show");
+                div.addEventListener("click", () => {
 
-                if (onSelect) {
-                    onSelect(item);
-                }
+                    input.value = item;
 
+                    hideList();
+
+                    if (onSelect) {
+                        onSelect(item);
+                    }
+
+                });
+
+                list.appendChild(div);
             });
+    }
 
-            list.appendChild(div);
 
-        });
+    // 목록 위치
+    function positionList() {
+
+        const rect = input.getBoundingClientRect();
+
+        list.style.position = "fixed";
+        list.style.left = rect.left + "px";
+        list.style.top = (rect.bottom + 2) + "px";
+        list.style.width = rect.width + "px";
+        list.style.zIndex = "99999";
 
     }
 
-    // -----------------------
-    // 입력
-    // -----------------------
-    input.addEventListener("input", () => {
+
+    // 열기
+    function showList() {
+
+        // 다른 드롭다운 모두 닫기
+        document.querySelectorAll(".dropdownList.show").forEach(el => {
+
+            if (el !== list) {
+                el.classList.remove("show");
+            }
+
+        });
 
         renderList(input.value);
+        positionList();
 
         list.classList.add("show");
+    }
 
-    });
 
-    // -----------------------
-    // 클릭
-    // -----------------------
-    input.addEventListener("click", () => {
+    // 닫기
+    function hideList() {
+        list.classList.remove("show");
+    }
 
-        renderList(input.value);
+    // 바깥 클릭 시 닫기
+    document.addEventListener("mousedown", (e) => {
 
-        list.classList.add("show");
-
-    });
-
-    // -----------------------
-    // 포커스
-    // -----------------------
-    input.addEventListener("focus", () => {
-
-        renderList(input.value);
-
-        list.classList.add("show");
-
-    });
-
-    // -----------------------
-    // 바깥 클릭
-    // -----------------------
-    document.addEventListener("click", e => {
-
-        if (!wrapper.contains(e.target)) {
-            list.classList.remove("show");
+        if (
+            !wrapper.contains(e.target) &&
+            !list.contains(e.target)
+        ) {
+            hideList();
         }
 
     });
+
+
+    // 입력
+    input.addEventListener("input", () => {
+
+        if (onInput) {
+            onInput(input.value);
+        }
+
+        showList();
+
+    });
+
+    // 클릭
+    input.addEventListener("click", () => {
+
+        showList();
+
+    });
+
+    // 포커스
+    input.addEventListener("focus", () => {
+
+        showList();
+
+    });
+
+    // 스크롤하면 위치 다시 계산
+    window.addEventListener("scroll", () => {
+
+        if (list.classList.contains("show")) {
+            positionList();
+        }
+
+    }, true);
+
+    // 화면 크기 변경
+    window.addEventListener("resize", () => {
+
+        if (list.classList.contains("show")) {
+            positionList();
+        }
+
+    });   
 
     return {
         element: wrapper,
@@ -118,6 +171,11 @@ export function createDropdown(options) {
 
         focus() {
             input.focus();
+        },
+
+        hide() {
+            hideList();
         }
     };
+
 }

@@ -1,13 +1,13 @@
-// admin.js
+// staff.js
 
-import {loadUsers} from "./adminFirebase.js";
+import {loadUsers} from "../admin/adminFirebase.js";
 import { openStateModal } from "../mstate/mstate.js";
 import "../point/adpoint.js";
 
-// 관리자 로그인 확인
-const isAdmin = sessionStorage.getItem("isAdmin");
+// 운영진 로그인 확인
+const isStaff = sessionStorage.getItem("isStaff");
 
-if (isAdmin !== "true") {
+if (isStaff !== "true") {
     location.href = "../login/login.html";
 }
 

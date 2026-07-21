@@ -12,13 +12,23 @@ import {
 // 관리자 로그인 확인
 export async function checkAdmin(password) {
 
-    const snapshot = await get(ref(db, "admin/password"));
+    const snapshot = await get(ref(db, "admin"));
 
     if (!snapshot.exists()) {
-        return false;
+        return null;
     }
 
-    return snapshot.val() === password;
+    const data = snapshot.val();
+
+    if (password === data.adminPassword) {
+        return "admin";
+    }
+
+    if (password === data.staffPassword) {
+        return "staff";
+    }
+
+    return null;
 }
 
 // history 전체 가져오기

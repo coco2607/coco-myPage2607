@@ -24,6 +24,18 @@
 /* ===========================
    입력 영역
 =========================== */
+.pointScroll{
+    max-height:230px;      /* 5줄 정도 */
+    overflow-y:auto;
+    overflow-x:hidden;
+    margin-bottom:12px;
+}
+
+#pointRows{
+    display:flex;
+    flex-direction:column;
+}
+
 .pointRow{
     display:flex;
     align-items:center;
@@ -91,10 +103,7 @@
 }
 
 .dropdownList{
-    position:absolute;
-    top:36px;
-    left:0;
-    right:0;
+    display:none;
 
     max-height:180px;
     overflow-y:auto;
@@ -105,9 +114,7 @@
 
     box-shadow:0 4px 12px rgba(0,0,0,.15);
 
-    display:none;
-
-    z-index:100;
+    z-index:99999;
 }
 
 .dropdownList.show{
@@ -119,6 +126,7 @@
     font-size:13px;
     cursor:pointer;
     transition:.15s;
+    text-align:left;
 }
 
 .dropdownItem:hover{
@@ -230,4 +238,67 @@
 
 #pointConfirmCancelBtn:hover{
     background:#9E9E9E;
+}
+
+
+/* ===========================
+   알림팝업
+=========================== */
+.modal{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.45);
+
+    z-index:9999;
+}
+
+.hidden{
+    display:none;
+}
+
+.modalBox{
+    width:90%;
+    max-width:330px;
+
+    padding:25px;
+
+    background:#FFF;
+    border-radius:15px;
+
+    text-align:center;
+}
+
+#alertMessage{
+    font-size:18px;
+    font-weight:300;
+    color:#333;
+    line-height:1.6;
+    white-space:pre-line;
+    word-break:keep-all;
+    margin-bottom:25px;
+}
+
+#alertCloseBtn{
+    width:100%;
+    height:52px;
+
+    border:none;
+    border-radius:12px;
+
+    background:#2196F3;
+    color:#FFF;
+
+    font-size:20px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+#alertCloseBtn:hover{
+    background:#1E88E5;
 }

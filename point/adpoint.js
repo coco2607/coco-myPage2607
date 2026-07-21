@@ -3,15 +3,16 @@
 import { applyPoint } from "./adpointFirebase.js";
 import { createDropdown } from "./dropdown.js";
 
-// ===========================
+
 // DOM
-// ===========================
 const plusBtn = document.getElementById("plusBtn");
 const minusBtn = document.getElementById("minusBtn");
 
 const pointModal = document.getElementById("pointModal");
 const pointTitle = document.getElementById("pointTitle");
 const pointRows = document.getElementById("pointRows");
+
+const pointScroll = document.querySelector(".pointScroll");
 
 const pointApplyBtn = document.getElementById("pointApplyBtn");
 const pointCancelBtn = document.getElementById("pointCancelBtn");
@@ -21,9 +22,12 @@ const pointConfirmList = document.getElementById("pointConfirmList");
 const pointConfirmBtn = document.getElementById("pointConfirmBtn");
 const pointConfirmCancelBtn = document.getElementById("pointConfirmCancelBtn");
 
-// ===========================
+const alertModal = document.getElementById("alertModal");
+const alertMessage = document.getElementById("alertMessage");
+const alertCloseBtn = document.getElementById("alertCloseBtn");
+
+
 // 상태
-// ===========================
 const START_ROW = 5;
 
 const minusPointMap = {
@@ -44,29 +48,39 @@ const plusEventList = [
 let mode = "plus";
 let pointData = [];
 
-// ===========================
+
+function showAlert(message) {
+
+    alertMessage.textContent = message;
+    alertModal.classList.remove("hidden");
+}
+
+
 // 적립
-// ===========================
 plusBtn.addEventListener("click", () => {
 
     mode = "plus";
     openPointModal();
-
 });
 
-// ===========================
+
 // 사용
-// ===========================
 minusBtn.addEventListener("click", () => {
 
     mode = "minus";
     openPointModal();
+});
+
+
+// 알림 확인
+alertCloseBtn.addEventListener("click", () => {
+
+    alertModal.classList.add("hidden");
 
 });
 
-// ===========================
+
 // 모달 열기
-// ===========================
 function openPointModal() {
 
     if (mode === "plus") {
@@ -85,12 +99,21 @@ function openPointModal() {
         addRow();
     }
     pointModal.classList.remove("hidden");
+}
+
+
+function hideAllDropdown() {
+
+    [...pointRows.children].forEach(row => {
+
+        row.nicknameDropdown?.hide();
+        row.eventDropdown?.hide();
+
+    });
 
 }
 
-// ===========================
 // 행 생성
-// ===========================
 function addRow() {
 
     const row = document.createElement("div");
@@ -108,19 +131,18 @@ function addRow() {
             ? plusEventList
             : Object.keys(minusPointMap),
         placeholder: "내용",
+
+        onInput(value) {
+            updatePointByEvent(value);
+        },
+
         onSelect(item) {
-
-            if (mode !== "minus") return;
-
-            if (minusPointMap[item] !== undefined) {
-                point.value = minusPointMap[item];
-                point.readOnly = true;
-            } else {
-                point.readOnly = false;
-            }
-
+            updatePointByEvent(item);
         }
     });
+
+    row.nicknameDropdown = nickname;
+    row.eventDropdown = event;
 
     // 포인트
     const point = document.createElement("input");
@@ -129,11 +151,35 @@ function addRow() {
     point.min = 1;
     point.step = 1;
 
+
+    function updatePointByEvent(value) {
+
+        if (mode !== "minus") return;
+
+        if (minusPointMap[value] !== undefined) {
+            point.value = minusPointMap[value];
+            point.readOnly = true;
+        } else {
+            point.value = "";
+            point.readOnly = false;
+        }
+    } 
+
+
+    const eventInput = event.element.querySelector(".dropdownInput");
+
     row.appendChild(nickname.element);
     row.appendChild(event.element);
     row.appendChild(point);
 
     pointRows.appendChild(row);
+
+    requestAnimationFrame(() => {
+        if (pointRows.children.length > START_ROW) {
+            pointScroll.scrollTop = pointScroll.scrollHeight;
+        }
+
+    });
 
     // 마지막 줄 자동 추가
     const nicknameInput =
@@ -167,19 +213,16 @@ function addRow() {
 
 }
 
-// ===========================
+
 // 취소
-// ===========================
 pointCancelBtn.addEventListener("click", () => {
 
+    hideAllDropdown();
     pointModal.classList.add("hidden");
-
 });
 
 
-// ===========================
 // 적용
-// ===========================
 pointApplyBtn.addEventListener("click", () => {
 
     pointData = [];
@@ -187,15 +230,24 @@ pointApplyBtn.addEventListener("click", () => {
 
     const rows = [...pointRows.children];
 
+    let hasError = false;
+
     rows.forEach(row => {
 
         const nickname = row.children[0].value.trim();
         const event = row.children[1].value;
         const point = Number(row.children[2].value);
 
-        if (!nickname) return;
-        if (!event) return;
-        if (!point || point <= 0) return;
+        // 완전히 빈 줄은 무시
+        if (!nickname && !event && !point) {
+            return;
+        }
+
+        // 하나라도 빠져 있으면 오류
+        if (!nickname || !event || !point || point <= 0) {
+            hasError = true;
+            return;
+        }
 
         pointData.push({
             nickname,
@@ -204,6 +256,12 @@ pointApplyBtn.addEventListener("click", () => {
         });
 
     });
+
+    
+    if (hasError) {
+        showAlert("닉네임, 내용, 포인트\n모두 입력해주세요.");
+        return;
+    }
 
     if (pointData.length === 0) {
         return;
@@ -226,23 +284,20 @@ pointApplyBtn.addEventListener("click", () => {
 
     pointModal.classList.add("hidden");
     pointConfirmModal.classList.remove("hidden");
-
 });
 
-// ===========================
+
 // 아니오
-// ===========================
 pointConfirmCancelBtn.addEventListener("click", () => {
+
+    hideAllDropdown();
 
     pointConfirmModal.classList.add("hidden");
     pointModal.classList.remove("hidden");
-
 });
 
 
-// ===========================
 // 예
-// ===========================
 pointConfirmBtn.addEventListener("click", async () => {
 
     try {
@@ -254,7 +309,5 @@ pointConfirmBtn.addEventListener("click", async () => {
     } catch (err) {
 
         (err.message);
-
     }
-
 });
