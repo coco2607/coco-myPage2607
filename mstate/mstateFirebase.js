@@ -20,6 +20,7 @@ export async function saveMemberState(nickname, state) {
 
     const user = snapshot.val();
     const point = user.totalP ?? 0;
+    const joinDate = user.joinDate ?? "";
 
     // 이미 외출 상태이면 중복 저장하지 않음
     if ((user.state || "") === state) {
