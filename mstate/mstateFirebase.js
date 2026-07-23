@@ -68,6 +68,7 @@ export async function saveMemberState(nickname, state) {
             ref(db, `users/${nickname}`),
             {
                 date: date,
+                joinDate: date,
                 state: "외출",
                 totalP: 0
             }
