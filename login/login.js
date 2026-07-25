@@ -94,14 +94,3 @@ async function checkPassword() {
         memberPassword.select();
     }
 }
-
-// footer 높이만큼 body 여백 자동 설정
-function updateFooterPadding() {
-    const footer = document.querySelector(".footerInfo");
-    if (!footer) return;
-
-    document.body.style.paddingBottom = `${footer.offsetHeight}px`;
-}
-
-window.addEventListener("load", updateFooterPadding);
-window.addEventListener("resize", updateFooterPadding);
