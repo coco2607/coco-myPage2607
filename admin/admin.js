@@ -263,3 +263,16 @@ function addHistory(date, memo, point) {
     `;
     historyList.appendChild(item);
 }
+
+function updateFooterHeight() {
+    const footer = document.querySelector(".footerInfo");
+    if (!footer) return;
+
+    document.documentElement.style.setProperty(
+        "--footer-height",
+        `${footer.offsetHeight}px`
+    );
+}
+
+window.addEventListener("load", updateFooterHeight);
+window.addEventListener("resize", updateFooterHeight);
