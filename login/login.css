@@ -19,8 +19,9 @@ body{
     background-size:cover;
     background-repeat:no-repeat;
     background-position:center bottom;
+    background-attachment:fixed;
 
-    min-height:100dvh;
+    min-height:100vh;
 
     display:flex;
     justify-content:center;
@@ -252,16 +253,15 @@ button:active{
 .footerInfo{
     position:fixed;
     left:0;
-    right:0;
     bottom:0;
 
     width:100%;
-    z-index:1000;
-
     padding:10px;
 
     background:rgba(255,255,255,.45);
     border-top:1px solid #D9D9D9;
+
+    text-align:left;
 }
 
 .footerTitle{
