@@ -56,6 +56,8 @@ confirmBtn.addEventListener("click", async () => {
         return;
     }
 
+    document.dispatchEvent(new Event("memberUpdated"));
+
     const item = currentButton.parentElement;
 
     // 삭제
@@ -71,17 +73,18 @@ confirmBtn.addEventListener("click", async () => {
         return;
     }
 
-    // 상태 선택박스
-    const select = item.querySelector(".stateSelect");
+    // 상태 버튼
+    const stateButton = item.querySelector(".stateSelect");
 
-    select.value = currentState;
+    stateButton.textContent = currentState;
 
     if (currentState === "외출") {
-        select.classList.add("outing");
+        stateButton.classList.add("outing");
         item.querySelector(".memberPoint").textContent = "0P";
     } else {
-        select.classList.remove("outing");
+        stateButton.classList.remove("outing");
     }
+
 });
 
 // 아니오
