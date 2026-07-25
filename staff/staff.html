@@ -178,6 +178,61 @@
     </div>    
 
 
+    <!-- 상태 선택 모달 -->
+    <div id="stateSelectModal" class="modal hidden">
+
+        <div class="modalBox">
+
+            <h3>상태 변경</h3>
+
+            <div class="stateRadioGroup">
+
+                <label class="stateRadio">
+                    <input
+                        type="radio"
+                        name="memberState"
+                        class="stateChoice"
+                        data-state="활동">
+                    <span>활동</span>
+                </label>
+
+                <label class="stateRadio">
+                    <input
+                        type="radio"
+                        name="memberState"
+                        class="stateChoice"
+                        data-state="외출">
+                    <span>외출</span>
+                </label>
+
+                <label class="stateRadio">
+                    <input
+                        type="radio"
+                        name="memberState"
+                        class="stateChoice"
+                        data-state="삭제">
+                    <span>삭제</span>
+                </label>
+
+            </div>
+
+            <div class="modalBtnBox">
+
+                <button id="stateSelectSave">
+                    저장
+                </button>
+
+                <button id="stateSelectCancel">
+                    취소
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <!-- 상태 변경 확인 모달 -->
     <div id="mstateModal" class="modal hidden">
 

@@ -13,18 +13,29 @@ if (isStaff !== "true") {
 
 const memberList = document.getElementById("memberList");
 
+const stateSelectModal = document.getElementById("stateSelectModal");
+const stateSelectSave = document.getElementById("stateSelectSave");
+const stateSelectCancel = document.getElementById("stateSelectCancel");
+
+let currentStateButton = null;
+
+let selectedNickname = "";
+let selectedState = "";
+
 let memberData = [];
 
 // 시작
 init();
 
+document.addEventListener("memberUpdated", async () => {
+    await init();
+});
+
 async function init() {
-
     memberData = await loadUsers();
-
     render(memberData);
-
 }
+
 
 // 회원 출력
 function render(list) {
@@ -58,49 +69,66 @@ function render(list) {
                     ${user.totalP ?? 0}P
                 </div>
 
-                <select
+                <div class="memberDate">
+                    ${user.date ?? ""}
+                </div>
+
+                <button
                     class="stateSelect ${user.state === "외출" ? "outing" : ""}"
                     data-key="${user.nickname}">
 
-                    <option value="활동"
-                        ${user.state === "활동" ? "selected" : ""}>
-                        활동
-                    </option>
+                    ${user.state ?? "활동"}
 
-                    <option value="외출"
-                        ${user.state === "외출" ? "selected" : ""}>
-                        외출
-                    </option>
-
-                    <option value="삭제"
-                        ${user.state === "삭제" ? "selected" : ""}>
-                        삭제
-                    </option>
-
-                </select>
-
-                <button
-                    class="saveBtn"
-                    data-key="${user.nickname}">
-                    저장
                 </button>
 
             </div>
         `;
     });
 
-
-    // 저장 버튼 이벤트
-    document.querySelectorAll(".saveBtn").forEach(button => {
+    // 상태 버튼 이벤트
+    document.querySelectorAll(".stateSelect").forEach(button => {
 
         button.addEventListener("click", () => {
 
-            const nickname = button.dataset.key;
-            const state = button
-                .parentElement
-                .querySelector(".stateSelect")
-                .value;
-            openStateModal(nickname, state, button);
+            currentStateButton = button;
+            selectedNickname = button.dataset.key;
+            selectedState = button.textContent.trim();
+
+            document.querySelectorAll(".stateChoice").forEach(radio => {
+                radio.checked = (radio.dataset.state === selectedState);
+            });
+
+            stateSelectModal.classList.remove("hidden");
+
         });
     });
+
 }
+
+stateSelectSave.addEventListener("click", () => {
+
+    stateSelectModal.classList.add("hidden");
+
+    openStateModal(
+        selectedNickname,
+        selectedState,
+        currentStateButton
+    );
+
+});
+
+stateSelectCancel.addEventListener("click", () => {
+    stateSelectModal.classList.add("hidden");
+});
+
+document.querySelectorAll(".stateChoice").forEach(radio => {
+
+    radio.addEventListener("change", () => {
+
+        if (radio.checked) {
+            selectedState = radio.dataset.state;
+        }
+
+    });
+
+});

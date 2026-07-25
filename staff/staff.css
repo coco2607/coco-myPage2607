@@ -178,7 +178,17 @@ body{
     font-size:16px;
     font-weight:700;
     justify-self:end;
-    margin-right:40px;    
+    margin-right:28px;    
+}
+
+/* 마지막수정날짜 */
+.memberDate{
+    width:95px;
+    text-align:center;
+    font-size:13px;
+    margin-right:4px;  
+    color:#666;
+    white-space:nowrap;
 }
 
 /* 상태드롭다운 */
@@ -218,6 +228,57 @@ body{
 }
 
 .saveBtn:hover{
+    background:#1565C0;
+}
+
+
+/* ===========================
+   상태 선택
+=========================== */
+
+.stateRadioGroup{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin:24px auto 32px;
+    width:fit-content;
+}
+
+.stateRadio{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    user-select:none;
+}
+
+.stateRadio input[type="radio"]{
+    width:20px;
+    height:20px;
+    accent-color:#FB8C00;
+    cursor:pointer;
+}
+
+/* ===========================
+   상태 선택 버튼
+=========================== */
+#stateSelectCancel{
+    background:#BDBDBD;
+    color:#fff;
+}
+
+#stateSelectCancel:hover{
+    background:#9E9E9E;
+}
+
+#stateSelectSave{
+    background:#1976D2;
+    color:#fff;
+}
+
+#stateSelectSave:hover{
     background:#1565C0;
 }
 
