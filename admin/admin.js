@@ -2,6 +2,7 @@
 
 import {loadUsers, loadHistory} from "./adminFirebase.js";
 import { openStateModal } from "../mstate/mstate.js";
+import { changeNickname } from "./changenmFirebase.js";
 import "../point/adpoint.js";
 
 // 관리자 로그인 확인
@@ -17,6 +18,17 @@ const historyModal = document.getElementById("historyModal");
 const historyTitle = document.getElementById("historyTitle");
 const historyList = document.getElementById("historyList");
 const historyCloseBtn = document.getElementById("historyCloseBtn");
+const nicknameChangeBtn = document.getElementById("nicknameChangeBtn");
+
+const nicknameModal = document.getElementById("nicknameModal");
+const nicknameInput = document.getElementById("nicknameInput");
+const nicknameSaveBtn = document.getElementById("nicknameSaveBtn");
+const nicknameCancelBtn = document.getElementById("nicknameCancelBtn");
+
+const nicknameConfirmModal = document.getElementById("nicknameConfirmModal");
+const nicknameConfirmText = document.getElementById("nicknameConfirmText");
+const nicknameConfirmBtn = document.getElementById("nicknameConfirmBtn");
+const nicknameConfirmCancelBtn = document.getElementById("nicknameConfirmCancelBtn");
 
 const stateSelectModal = document.getElementById("stateSelectModal");
 const stateSelectSave = document.getElementById("stateSelectSave");
@@ -28,11 +40,105 @@ let currentStateButton = null;
 let selectedNickname = "";
 let selectedState = "";
 
+let currentNickname = "";
+let newNickname = "";
+
+
 
 historyCloseBtn.addEventListener("click", () => {
     historyModal.classList.add("hidden");
 });
 
+nicknameChangeBtn.addEventListener("click", () => {
+
+    nicknameInput.value = "";
+
+    nicknameModal.classList.remove("hidden");
+
+    nicknameInput.focus();
+});
+
+
+nicknameCancelBtn.addEventListener("click", () => {
+
+    nicknameModal.classList.add("hidden");
+
+});
+
+nicknameSaveBtn.addEventListener("click", () => {
+
+    newNickname = nicknameInput.value.trim();
+
+    if (!newNickname) {
+        nicknameConfirmText.textContent = "새 닉네임을 입력해주세요.";
+
+        nicknameConfirmBtn.textContent = "확인";
+        nicknameConfirmCancelBtn.classList.add("hidden");
+
+        nicknameModal.classList.add("hidden");
+        nicknameConfirmModal.classList.remove("hidden");
+        return;
+    }
+
+    
+    if (newNickname === currentNickname) {
+        nicknameModal.classList.add("hidden");
+
+        nicknameConfirmText.textContent = "기존 닉네임과 동일합니다.";
+
+        nicknameConfirmBtn.textContent = "확인";
+        nicknameConfirmCancelBtn.classList.add("hidden");
+        nicknameConfirmModal.classList.remove("hidden");
+        return;
+    }  
+
+    nicknameModal.classList.add("hidden");
+
+    // 원래 상태로 복원
+    nicknameConfirmBtn.textContent = "예";
+    nicknameConfirmCancelBtn.classList.remove("hidden");
+
+    nicknameConfirmText.innerHTML =
+        `${currentNickname}를<br><span class="newNickname">${newNickname}</span>로 변경하시겠습니까?`;
+        //`'${currentNickname}'를<br><br>'${newNickname}'로 변경하시겠습니까?`;
+
+    nicknameConfirmModal.classList.remove("hidden");
+
+});
+
+nicknameConfirmCancelBtn.addEventListener("click", () => {
+
+    nicknameConfirmModal.classList.add("hidden");
+
+});
+
+nicknameConfirmBtn.addEventListener("click", async () => {
+
+    // 단순 확인 모드
+    if (nicknameConfirmBtn.textContent === "확인") {
+
+        nicknameConfirmModal.classList.add("hidden");
+
+        nicknameConfirmBtn.textContent = "예";
+        nicknameConfirmCancelBtn.classList.remove("hidden");
+
+        // 입력창 다시 열기
+        nicknameModal.classList.remove("hidden");
+        nicknameInput.focus();
+
+        return;
+
+    }
+
+    // 닉네임 변경 모드
+    await changeNickname(currentNickname, newNickname);
+
+    nicknameConfirmModal.classList.add("hidden");
+    historyModal.classList.add("hidden");
+
+    await init();
+
+});
 
 stateSelectSave.addEventListener("click", () => {
 
@@ -165,8 +271,8 @@ function render(list) {
 // 히스토리 표시
 function showHistory(nickname, list) {
 
-    historyTitle.textContent =
-        `${nickname} 포인트 내역`;
+    historyTitle.textContent =`${nickname} 포인트 내역`;
+    currentNickname = nickname;
 
     historyList.innerHTML = "";
 

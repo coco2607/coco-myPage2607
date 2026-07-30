@@ -252,9 +252,39 @@ body{
 }
 
 #historyTitle{
+    margin:0;
     font-size:15px;
     font-weight:700;
+
+}
+
+.historyHeader{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
     margin-bottom:15px;
+}
+
+#nicknameChangeBtn{
+    position:absolute;
+    right:0;
+
+    padding:0;
+
+    border:none;
+    background:none;
+
+    color:#666;
+    font-size:13px;
+    font-weight:600;
+
+    cursor:pointer;
+}
+
+#nicknameChangeBtn:hover{
+    color:#1976D2;
+    text-decoration:underline;
 }
 
 #historyList{
@@ -313,6 +343,83 @@ body{
 
 .historyPoint.minus{
     color:#E53935;
+}
+
+
+/* ===========================
+   닉네임 변경
+=========================== */
+
+/* 입력창 */
+.nicknameInput{
+    width:100%;
+    height:42px;
+
+    margin:22px 0 26px;
+    padding:0 12px;
+
+    border:1px solid #D5D5D5;
+    border-radius:10px;
+
+    font-size:15px;
+    text-align:center;
+
+    outline:none;
+    transition:.2s;
+}
+
+.nicknameInput:focus{
+    border-color:#1976D2;
+}
+
+/* 입력 모달 확인 버튼 */
+#nicknameSaveBtn{
+    background:#43A047;
+    color:#fff;
+}
+
+#nicknameSaveBtn:hover{
+    background:#388E3C;
+}
+
+/* 입력 모달 취소 버튼 */
+#nicknameCancelBtn{
+    background:#BDBDBD;
+    color:#fff;
+}
+
+#nicknameCancelBtn:hover{
+    background:#9E9E9E;
+}
+
+/* 확인 모달 예 버튼 */
+#nicknameConfirmBtn{
+    background:#43A047;
+    color:#fff;
+}
+
+#nicknameConfirmBtn:hover{
+    background:#388E3C;
+}
+
+/* 확인 모달 아니오 버튼 */
+#nicknameConfirmCancelBtn{
+    background:#BDBDBD;
+    color:#fff;
+}
+
+#nicknameConfirmCancelBtn:hover{
+    background:#9E9E9E;
+}
+
+.newNickname{
+    color:#D32F2F;
+    background:#FFEBEE;
+    padding:2px 6px;
+    border-radius:6px;
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:1px;
 }
 
 

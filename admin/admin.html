@@ -184,7 +184,7 @@
 
         <div class="footerManager">
             <span>운영관리담당 : 코코</span>
-            <span class="version">Ver 1.7.2</span>
+            <span class="version">Ver 1.7.3</span>
         </div>
     </div>
 
@@ -283,17 +283,23 @@
 
         <div class="modalBox historyBox">
 
-            <h3 id="historyTitle">
-                포인트 내역
-            </h3>
+            <div class="historyHeader">
 
+                <h3 id="historyTitle">
+                    포인트 내역
+                </h3>
+
+                <button id="nicknameChangeBtn">
+                    이름변경
+                </button>
+
+            </div>           
 
             <div id="historyList">
 
                 <!-- JS 생성 -->
 
             </div>
-
 
             <div class="modalBtnBox">
 
@@ -307,6 +313,65 @@
 
     </div>    
 
+    <!-- 닉네임 변경 입력 모달 -->
+    <div id="nicknameModal" class="modal hidden">
+
+        <div class="modalBox">
+
+            <h3>
+                이름 변경
+            </h3>
+
+            <input
+                type="text"
+                id="nicknameInput"
+                class="nicknameInput"
+                maxlength="2"
+                placeholder="새 닉네임">
+
+            <div class="modalBtnBox">
+
+                <button id="nicknameSaveBtn">
+                    확인
+                </button>
+
+                <button id="nicknameCancelBtn">
+                    취소
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 닉네임 변경 확인 모달 -->
+    <div id="nicknameConfirmModal" class="modal hidden">
+
+        <div class="modalBox">
+
+            <p
+                id="nicknameConfirmText"
+                class="modalText">
+            </p>
+
+            <div class="modalBtnBox">
+
+                <button id="nicknameConfirmBtn">
+                    예
+                </button>
+
+                <button id="nicknameConfirmCancelBtn">
+                    아니오
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+        
 
     <!-- Excel 파일 선택 -->
     <input
