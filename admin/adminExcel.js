@@ -2,7 +2,9 @@
 
 import {
     loadUsers,
-    loadHistory
+    loadHistory,
+    uploadUsers,
+    uploadHistory
 } from "./adminFirebase.js";
 
 
