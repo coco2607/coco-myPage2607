@@ -79,6 +79,12 @@ export async function updateMemberState(nickname, state) {
 export async function uploadHistory(historyList) {
 
     for (const history of historyList) {
+
+        // timestamp가 없으면 date로 생성
+        if (!history.timestamp && history.date) {
+            history.timestamp = new Date(history.date).getTime();
+        }
+
         await set(
             push(ref(db, "history")),
             history

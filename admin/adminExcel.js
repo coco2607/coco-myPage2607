@@ -83,36 +83,53 @@ async function uploadExcel() {
     try {
 
         const buffer = await file.arrayBuffer();
-        const workbook = XLSX.read(buffer, { type: "array" });
+
+        const workbook = XLSX.read(buffer, {
+            type: "array"
+        });
 
         let uploaded = false;
 
+        // users
         const usersSheet = workbook.Sheets["users"];
+
         if (usersSheet) {
 
             const users = XLSX.utils.sheet_to_json(usersSheet);
 
             if (users.length > 0) {
+
                 await uploadUsers(users);
                 uploaded = true;
+
             }
+
         }
 
+        // history
         const historySheet = workbook.Sheets["history"];
+
         if (historySheet) {
 
             const history = XLSX.utils.sheet_to_json(historySheet);
 
             if (history.length > 0) {
+
                 await uploadHistory(history);
                 uploaded = true;
+
             }
+
         }
 
         if (uploaded) {
+
             alert("업로드가 완료되었습니다.");
+
         } else {
+
             alert("users 또는 history 시트를 찾을 수 없습니다.");
+
         }
 
     } catch (err) {
@@ -122,12 +139,12 @@ async function uploadExcel() {
 
     } finally {
 
+        // 같은 파일을 다시 선택할 수 있도록 초기화
         excelFile.value = "";
 
     }
 
 }
-
 
 // ===========================
 // Download
