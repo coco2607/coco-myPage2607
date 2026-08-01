@@ -76,13 +76,53 @@ excelFile.addEventListener("change", uploadExcel);
 async function uploadExcel() {
 
     const file = excelFile.files[0];
-
     if (!file) return;
 
-    // TODO
-    // workbook 읽기
-    // users 시트 → users 업로드
-    // history 시트 → history 업로드
+    try {
+
+        const buffer = await file.arrayBuffer();
+        const workbook = XLSX.read(buffer, { type: "array" });
+
+        let uploaded = false;
+
+        const usersSheet = workbook.Sheets["users"];
+        if (usersSheet) {
+
+            const users = XLSX.utils.sheet_to_json(usersSheet);
+
+            if (users.length > 0) {
+                await uploadUsers(users);
+                uploaded = true;
+            }
+        }
+
+        const historySheet = workbook.Sheets["history"];
+        if (historySheet) {
+
+            const history = XLSX.utils.sheet_to_json(historySheet);
+
+            if (history.length > 0) {
+                await uploadHistory(history);
+                uploaded = true;
+            }
+        }
+
+        if (uploaded) {
+            alert("업로드가 완료되었습니다.");
+        } else {
+            alert("users 또는 history 시트를 찾을 수 없습니다.");
+        }
+
+    } catch (err) {
+
+        console.error(err);
+        alert("업로드 중 오류가 발생했습니다.");
+
+    } finally {
+
+        excelFile.value = "";
+
+    }
 
 }
 
