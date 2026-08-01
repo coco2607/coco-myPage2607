@@ -101,7 +101,11 @@ export async function uploadUsers(userList) {
         const { nickname, ...data } = user;
 
         if (!nickname) continue;
+
+        // 비밀번호는 업데이트하지 않음
+        delete data.memberPw;
         updates[nickname] = data;
     }
     await update(ref(db, "users"), updates);
+
 }
