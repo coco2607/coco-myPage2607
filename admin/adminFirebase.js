@@ -95,17 +95,17 @@ export async function uploadHistory(historyList) {
 // 엑셀 업로드 users 업데이트
 export async function uploadUsers(userList) {
 
-    const updates = {};
-
     for (const user of userList) {
-        const { nickname, ...data } = user;
+
+        const { nickname, memberPw, ...data } = user;
 
         if (!nickname) continue;
 
-        // 비밀번호는 업데이트하지 않음
-        delete data.memberPw;
-        updates[nickname] = data;
+        await update(
+            ref(db, `users/${nickname}`),
+            data
+        );
+
     }
-    await update(ref(db, "users"), updates);
 
 }
