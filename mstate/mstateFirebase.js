@@ -47,7 +47,7 @@ export async function saveMemberState(nickname, state) {
                 date: date,
                 time,
                 nickname,
-                joinDate,
+                joinDate: date,
                 dice: 0,
                 start: 0,
                 end: 0,
