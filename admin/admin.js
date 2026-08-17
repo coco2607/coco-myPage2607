@@ -292,12 +292,21 @@ function showHistory(nickname, list) {
         .sort((a, b) => b.timestamp - a.timestamp)
         .forEach(data => {
 
-            if (data.normal || data.special) {
-
+            if (data.normal && data.normalPoint !== 0) {
                 addHistory(
                     data.joinDate,
                     "벙참 보드게임 참여",
-                    data.tpoint
+                    data.normalPoint,
+                    data.normalPoint > 0
+                );
+            }
+
+            if (data.special) {
+                addHistory(
+                    data.joinDate,
+                    data.special,
+                    data.specialPoint,
+                    data.specialPoint >= 0
                 );
             }
 
