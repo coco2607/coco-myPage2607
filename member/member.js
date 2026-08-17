@@ -36,12 +36,10 @@ async function loadMember() {
 
     // 회원정보
     if (user) {
-
         totalPoint.textContent = `${user.totalP ?? 0}점`;
         boardPosition.textContent = `(보드게임 현 위치 ${user.last ?? 0})`;
 
     } else {
-
         totalPoint.textContent = "0점";
         boardPosition.textContent = "(보드게임 현 위치 0)";
 
@@ -49,27 +47,30 @@ async function loadMember() {
 
     // 히스토리
     historyList.innerHTML = "";
-
     if (history.length === 0) {
-
-        historyList.innerHTML =
-            "<div class='historyItem'>포인트 내역이 없습니다.</div>";
-
+        historyList.innerHTML ="<div class='historyItem'>포인트 내역이 없습니다.</div>";
         return;
 
     }
 
     history.forEach(data => {
 
-        if (data.normal || data.special) {
-
+        if (data.normal && data.normalPoint !== 0) {
             addHistory(
                 data.joinDate,
                 "벙참 보드게임 참여",
-                data.tpoint,
-                true
+                data.normalPoint,
+                data.normalPoint > 0
             );
+        }
 
+        if (data.special) {
+            addHistory(
+                data.joinDate,
+                data.special,
+                data.specialPoint,
+                data.specialPoint >= 0
+            );
         }
 
         if (data.event) {
