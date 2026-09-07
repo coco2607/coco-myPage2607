@@ -2,9 +2,7 @@
 
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-/* ===========================
-   기본
-=========================== */
+/* 기본 */
 *{
     margin:0;
     padding:0;
@@ -34,9 +32,7 @@ body{
     flex-direction:column;
 }
 
-/* ===========================
-   상단
-=========================== */
+/* 상단 */
 .header{
     display:flex;
     justify-content:space-between;
@@ -75,9 +71,7 @@ body{
     display:none;
 }
 
-/* ===========================
-   회원관리
-=========================== */
+/* 회원관리 */
 .memberBox{
     flex:1;
     display:flex;
@@ -109,9 +103,7 @@ body{
     color:#888;
 }
 
-/* ===========================
-   포인트 버튼
-=========================== */
+/* 포인트 버튼 */
 .pointHeader{
     display:flex;
     gap:10px;
@@ -147,9 +139,7 @@ body{
     background:#D84343;
 }
 
-/* ===========================
-   회원 목록
-=========================== */
+/* 회원 목록 */
 #memberList{
     flex:1;
     min-height:0;
@@ -231,11 +221,7 @@ body{
     background:#1565C0;
 }
 
-
-/* ===========================
-   상태 선택
-=========================== */
-
+/* 상태 선택 */
 .stateRadioGroup{
     display:flex;
     flex-direction:column;
@@ -261,9 +247,7 @@ body{
     cursor:pointer;
 }
 
-/* ===========================
-   상태 선택 버튼
-=========================== */
+/* 상태 선택 버튼 */
 #stateSelectCancel{
     background:#BDBDBD;
     color:#fff;
@@ -282,10 +266,7 @@ body{
     background:#1565C0;
 }
 
-
-/* ===========================
-   하단 안내
-=========================== */
+/* 하단 안내 */
 .footerInfo{
     position:fixed;
     left:0;
@@ -326,4 +307,4 @@ body{
 
 .version{
     color:#999;
-} 
+}

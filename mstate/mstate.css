@@ -1,6 +1,6 @@
-/* ===========================
-   상태 변경 모달
-=========================== */
+/* mstate.css */
+
+/* 상태 변경 모달 */
 .modal{
     position:fixed;
     inset:0;
@@ -22,7 +22,6 @@
     border-radius:18px;
     box-shadow:0 8px 24px rgba(0,0,0,.18);
 }
-
 
 .modalText{
     margin-bottom:32px;

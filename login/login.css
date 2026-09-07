@@ -1,10 +1,6 @@
-/*login.css*/
+/* login.css */
 
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
-
-/* ===========================
-   기본 설정
-=========================== */
+/* 기본 설정 */
 *{
     margin:0;
     padding:0;
@@ -15,7 +11,7 @@
 body{
     position:relative;
 
-    background-image:url("bgImage.jpg");
+    background-image:url("bgImage.webp");
     background-size:cover;
     background-repeat:no-repeat;
     background-position:center bottom;
@@ -30,9 +26,7 @@ body{
     padding-bottom:120px;
 }
 
-/* ===========================
-   접속 화면
-=========================== */
+/* 접속 화면 */
 .container{
     width:100%;
     max-width:240px;
@@ -49,10 +43,7 @@ h1{
         0 3px 10px rgba(0,0,0,.45);
 }
 
-
-/* ===========================
-   닉네임 입력창
-=========================== */
+/* 닉네임 입력창 */
 input{
     width:100%;
     height:52px;
@@ -64,7 +55,7 @@ input{
     border-radius:12px;
 
     background:rgba(255,255,255,.28);
-    
+ 
     outline:none;
 
     color:#2c2c2c;
@@ -83,10 +74,7 @@ input:focus{
     background:rgba(255,255,255,.38);
 }
 
-
-/* ===========================
-   공통 버튼
-=========================== */
+/* 공통 버튼 */
 button{
     width:100%;
     height:52px;
@@ -118,10 +106,7 @@ button:active{
     background:#1976D2;
 }
 
-
-/* ===========================
-   로그인 모달
-=========================== */
+/* 로그인 모달 */
 .modal{
     position:fixed;
     inset:0;
@@ -164,7 +149,8 @@ button:active{
 .modalButton{
     display:flex;
     gap:8px;
-    margin-top:-8px;    
+    margin-top:-8px;
+ 
 }
 
 .modalButton button{
@@ -188,7 +174,6 @@ button:active{
     background:#CFCFCF;
 }
 
-
 #alertMessage{
     font-size:18px;
     font-weight:300;
@@ -208,9 +193,7 @@ button:active{
     background:#1E88E5;
 }
 
-/* ===========================
-   관리자 로그인
-=========================== */
+/* 관리자 로그인 */
 .adminLink{
     position:absolute;
     top:20px;
@@ -233,10 +216,7 @@ button:active{
     text-decoration:underline;
 }
 
-
-/* ===========================
-   로그인 메시지
-=========================== */
+/* 로그인 메시지 */
 #loginMessage,
 #adminMessage{
     font-size:14px;
@@ -245,10 +225,7 @@ button:active{
     font-weight:350;
 }
 
-
-/* ===========================
-   하단 안내
-=========================== */
+/* 하단 안내 */
 .footerInfo{
     position:fixed;
     left:0;

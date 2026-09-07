@@ -1,8 +1,8 @@
+/* member.css */
+
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-/* ===========================
-   기본
-=========================== */
+/* 기본 */
 *{
     margin:0;
     padding:0;
@@ -19,10 +19,7 @@ body{
     background:#e8f6ff;
 }
 
-
-/* ===========================
-   메인
-=========================== */
+/* 메인 */
 .container{
     width:100%;
     max-width:430px;
@@ -35,10 +32,7 @@ body{
     flex-direction:column;
 }
 
-
-/* ===========================
-   상단
-=========================== */
+/* 상단 */
 .topHeader{
     display:flex;
     justify-content:space-between;
@@ -59,7 +53,7 @@ body{
     margin-bottom:2px;
 }
 
-/* 닉네임 및 보드게임 현 위치*/
+/* 닉네임 및 보드게임 현 위치 */
 .nameRow{
     display:flex;
     align-items:baseline;  /* 글자 아래쪽 맞춤 */
@@ -121,9 +115,7 @@ body{
     color:#0e7bd4;
 }
 
-/* ===========================
-   구분선
-=========================== */
+/* 구분선 */
 hr{
     margin:12px 0;
 
@@ -131,10 +123,7 @@ hr{
     border-top:1px solid #333;
 }
 
-
-/* ===========================
-   포인트 상세 제목
-=========================== */
+/* 포인트 상세 제목 */
 .historyTitle{
         font-size:18px;
     font-weight:700;
@@ -150,10 +139,7 @@ hr{
     padding-bottom:10px;
 }
 
-
-/* ===========================
-   히스토리(상세내용)
-=========================== */
+/* 히스토리(상세내용) */
 .historyBox{
     flex:1;
     display:flex;
@@ -214,9 +200,7 @@ hr{
     color:#E53935;
 }
 
-/* ===========================
-   하단 안내
-=========================== */
+/* 하단 안내 */
 .footerInfo{
     position:fixed;
     left:0;

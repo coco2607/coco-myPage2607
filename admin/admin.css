@@ -6,9 +6,6 @@
     --footer-height:0px;
 }
 
-/* ===========================
-   기본
-=========================== */
 *{
     margin:0;
     padding:0;
@@ -38,9 +35,6 @@ body{
     flex-direction:column;
 }
 
-/* ===========================
-   상단
-=========================== */
 .header{
     display:flex;
     justify-content:space-between;
@@ -94,10 +88,7 @@ body{
     margin:12px 0;
 }
 
-
-/* ===========================
-   Excel 모달
-=========================== */
+/* Excel 모달 */
 .excelButton{
     display:flex;
     flex-direction:column;
@@ -133,7 +124,6 @@ body{
 .excelButton button:active{
     background:#11582F;
 }
-
 
 /* 다운로드 모달 */
 .downloadBox{
@@ -206,9 +196,7 @@ body{
     display:none;
 }
 
-/* ===========================
-   회원관리
-=========================== */
+/* 회원관리 */
 .memberBox{
     flex:1;
     display:flex;
@@ -240,10 +228,7 @@ body{
     color:#888;
 }
 
-
-/* ===========================
-   회원 포인트 내역
-=========================== */
+/* 회원 포인트 내역 */
 .historyBox{
     width:100%;
     max-width:330px;
@@ -340,15 +325,11 @@ body{
     color:#43A047;
 }
 
-
 .historyPoint.minus{
     color:#E53935;
 }
 
-
-/* ===========================
-   닉네임 변경
-=========================== */
+/* 닉네임 변경 */
 
 /* 입력창 */
 .nicknameInput{
@@ -422,10 +403,7 @@ body{
     letter-spacing:1px;
 }
 
-
-/* ===========================
-   히스토리 닫기 버튼
-=========================== */
+/* 히스토리 닫기 버튼 */
 #historyCloseBtn{
     width:100%;
     height:42px;
@@ -450,10 +428,7 @@ body{
     background:#388E3C;
 }
 
-
-/* ===========================
-   포인트 버튼
-=========================== */
+/* 포인트 버튼 */
 .pointHeader{
     display:flex;
     gap:10px;
@@ -489,9 +464,7 @@ body{
     background:#D84343;
 }
 
-/* ===========================
-   회원 목록
-=========================== */
+/* 회원 목록 */
 #memberList{
     flex:1;
     min-height:0;
@@ -573,11 +546,7 @@ body{
     background:#1565C0;
 }
 
-
-/* ===========================
-   상태 선택
-=========================== */
-
+/* 상태 선택 */
 .stateRadioGroup{
     display:flex;
     flex-direction:column;
@@ -603,9 +572,7 @@ body{
     cursor:pointer;
 }
 
-/* ===========================
-   상태 선택 버튼
-=========================== */
+/* 상태 선택 버튼 */
 #stateSelectCancel{
     background:#BDBDBD;
     color:#fff;
@@ -624,10 +591,7 @@ body{
     background:#1565C0;
 }
 
-
-/* ===========================
-   하단 안내
-=========================== */
+/* 하단 안내 */
 .footerInfo{
     position:fixed;
     left:0;
@@ -669,4 +633,4 @@ body{
 
 .version{
     color:#999;
-} 
+}

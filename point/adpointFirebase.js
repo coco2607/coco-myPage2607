@@ -14,16 +14,12 @@ import {
     getCurrentTime
 } from "../utils.js";
 
-// ===========================
 // 포인트 적용
-// ===========================
 export async function applyPoint(mode, pointData) {
 
     for (const item of pointData) {
 
-        // ===========================
         // 유저 조회
-        // ===========================
         const userRef = ref(db, `users/${item.nickname}`);
         const snapshot = await get(userRef);
 
@@ -48,17 +44,13 @@ export async function applyPoint(mode, pointData) {
 
         const totalPoint = currentPoint + changePoint;
 
-        // ===========================
         // users 업데이트
-        // ===========================
         await update(userRef, {
             date: getCurrentDate(),
             totalP: totalPoint
         });
 
-        // ===========================
         // history 저장
-        // ===========================
         const historyRef = push(ref(db, "history"));
 
         await set(historyRef, {

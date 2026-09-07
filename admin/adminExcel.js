@@ -7,10 +7,7 @@ import {
     uploadHistory
 } from "./adminFirebase.js";
 
-
-// ===========================
 // DOM
-// ===========================
 const excelBtn = document.getElementById("excelBtn");
 const excelModal = document.getElementById("excelModal");
 
@@ -22,10 +19,7 @@ const excelFile = document.getElementById("excelFile");
 const downloadModal = document.getElementById("downloadModal");
 const downloadStartBtn = document.getElementById("downloadStartBtn");
 
-
-// ===========================
 // Excel UP/DOWN 모달
-// ===========================
 
 // 열기
 excelBtn.addEventListener("click", (e) => {
@@ -59,10 +53,7 @@ excelModal.addEventListener("click", (e) => {
 
 });
 
-
-// ===========================
 // Upload
-// ===========================
 
 excelUploadBtn.addEventListener("click", () => {
 
@@ -146,9 +137,7 @@ async function uploadExcel() {
 
 }
 
-// ===========================
 // Download
-// ===========================
 
 const historyCheck = document.getElementById("historyCheck");
 const usersCheck = document.getElementById("usersCheck");

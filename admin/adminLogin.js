@@ -1,4 +1,4 @@
-//admin.js
+//adminLogin.js
 
 import { checkAdmin } from "./adminFirebase.js";
 
