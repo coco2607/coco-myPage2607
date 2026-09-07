@@ -55,7 +55,7 @@ input{
     border-radius:12px;
 
     background:rgba(255,255,255,.28);
- 
+
     outline:none;
 
     color:#2c2c2c;
@@ -82,10 +82,9 @@ button{
     border:none;
     border-radius:12px;
 
-    border:1px solid rgba(0,0,0,.12);
-    border-radius:12px;
+    border:1px solid rgba(255,255,255,.18);
 
-    background:#2196F3;
+    background:#2F7FA3;
     color:#FFF;
 
     font-size:20px;
@@ -99,11 +98,11 @@ button{
 }
 
 button:hover{
-    background:#1E88E5;
+    background:#286F8F;
 }
 
 button:active{
-    background:#1976D2;
+    background:#235F7A;
 }
 
 /* 로그인 모달 */
@@ -150,7 +149,6 @@ button:active{
     display:flex;
     gap:8px;
     margin-top:-8px;
- 
 }
 
 .modalButton button{
@@ -158,11 +156,11 @@ button:active{
 }
 
 .modalButton button:first-child{
-    background:#2196F3;
+    background:#2F7FA3;
 }
 
 .modalButton button:first-child:hover{
-    background:#1E88E5;
+    background:#286F8F;
 }
 
 .modalButton button:last-child{
@@ -185,12 +183,12 @@ button:active{
 }
 
 #alertCloseBtn{
-    background:#2196F3;
+    background:#2F7FA3;
     color:#FFF;
 }
 
 #alertCloseBtn:hover{
-    background:#1E88E5;
+    background:#286F8F;
 }
 
 /* 관리자 로그인 */
@@ -234,10 +232,12 @@ button:active{
     width:100%;
     padding:10px;
 
-    background:rgba(255,255,255,.45);
-    border-top:1px solid #D9D9D9;
+    background:transparent;
+    border-top:none;
 
     text-align:left;
+
+    text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
 .footerTitle{
@@ -245,15 +245,17 @@ button:active{
 
     font-size:14.2px;
     font-weight:bold;
-    color:#555;
+    color:#FFF;
 }
 
 .footerInfo a{
     font-size:18.8px;
     font-weight:bold;
 
-    color:#1976D2;
+    color:#FFF;
     text-decoration:none;
+
+    text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
 .footerInfo a:hover{
@@ -268,10 +270,12 @@ button:active{
     align-items:center;
 
     font-size:13px;
-    color:#777;
+    color:#FFF;
+
+    text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
 .version{
-    color:#999;
+    color:#FFF;
     font-size:13px;
 }

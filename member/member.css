@@ -48,7 +48,7 @@ body{
 
 .hello{
     font-size:14px;
-    font-weight: 450;
+    font-weight:450;
     color:#666;
     margin-bottom:2px;
 }
@@ -56,7 +56,7 @@ body{
 /* 닉네임 및 보드게임 현 위치 */
 .nameRow{
     display:flex;
-    align-items:baseline;  /* 글자 아래쪽 맞춤 */
+    align-items:baseline;
     gap:4px;
 }
 
@@ -75,7 +75,7 @@ body{
     color:#666;
 
     text-align:right;
-    letter-spacing:-0.3px; 
+    letter-spacing:-0.3px;
 }
 
 .rightBox{
@@ -86,7 +86,7 @@ body{
 
 .textLink{
     font-size:12px;
-    font-weight: 400;
+    font-weight:400;
     color:#666;
     cursor:pointer;
     user-select:none;
@@ -94,7 +94,7 @@ body{
 }
 
 .textLink:hover{
-    color:#0e7bd4;
+    color:#2F7FA3;
     text-decoration:underline;
 }
 
@@ -102,7 +102,7 @@ body{
     margin-top:10px;
 
     font-size:16px;
-    font-weight: 500;
+    font-weight:500;
     color:#666;
 }
 
@@ -112,7 +112,7 @@ body{
     font-size:18px;
     font-weight:bold;
 
-    color:#0e7bd4;
+    color:#2F7FA3;
 }
 
 /* 구분선 */
@@ -125,10 +125,10 @@ hr{
 
 /* 포인트 상세 제목 */
 .historyTitle{
-        font-size:18px;
+    font-size:18px;
     font-weight:700;
     padding:0px 18px;
-    color:#0e7bd4;
+    color:#2F7FA3;
     text-align:center;
 }
 
@@ -165,7 +165,7 @@ hr{
 .historyDate{
     font-size:12.5px;
     color:#888;
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric:tabular-nums;
     font-feature-settings:"tnum";
 }
 
@@ -181,17 +181,17 @@ hr{
     white-space:nowrap;
     font-size:14px;
     font-weight:bold;
-    color:#0e7bd4;
+    color:#2F7FA3;
 }
 
 .sign{
-    width: 4px;          /* +, - 자리 고정 */
+    width:4px;
     text-align:center;
     flex-shrink:0;
 }
 
 .pointValue{
-    width:35px;          /* 점수 자리 고정 */
+    width:35px;
     text-align:right;
     font-variant-numeric:tabular-nums;
 }
@@ -209,10 +209,12 @@ hr{
     width:100%;
     padding:10px;
 
-    background:rgba(255,255,255,.65);
-    border-top:1px solid #D9D9D9;
+    background:transparent;
+    border-top:none;
 
     text-align:left;
+
+    text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
 .footerTitle{
@@ -220,15 +222,17 @@ hr{
 
     font-size:14.2px;
     font-weight:bold;
-    color:#555;
+    color:#FFF;
 }
 
 .footerInfo a{
     font-size:18.8px;
     font-weight:bold;
 
-    color:#1976D2;
+    color:#FFF;
     text-decoration:none;
+
+    text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
 .footerInfo a:hover{
@@ -243,9 +247,12 @@ hr{
     align-items:center;
 
     font-size:13px;
-    color:#777;
+    color:#FFF;
+
+    text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
 .version{
-    color:#999;
+    color:#FFF;
+    font-size:13px;
 }
