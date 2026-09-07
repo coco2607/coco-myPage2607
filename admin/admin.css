@@ -595,7 +595,6 @@ body{
 .footerInfo{
     position:fixed;
     left:0;
-    right:0;
     bottom:0;
     width:100%;
     padding:10px;
@@ -606,7 +605,7 @@ body{
 
 .footerTitle{
     margin-bottom:1px;
-    font-size:14.2px;
+    font-size:13.4px;
     font-weight:bold;
     color:#555;
 }
@@ -627,7 +626,7 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:13px;
+    font-size:12px;
     color:#777;
 }
 
