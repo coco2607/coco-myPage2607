@@ -16,7 +16,7 @@ body{
 }
 
 body{
-    background:#e8f6ff;
+    background:#F6EFE3;
 }
 
 /* 메인 */
@@ -24,12 +24,11 @@ body{
     width:100%;
     max-width:430px;
     height:100vh;
-
     margin:0 auto;
-    padding:20px 15px 80px;
-
+    padding:20px 15px 0;
     display:flex;
     flex-direction:column;
+    min-height:0;
 }
 
 /* 상단 */
@@ -49,7 +48,7 @@ body{
 .hello{
     font-size:14px;
     font-weight:450;
-    color:#666;
+    color:#786B5F;
     margin-bottom:2px;
 }
 
@@ -64,16 +63,14 @@ body{
     margin:0;
     font-size:25px;
     font-weight:bold;
-    color:#333;
+    color:#4A4038;
 }
 
 .boardPosition{
     margin-top:2px;
-
     font-size:12px;
     font-weight:350;
-    color:#666;
-
+    color:#786B5F;
     text-align:right;
     letter-spacing:-0.3px;
 }
@@ -87,56 +84,115 @@ body{
 .textLink{
     font-size:12px;
     font-weight:400;
-    color:#666;
+    color:#786B5F;
     cursor:pointer;
     user-select:none;
     transition:.2s;
 }
 
 .textLink:hover{
-    color:#2F7FA3;
+    color:#A65D3B;
     text-decoration:underline;
 }
 
 .point{
     margin-top:10px;
-
     font-size:16px;
     font-weight:500;
-    color:#666;
+    color:#786B5F;
 }
 
 #totalPoint{
     margin-left:8px;
-
     font-size:18px;
     font-weight:bold;
-
-    color:#2F7FA3;
+    color:#A65D3B;
 }
 
 /* 구분선 */
 hr{
     margin:12px 0;
-
     border:none;
-    border-top:1px solid #333;
+    border-top:1px solid #4A4038;
 }
+
+
+/* 콘텐츠 탭 */
+.contentTabs{
+    display:flex;
+    width:100%;
+    margin:2px 0 12px;
+    border-bottom:1px solid #D8CBB9;
+}
+
+.contentTab{
+    flex:1;
+    height:42px;
+    padding:0;
+    border:none;
+    border-bottom:2px solid transparent;
+    background:transparent;
+    color:#9A8C7D;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.contentTab:hover{
+    color:#A65D3B;
+}
+
+.contentTab.active{
+    color:#A65D3B;
+    border-bottom-color:#A65D3B;
+}
+
+.tabContent{
+    flex:1;
+    min-height:0;
+}
+
+.hidden{
+    display:none;
+}
+
+
+/* 포인트 내역 */
+#pointContent{
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+}
+
+#pointContent.hidden{
+    display:none;
+}
+
 
 /* 포인트 상세 제목 */
 .historyTitle{
+    flex-shrink:0;
     font-size:18px;
     font-weight:700;
     padding:0px 18px;
-    color:#2F7FA3;
+    color:#A65D3B;
     text-align:center;
 }
 
+/* 포인트 상세 제목 아래 구분선 */
+.historyTitle + hr{
+    flex-shrink:0;
+    border-top:1px solid #D8CBB9;
+}
+
+/* 히스토리 목록 */
 #historyList{
     flex:1;
+    min-height:0;
     margin-top:2px;
     overflow-y:auto;
-    padding-bottom:10px;
+    padding-bottom:55px;
 }
 
 /* 히스토리(상세내용) */
@@ -164,14 +220,14 @@ hr{
 
 .historyDate{
     font-size:12.5px;
-    color:#888;
+    color:#9A8C7D;
     font-variant-numeric:tabular-nums;
     font-feature-settings:"tnum";
 }
 
 .historyMemo{
     font-size:14px;
-    color:#333;
+    color:#4A4038;
 }
 
 .historyPoint{
@@ -181,7 +237,11 @@ hr{
     white-space:nowrap;
     font-size:14px;
     font-weight:bold;
-    color:#2F7FA3;
+    color:#D9534F;
+}
+
+.historyPoint.minus{
+    color:#3973A8;
 }
 
 .sign{
@@ -196,43 +256,33 @@ hr{
     font-variant-numeric:tabular-nums;
 }
 
-.historyPoint.minus{
-    color:#E53935;
-}
 
 /* 하단 안내 */
 .footerInfo{
     position:fixed;
-    left:0;
+    left:50%;
     bottom:0;
-
     width:100%;
+    max-width:430px;
     padding:10px;
-
-    background:transparent;
+    transform:translateX(-50%);
+    background:#F6EFE3;
     border-top:none;
-
     text-align:left;
-
-    text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
 .footerTitle{
-    margin-bottom:1px;
-
-    font-size:13.4px;
-    font-weight:bold;
-    color:#FFF;
+    margin-bottom:-1px;
+    font-size:9px;
+    font-weight:500;
+    color:#786B5F;
 }
 
 .footerInfo a{
-    font-size:18.8px;
-    font-weight:bold;
-
-    color:#FFF;
+    font-size:12.5px;
+    font-weight:500;
+    color:#A65D3B;
     text-decoration:none;
-
-    text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
 .footerInfo a:hover{
@@ -240,19 +290,15 @@ hr{
 }
 
 .footerManager{
-    margin-top:6px;
-
+    margin-top:2px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-
-    font-size:12px;
-    color:#FFF;
-
-    text-shadow:0 1px 4px rgba(0,0,0,.7);
+    font-size:8.5px;
+    color:#786B5F;
 }
 
 .version{
-    color:#FFF;
-    font-size:13px;
+    color:#786B5F;
+    font-size:9.5px;
 }

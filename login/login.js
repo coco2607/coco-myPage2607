@@ -1,7 +1,10 @@
 // login.js
 
 import { login } from "./loginFirebase.js";
-import { trim } from "../utils.js";
+import {
+    trim,
+    getVersion
+} from "../utils.js";
 
 // 요소 가져오기
 const nickname = document.getElementById("nickname");
@@ -13,6 +16,13 @@ const memberCancelBtn = document.getElementById("memberCancelBtn");
 const loginMessage = document.getElementById("loginMessage");
 const alertModal = document.getElementById("alertModal");
 const alertCloseBtn = document.getElementById("alertCloseBtn");
+const version = document.getElementById("version");
+
+
+// 버전
+if (version) {
+    version.textContent = `Ver ${getVersion()}`;
+}
 
 
 // 이벤트
@@ -31,13 +41,14 @@ memberPassword.addEventListener("keydown", function (e) {
 });
 
 
-//경고메시지
+// 경고메시지
 function alertMessage(message) {
 
     document.getElementById("alertMessage").textContent = message;
     alertModal.classList.remove("hidden");
 
 }
+
 
 // 입장하기
 function openLoginModal() {
@@ -85,12 +96,19 @@ async function checkPassword() {
     try {
         await login(trim(nickname.value), password);
 
-        sessionStorage.setItem("nickname", trim(nickname.value));
+        sessionStorage.setItem(
+            "nickname",
+            trim(nickname.value)
+        );
+
         memberModal.classList.add("hidden");
+
         location.href = "../member/member.html";
 
     } catch (error) {
+
         loginMessage.textContent = error.message;
         memberPassword.select();
+
     }
 }

@@ -4,6 +4,7 @@ import {loadUsers, loadHistory} from "./adminFirebase.js";
 import { openStateModal } from "../mstate/mstate.js";
 import { changeNickname } from "./changenmFirebase.js";
 import "../point/adpoint.js";
+import { getVersion } from "../utils.js";
 
 // 관리자 로그인 확인
 const isAdmin = sessionStorage.getItem("isAdmin");
@@ -13,6 +14,10 @@ if (isAdmin !== "true") {
 }
 
 const memberList = document.getElementById("memberList");
+
+const version = document.getElementById("version");
+
+if (version) { version.textContent = `Ver ${getVersion()}`; }
 
 const historyModal = document.getElementById("historyModal");
 const historyTitle = document.getElementById("historyTitle");

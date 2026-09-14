@@ -1,11 +1,8 @@
-/* admin.css */
+/* staff.css */
 
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-:root{
-    --footer-height:0px;
-}
-
+/* 기본 */
 *{
     margin:0;
     padding:0;
@@ -28,13 +25,14 @@ body{
 .container{
     width:100%;
     max-width:430px;
-    height:calc(100svh - var(--footer-height));
+    height:100vh;
     margin:0 auto;
-    padding:24px 18px 20px;
+    padding:24px 18px 99px;
     display:flex;
     flex-direction:column;
 }
 
+/* 상단 */
 .header{
     display:flex;
     justify-content:space-between;
@@ -62,135 +60,12 @@ body{
     margin-left:15px;
 }
 
-.rightHeader{
-    display:flex;
-    align-items:flex-end;
-}
-
-.excelLink{
-    display:flex;
-    align-items:center;
-    font-size:14px;
-    font-weight:700;
-    color:#17753F;
-    text-decoration:none;
-    justify-self:end;
-    margin-right:15px;
-}
-
-.excelLink:hover{
-    text-decoration:underline;
-}
-
 .line{
     border:none;
     border-top:1px solid #E5DDA8;
     margin:12px 0;
 }
 
-/* Excel 모달 */
-.excelButton{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-
-    flex:1;
-}
-
-.excelButton button{
-    flex:1;
-
-    width:100%;
-    padding:14px 0;
-
-    background:#17753F;
-    color:#fff;
-
-    border:none;
-    border-radius:10px;
-
-    font-size:16px;
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:background-color .2s ease;
-}
-
-.excelButton button:hover{
-    background:#146937;
-}
-
-.excelButton button:active{
-    background:#11582F;
-}
-
-/* 다운로드 모달 */
-.downloadBox{
-    width:320px;
-    padding:24px;
-}
-
-/* 다운로드 메시지*/
-.downloadTitle{
-    margin-bottom:14px;
-    text-align:center;
-    font-size:18px;
-    font-weight:500;
-    color:#333;
-}
-
-/* 다운로드 체크박스 */
-.downloadCheck{
-    display:flex;
-    flex-direction:column;
-    gap:10px;              /* history users 사이 */
-    margin-bottom:15px;    /* users와 버튼 사이 */
-}
-
-.downloadCheck label{
-    display:flex;
-    align-items:center;
-    gap:10px;              /* 체크박스와 글자 사이 */
-
-    font-size:16px;
-    font-weight:500;
-    color:#555;
-
-    cursor:pointer;
-}
-
-.downloadCheck input{
-    width:16px;
-    height:16px;
-}
-
-/* 다운로드 버튼 */
-.downloadButton button{
-    width:100%;
-    padding:14px 0;
-
-    background:#17753F;
-    color:#fff;
-
-    border:none;
-    border-radius:10px;
-
-    font-size:16px;
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:background-color .2s ease;
-}
-
-.downloadButton button:hover{
-    background:#146937;
-}
-
-.downloadButton button:active{
-    background:#11582F;
-}
 
 .hidden{
     display:none;
@@ -226,206 +101,6 @@ body{
     letter-spacing:-0.3px; 
     font-weight:400;
     color:#888;
-}
-
-/* 회원 포인트 내역 */
-.historyBox{
-    width:100%;
-    max-width:330px;
-    max-height:70vh;
-    overflow:hidden;
-}
-
-#historyTitle{
-    margin:0;
-    font-size:15px;
-    font-weight:700;
-
-}
-
-.historyHeader{
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin-bottom:15px;
-}
-
-#nicknameChangeBtn{
-    position:absolute;
-    right:0;
-
-    padding:0;
-
-    border:none;
-    background:none;
-
-    color:#666;
-    font-size:13px;
-    font-weight:600;
-
-    cursor:pointer;
-}
-
-#nicknameChangeBtn:hover{
-    color:#1976D2;
-    text-decoration:underline;
-}
-
-#historyList{
-    max-height:270px;
-    overflow-y:auto;
-    padding-right:10px;
-}
-
-.historyItem{
-    padding:8px 0;
-    border-bottom:1px solid #eee;
-}
-
-.historyRow{
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-
-.historyDate{
-    width:85px;
-    font-size:11px;
-    color:#777;
-}
-
-.historyMemo{
-    flex:1;
-    text-align:left;
-    font-size:12px;
-}
-
-.historyPoint{
-    font-size:14px;
-    width:65px;
-    display:flex;
-    justify-content:flex-end;
-    align-items:center;
-    gap:0px;
-    font-weight:700;
-}
-
-.historyPoint .sign{
-    width:8px;
-    text-align:center;
-}
-
-.historyPoint .pointValue{
-    width:30px;
-    text-align:right;
-}
-
-.historyPoint.plus{
-    color:#43A047;
-}
-
-.historyPoint.minus{
-    color:#E53935;
-}
-
-/* 닉네임 변경 */
-
-/* 입력창 */
-.nicknameInput{
-    width:100%;
-    height:42px;
-
-    margin:22px 0 26px;
-    padding:0 12px;
-
-    border:1px solid #D5D5D5;
-    border-radius:10px;
-
-    font-size:15px;
-    text-align:center;
-
-    outline:none;
-    transition:.2s;
-}
-
-.nicknameInput:focus{
-    border-color:#1976D2;
-}
-
-/* 입력 모달 확인 버튼 */
-#nicknameSaveBtn{
-    background:#43A047;
-    color:#fff;
-}
-
-#nicknameSaveBtn:hover{
-    background:#388E3C;
-}
-
-/* 입력 모달 취소 버튼 */
-#nicknameCancelBtn{
-    background:#BDBDBD;
-    color:#fff;
-}
-
-#nicknameCancelBtn:hover{
-    background:#9E9E9E;
-}
-
-/* 확인 모달 예 버튼 */
-#nicknameConfirmBtn{
-    background:#43A047;
-    color:#fff;
-}
-
-#nicknameConfirmBtn:hover{
-    background:#388E3C;
-}
-
-/* 확인 모달 아니오 버튼 */
-#nicknameConfirmCancelBtn{
-    background:#BDBDBD;
-    color:#fff;
-}
-
-#nicknameConfirmCancelBtn:hover{
-    background:#9E9E9E;
-}
-
-.newNickname{
-    color:#D32F2F;
-    background:#FFEBEE;
-    padding:2px 6px;
-    border-radius:6px;
-    font-size:22px;
-    font-weight:800;
-    letter-spacing:1px;
-}
-
-/* 히스토리 닫기 버튼 */
-#historyCloseBtn{
-    width:100%;
-    height:42px;
-
-    margin-top:15px;
-
-    border:none;
-    border-radius:10px;
-
-    background:#43A047;
-    color:#fff;
-
-    font-size:15px;
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-#historyCloseBtn:hover{
-    background:#388E3C;
 }
 
 /* 포인트 버튼 */
@@ -596,23 +271,29 @@ body{
     position:fixed;
     left:0;
     bottom:0;
+
     width:100%;
+
     padding:10px;
+
     background:rgba(255,255,255,.45);
     border-top:1px solid #D9D9D9;
+
     text-align:left;
 }
 
 .footerTitle{
     margin-bottom:1px;
-    font-size:13.4px;
+
+    font-size:9px;
     font-weight:bold;
     color:#555;
 }
 
 .footerInfo a{
-    font-size:18.8px;
+    font-size:12.5px;
     font-weight:bold;
+
     color:#1976D2;
     text-decoration:none;
 }
@@ -623,13 +304,16 @@ body{
 
 .footerManager{
     margin-top:6px;
+
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:12px;
+
+    font-size:8.5px;
     color:#777;
 }
 
 .version{
     color:#999;
+    font-size:9.5px;
 }

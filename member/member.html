@@ -10,6 +10,7 @@
     <title>으차방 MyPage</title>
 
     <link rel="stylesheet" href="member.css">
+    <link rel="stylesheet" href="attend.css">
     <link rel="stylesheet" href="pwChange.css">
 
 </head>
@@ -28,29 +29,40 @@
                 </div>
 
                 <div class="nameRow">
-                    <h1 id="memberNickname">회원님</h1>
 
-                    <div id="boardPosition" class="boardPosition">
+                    <h1 id="memberNickname">
+                        회원님
+                    </h1>
+
+                    <div
+                        id="boardPosition"
+                        class="boardPosition">
                         (보드게임 현 위치 0)
                     </div>
+
                 </div>
 
             </div>
 
             <div class="rightBox">
 
-                <span id="changePasswordBtn" class="textLink">
+                <span
+                    id="changePasswordBtn"
+                    class="textLink">
                     비밀번호 변경
                 </span>
 
                 <div class="point">
-                    누적포인트
-                    <span id="totalPoint">
-                        0점
+
+                    <span id="pointLabel">
+                        9월 출석
                     </span>
+
+                    <span id="totalPoint">
+                        0회
+                    </span>
+
                 </div>
-
-
 
             </div>
 
@@ -58,29 +70,104 @@
 
         <hr>
 
-        <!-- 포인트 상세 -->
-        <div class="historyBox">
+
+        <!-- 콘텐츠 탭 -->
+        <div class="contentTabs">
+
+            <button
+                type="button"
+                class="contentTab active"
+                data-tab="attendance">
+                출석체크
+            </button>
+
+            <button
+                type="button"
+                class="contentTab"
+                data-tab="point">
+                포인트내역
+            </button>
+
+        </div>
+
+
+        <!-- 출석체크 -->
+        <div
+            id="attendanceContent"
+            class="tabContent">
+
+            <!-- 출석체크 제목 -->
+            <div class="attendanceHeader">
+
+                <div class="attendanceTitle">
+                    출석체크
+                </div>
+
+                <div
+                    id="attendanceDate"
+                    class="attendanceDate">
+                </div>
+
+            </div>
+
+
+            <!-- 출석 입력 -->
+            <div class="attendanceWrite">
+
+                <input
+                    type="text"
+                    id="attendanceInput"
+                    maxlength="100"
+                    placeholder="오늘의 출석 한마디를 남겨주세요.">
+
+                <button
+                    type="button"
+                    id="attendanceBtn">
+                    등록
+                </button>
+
+            </div>
+
+
+            <!-- 오늘 출석 목록 -->
+            <div
+                id="attendanceList"
+                class="attendanceList">
+            </div>
+
+        </div>
+
+
+        <!-- 포인트 내역 -->
+        <div
+            id="pointContent"
+            class="tabContent hidden">
 
             <div class="historyTitle">
                 포인트 상세내역
             </div>
-            
+
             <hr>
 
             <div id="historyList">
-                <!-- JS에서 생성 -->
+                <!-- member.js에서 생성 -->
             </div>
 
         </div>
 
     </div>
 
+
     <!-- 비밀번호 변경 -->
-    <div id="pwModal" class="modal hidden">
+    <div
+        id="pwModal"
+        class="modal hidden">
 
         <div class="modalBox">
 
-            <h2>비밀번호 변경</h2>
+            <h2>
+                비밀번호 변경
+            </h2>
 
             <input
                 type="password"
@@ -97,32 +184,56 @@
                 id="newPwCheck"
                 placeholder="새 비밀번호 확인">
 
-            <div id="pwError" class="pwError"></div>
+            <div
+                id="pwError"
+                class="pwError">
+            </div>
 
             <div class="modalButton">
-                <button id="pwOk">확인</button>
-                <button id="pwCancel">취소</button>
+
+                <button id="pwOk">
+                    확인
+                </button>
+
+                <button id="pwCancel">
+                    취소
+                </button>
+
             </div>
-            
+
         </div>
+
     </div>
+
 
     <!-- 변경 완료 -->
-    <div id="completeModal" class="modal hidden">
+    <div
+        id="completeModal"
+        class="modal hidden">
 
-        <div class="modalBox completeModalBox">
+        <div
+            class="modalBox completeModalBox">
 
-            <p>비밀번호가 변경되었습니다.</p>
+            <p>
+                비밀번호가 변경되었습니다.
+            </p>
 
             <div class="modalButton">
-                <button id="completeOk">확인</button>
+
+                <button id="completeOk">
+                    확인
+                </button>
+
             </div>
+
         </div>
+
     </div>
 
-    
+
     <!-- 하단 안내 -->
     <div class="footerInfo">
+
         <div class="footerTitle">
             카카오톡 오픈채팅
         </div>
@@ -134,14 +245,35 @@
         </a>
 
         <div class="footerManager">
-            <span>운영관리담당 : 코코</span>
-            <span class="version">Ver 1.7.6 ⓒ LINE</span>
+
+            <span>
+                운영관리담당 : 코코
+            </span>
+
+            <span
+                class="version"
+                id="version">
+            </span>
+
         </div>
+
     </div>
 
 
-    <script type="module" src="member.js"></script>
-    <script type="module" src="pwChange.js"></script>
+    <script
+        type="module"
+        src="member.js">
+    </script>
+
+    <script
+        type="module"
+        src="attend.js">
+    </script>
+
+    <script
+        type="module"
+        src="pwChange.js">
+    </script>
 
 </body>
 

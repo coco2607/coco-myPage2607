@@ -12,7 +12,8 @@ import {
 
 import { trim, createId } from "../utils.js";
 
-const USERS = "users";
+const MEMBER = "으차방/member";
+const NICKNAMES = "으차방/nicknames";
 const myConnectionId = createId();
 let myNickname = "";
 
@@ -46,7 +47,11 @@ export async function login(nickname, password) {
 // 회원 확인 및 비밀번호 확인
 async function checkMemberPassword(nickname, password) {
 
-    const userRef = ref(db, `${USERS}/${nickname}`);
+    const userRef = ref(
+        db,
+        `${MEMBER}/${nickname}`
+    );
+
     const snapshot = await get(userRef);
 
     // 회원이 없으면
@@ -58,9 +63,12 @@ async function checkMemberPassword(nickname, password) {
         }
 
         // 자동 회원 생성
-        await set(userRef, {
-            memberPw: "1234"
-        });
+        await set(
+            userRef,
+            {
+                memberPw: "1234"
+            }
+        );
 
         return true;
     }
@@ -71,9 +79,12 @@ async function checkMemberPassword(nickname, password) {
     // memberPw가 없으면 최초 로그인으로 간주하고 생성
     if (!data.memberPw) {
 
-        await update(userRef, {
-            memberPw: password
-        });
+        await update(
+            userRef,
+            {
+                memberPw: password
+            }
+        );
 
         return true;
     }
@@ -88,7 +99,10 @@ async function joinUser(nickname) {
 
     myNickname = nickname;
 
-    const nicknameRef = ref(db, `nicknames/${nickname}`);
+    const nicknameRef = ref(
+        db,
+        `${NICKNAMES}/${nickname}`
+    );
 
     const result = await runTransaction(
         nicknameRef,
@@ -99,7 +113,6 @@ async function joinUser(nickname) {
             }
 
             return;
-
         }
     );
 
@@ -108,5 +121,4 @@ async function joinUser(nickname) {
     }
 
     onDisconnect(nicknameRef).remove();
-
 }

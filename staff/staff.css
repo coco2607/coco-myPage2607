@@ -271,23 +271,29 @@ body{
     position:fixed;
     left:0;
     bottom:0;
+
     width:100%;
+
     padding:10px;
+
     background:rgba(255,255,255,.45);
     border-top:1px solid #D9D9D9;
+
     text-align:left;
 }
 
 .footerTitle{
     margin-bottom:1px;
-    font-size:13.4px;
+
+    font-size:9px;
     font-weight:bold;
     color:#555;
 }
 
 .footerInfo a{
-    font-size:18.8px;
+    font-size:12.5px;
     font-weight:bold;
+
     color:#1976D2;
     text-decoration:none;
 }
@@ -298,13 +304,16 @@ body{
 
 .footerManager{
     margin-top:6px;
+
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:12px;
+
+    font-size:8.5px;
     color:#777;
 }
 
 .version{
     color:#999;
+    font-size:9.5px;
 }

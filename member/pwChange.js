@@ -67,6 +67,7 @@ pwOk.addEventListener("click", async () => {
     pwError.textContent = "";
     currentPw.classList.remove("inputError");
     newPw.classList.remove("inputError");
+    newPwCheck.classList.remove("inputError");
 
     if (!user) {
         pwError.textContent = "회원정보를 찾을 수 없습니다.";
@@ -149,17 +150,20 @@ pwOk.addEventListener("click", async () => {
 });
 
 
+// 완료
 completeOk.addEventListener("click", () => {
 
     completeModal.classList.add("hidden");
 
     currentPw.value = "";
     newPw.value = "";
+    newPwCheck.value = "";
 
     pwError.textContent = "";
 
     currentPw.classList.remove("inputError");
     newPw.classList.remove("inputError");
+    newPwCheck.classList.remove("inputError");
 
     currentPw.focus();
 });
