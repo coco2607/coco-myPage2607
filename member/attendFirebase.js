@@ -7,10 +7,7 @@ import {
     set,
     serverTimestamp,
     runTransaction,
-    push,
-    query,
-    orderByChild,
-    equalTo
+    push
 } from "../firebase.js";
 
 // 오늘 출석 조회
@@ -50,6 +47,22 @@ export async function saveTodayAttendance(
     comment
 ) {
     const monthKey = date.substring(0, 7);
+
+    // 댓글은 매번 별도 기록
+    const attendanceRef = push(
+        ref(db, `으차방/attend/${date}`)
+    );
+
+    await set(
+        attendanceRef,
+        {
+            nickname: nickname,
+            comment: comment,
+            time: serverTimestamp()
+        }
+    );
+
+    // 오늘 첫 출석 확인
     const checkRef = ref(
         db,
         `으차방/member/${nickname}/attend/${monthKey}/check/${date}`
@@ -73,56 +86,37 @@ export async function saveTodayAttendance(
             `으차방/member/${nickname}/attend/${monthKey}/count`
         );
 
-        const countResult = await runTransaction(
+        await runTransaction(
             countRef,
             current => {
                 return (Number(current) || 0) + 1;
             }
         );
-
-        const attendanceCount = Number(
-            countResult.snapshot.val()
-        ) || 0;
-
-        await rewardAttendancePoint(
-            nickname,
-            monthKey,
-            attendanceCount
-        );
     }
-
-    // 댓글은 매번 별도 기록
-    const attendanceRef = push(
-        ref(db, `으차방/attend/${date}`)
-    );
-
-    await set(
-        attendanceRef,
-        {
-            nickname: nickname,
-            comment: comment,
-            time: serverTimestamp()
-        }
-    );
 
     return true;
 }
 
-// 출석 보상 자동 지급
-async function rewardAttendancePoint(
+// 출석 보상 지급
+export async function rewardAttendancePoint(
     nickname,
     monthKey,
-    attendanceCount
+    attendanceCount,
+    date
 ) {
     let rewardPoint = 0;
 
+    // 일반적인 달
     if (attendanceCount === 10) {
         rewardPoint = 1;
     } else if (attendanceCount === 20) {
         rewardPoint = 1;
     } else if (attendanceCount === 30) {
         rewardPoint = 2;
-    } else if (
+    }
+
+    // 2월은 28회에 2점
+    if (
         monthKey.endsWith("-02") &&
         attendanceCount === 28
     ) {
@@ -130,25 +124,35 @@ async function rewardAttendancePoint(
     }
 
     if (rewardPoint === 0) {
-        return;
+        return 0;
     }
 
-    const type = `${monthKey.substring(2).replace("-", "")}출석 ${attendanceCount}회`;
-
-    // 이미 지급된 보상인지 확인
-    const historyQuery = query(
-        ref(db, `으차방/history/${nickname}`),
-        orderByChild("type"),
-        equalTo(type)
+    // 이미 지급한 보상인지 확인
+    const rewardRef = ref(
+        db,
+        `으차방/member/${nickname}/attend/${monthKey}/reward/${attendanceCount}`
     );
 
-    const historySnapshot = await get(historyQuery);
+    const rewardResult = await runTransaction(
+        rewardRef,
+        current => {
+            if (current !== null) {
+                return;
+            }
 
-    if (historySnapshot.exists()) {
-        return;
+            return date;
+        }
+    );
+
+    // 이미 지급된 보상
+    if (
+        !rewardResult.committed ||
+        rewardResult.snapshot.val() !== date
+    ) {
+        return 0;
     }
 
-    // 회원 누적 포인트 증가
+    // 누적 포인트 증가
     const pointRef = ref(
         db,
         `으차방/member/${nickname}/point`
@@ -161,7 +165,7 @@ async function rewardAttendancePoint(
         }
     );
 
-    // 포인트 히스토리 기록
+    // 히스토리 기록
     const historyRef = push(
         ref(db, `으차방/history/${nickname}`)
     );
@@ -170,9 +174,11 @@ async function rewardAttendancePoint(
         historyRef,
         {
             getP: rewardPoint,
-            type: type
+            type: `${monthKey.substring(2).replace("-", "")}출석 ${attendanceCount}회`
         }
     );
+
+    return rewardPoint;
 }
 
 // 월별 누적 출석 횟수

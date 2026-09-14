@@ -126,3 +126,44 @@
     font-size:13px;
     color:#A59A8F;
 }
+
+/* 출석체크 보상 팝업 */
+.attendanceRewardBox{
+    width:280px;
+    text-align:center;
+}
+
+.attendanceRewardBox h2{
+    margin:0 0 16px;
+    font-size:18px;
+    font-weight:700;
+    color:#4A4038;
+}
+
+#attendanceRewardPoint{
+    margin:0 0 20px;
+    font-size:24px;
+    font-weight:700;
+    color:#A65D3B;
+}
+
+.attendanceRewardBox .modalButton{
+    display:flex;
+    justify-content:center;
+}
+
+#attendanceRewardOk{
+    width:100%;
+    height:40px;
+    border:none;
+    border-radius:8px;
+    background:#A65D3B;
+    color:#FFF;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+#attendanceRewardOk:hover{
+    background:#8F4E31;
+}

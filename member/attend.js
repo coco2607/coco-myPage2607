@@ -3,7 +3,8 @@
 import {
     loadTodayAttendance,
     saveTodayAttendance,
-    loadMonthlyAttendance
+    loadMonthlyAttendance,
+    rewardAttendancePoint
 } from "./attendFirebase.js";
 
 import {
@@ -21,6 +22,11 @@ const attendanceBtn = document.getElementById("attendanceBtn");
 const attendanceList = document.getElementById("attendanceList");
 const pointLabel = document.getElementById("pointLabel");
 const totalPoint = document.getElementById("totalPoint");
+
+// 출석 보상 팝업
+const attendanceRewardModal = document.getElementById("attendanceRewardModal");
+const attendanceRewardPoint = document.getElementById("attendanceRewardPoint");
+const attendanceRewardOk = document.getElementById("attendanceRewardOk");
 
 // 시작
 loadAttendance();
@@ -41,6 +47,18 @@ async function loadAttendance() {
 
     pointLabel.textContent = `${month}월 출석`;
     totalPoint.textContent = `${attendanceCount}회`;
+
+    // 출석 보상 확인
+    const rewardPoint = await rewardAttendancePoint(
+        nickname,
+        monthKey,
+        attendanceCount,
+        date
+    );
+
+    if (rewardPoint > 0) {
+        showAttendanceRewardPopup(rewardPoint);
+    }
 
     // 오늘 출석 목록
     const list = await loadTodayAttendance(date);
@@ -95,6 +113,8 @@ async function saveAttendance() {
         );
 
         attendanceInput.value = "";
+
+        // 출석 저장 후 count를 다시 조회하고 보상 확인
         await loadAttendance();
     } catch (error) {
         console.error("출석 등록 오류:", error);
@@ -102,6 +122,17 @@ async function saveAttendance() {
         attendanceBtn.disabled = false;
     }
 }
+
+// 출석 보상 팝업
+function showAttendanceRewardPopup(point) {
+    attendanceRewardPoint.textContent = `+${point}P`;
+    attendanceRewardModal.classList.remove("hidden");
+}
+
+// 출석 보상 팝업 확인
+attendanceRewardOk.addEventListener("click", () => {
+    attendanceRewardModal.classList.add("hidden");
+});
 
 // 출석 출력
 function addAttendance(nickname, comment, time) {
