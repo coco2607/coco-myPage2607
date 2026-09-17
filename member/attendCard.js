@@ -299,8 +299,7 @@ async function showCardResult(
             <div class="attendanceCardResultBox">
 
                 <div class="attendanceCardResultMessage">
-                    축하합니다!<br>
-                    +1P 당첨!
+                    축! +1P 당첨!
                 </div>
 
                 <button
