@@ -8,6 +8,10 @@ import {
 } from "./attendFirebase.js";
 
 import {
+    showAttendanceCard
+} from "./attendCard.js";
+
+import {
     getCurrentDate,
     trim
 } from "../utils.js";
@@ -66,12 +70,17 @@ async function loadAttendance() {
     attendanceList.innerHTML = "";
 
     if (list.length === 0) {
-        attendanceList.innerHTML = "<div class='attendanceEmpty'>오늘 출석한 회원이 없습니다.</div>";
+        attendanceList.innerHTML =
+            "<div class='attendanceEmpty'>오늘 출석한 회원이 없습니다.</div>";
         return;
     }
 
     // 최신 출석순
-    list.sort((a, b) => Number(b.time || 0) - Number(a.time || 0));
+    list.sort(
+        (a, b) =>
+            Number(b.time || 0) -
+            Number(a.time || 0)
+    );
 
     list.forEach(data => {
         addAttendance(
@@ -83,18 +92,25 @@ async function loadAttendance() {
 }
 
 // 등록 버튼
-attendanceBtn.addEventListener("click", saveAttendance);
+attendanceBtn.addEventListener(
+    "click",
+    saveAttendance
+);
 
 // 엔터로 등록
-attendanceInput.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-        saveAttendance();
+attendanceInput.addEventListener(
+    "keydown",
+    event => {
+        if (event.key === "Enter") {
+            saveAttendance();
+        }
     }
-});
+);
 
 // 출석 등록
 async function saveAttendance() {
-    const comment = trim(attendanceInput.value);
+    const comment =
+        trim(attendanceInput.value);
 
     if (comment === "") {
         attendanceInput.focus();
@@ -106,18 +122,34 @@ async function saveAttendance() {
     try {
         const date = getCurrentDate();
 
-        await saveTodayAttendance(
-            nickname,
-            date,
-            comment
-        );
+        // 출석 저장
+        const result =
+            await saveTodayAttendance(
+                nickname,
+                date,
+                comment
+            );
 
         attendanceInput.value = "";
 
-        // 출석 저장 후 count를 다시 조회하고 보상 확인
+        // 오늘 첫 출석인 경우에만 카드 뽑기
+        if (result?.firstAttendance) {
+            await wait(500);
+
+            await showAttendanceCard(
+                nickname,
+                date
+            );
+        }
+
+        // 출석 정보 새로고침
         await loadAttendance();
+
     } catch (error) {
-        console.error("출석 등록 오류:", error);
+        console.error(
+            "출석 등록 오류:",
+            error
+        );
     } finally {
         attendanceBtn.disabled = false;
     }
@@ -125,20 +157,35 @@ async function saveAttendance() {
 
 // 출석 보상 팝업
 function showAttendanceRewardPopup(point) {
-    attendanceRewardPoint.textContent = `+${point}P`;
-    attendanceRewardModal.classList.remove("hidden");
+    attendanceRewardPoint.textContent =
+        `+${point}P`;
+
+    attendanceRewardModal.classList.remove(
+        "hidden"
+    );
 }
 
 // 출석 보상 팝업 확인
-attendanceRewardOk.addEventListener("click", () => {
-    attendanceRewardModal.classList.add("hidden");
-});
+attendanceRewardOk.addEventListener(
+    "click",
+    () => {
+        attendanceRewardModal.classList.add(
+            "hidden"
+        );
+    }
+);
 
 // 출석 출력
-function addAttendance(nickname, comment, time) {
-    const item = document.createElement("div");
+function addAttendance(
+    nickname,
+    comment,
+    time
+) {
+    const item =
+        document.createElement("div");
 
-    item.className = "attendanceItem";
+    item.className =
+        "attendanceItem";
 
     item.innerHTML = `
         <div class="attendanceNickname">
@@ -161,7 +208,8 @@ function formatAttendanceTime(value) {
         return "";
     }
 
-    const date = new Date(Number(value));
+    const date =
+        new Date(Number(value));
 
     if (isNaN(date.getTime())) {
         return "";
@@ -170,5 +218,15 @@ function formatAttendanceTime(value) {
     return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
 
+// 대기
+function wait(ms) {
+    return new Promise(
+        resolve => {
+            setTimeout(resolve, ms);
+        }
+    );
+}
+
 // member.js에서 호출할 수 있도록 공개
-window.loadAttendance = loadAttendance;
+window.loadAttendance =
+    loadAttendance;
