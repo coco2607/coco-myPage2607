@@ -71,7 +71,7 @@ input::placeholder{
 
 input:focus{
     border-color:#90CAF9;
-    background:rgba(255,255,255,.38);
+    background:rgba(255,255,255,.80);
 }
 
 /* 공통 버튼 */
