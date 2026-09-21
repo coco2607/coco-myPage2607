@@ -32,7 +32,7 @@
     flex-shrink:0;
     align-items:flex-end;
     gap:8px;
-    margin:2px 18px 12px;
+    margin:2px 6%;
 }
 #attendanceInput{
     flex:1;
@@ -80,14 +80,14 @@
 .attendanceList{
     flex:1;
     min-height:0;
-    padding:8px 24px;
+    padding:4px 8%;
     overflow-y:auto;
 }
 .attendanceItem{
     display:grid;
     grid-template-columns:46px minmax(0,1fr) 42px;
     align-items:baseline;
-    column-gap:6px;
+    column-gap:2px;
     min-height:24px;
     padding:2px 0;
 }
@@ -95,7 +95,7 @@
     min-width:0;
     overflow:hidden;
     color:#4A4038;
-    font-size:13px;
+    font-size:13.5px;
     font-weight:600;
     line-height:20px;
     text-overflow:ellipsis;
@@ -104,7 +104,7 @@
 .attendanceComment{
     min-width:0;
     color:#5A514A;
-    font-size:13px;
+    font-size:13.5px;
     font-weight:400;
     line-height:20px;
     white-space:normal;
@@ -113,7 +113,7 @@
 }
 .attendanceTime{
     color:#9A8C7D;
-    font-size:12px;
+    font-size:12.5px;
     font-weight:400;
     line-height:20px;
     text-align:right;
