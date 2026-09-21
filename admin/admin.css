@@ -1,114 +1,74 @@
-/* staff.css */
-
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
-
-/* 기본 */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
     font-family:"Pretendard",sans-serif;
 }
-
 html,
 body{
     width:100%;
-    min-height:100%;
+    height:100%;
 }
-
 body{
     background:#FFF7CF;
     color:#222;
     overflow:hidden;
 }
-
-.container{
+.layout{
     width:100%;
     max-width:430px;
-    height:100vh;
+    height:100dvh;
     margin:0 auto;
     padding:24px 18px 99px;
     display:flex;
     flex-direction:column;
 }
-
-/* 상단 */
-.header{
+#topArea{
     display:flex;
     justify-content:space-between;
     align-items:flex-end;
+    width:100%;
 }
-
-.leftHeader{
+.adminTitle{
     display:flex;
     flex-direction:column;
 }
-
 .hello{
     font-size:14px;
     color:#777;
     margin-bottom:2px;
-    justify-self:start;
     margin-left:15px;
 }
-
 .title{
     font-size:25px;
     font-weight:800;
     color:#222;
-    justify-self:start;
     margin-left:15px;
 }
-
-.line{
-    border:none;
-    border-top:1px solid #E5DDA8;
-    margin:12px 0;
-}
-
-
-.hidden{
-    display:none;
-}
-
-/* 회원관리 */
-.memberBox{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    min-height:0;
-}
-
-.memberTop{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.sectionTitle{
-    margin:0;
-    font-size:22px;
-    font-weight:600;
-    color:#555;
-    white-space:nowrap;
-    justify-self:start;
-    margin-left:15px;
-}
-
-.memberCount{
-    margin-left:-4px;
+.excelLink{
+    margin-right:8px;
+    color:#1976D2;
     font-size:14px;
-    letter-spacing:-0.3px; 
-    font-weight:400;
-    color:#888;
+    font-weight:500;
+    text-decoration:underline;
+    white-space:nowrap;
 }
-
-/* 포인트 버튼 */
+#upperArea{
+    width:100%;
+}
+.upperInfo{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    width:100%;
+    margin-top:8px;
+    margin-bottom:14px;
+}
 .pointHeader{
     display:flex;
     gap:10px;
 }
-
 .pointBtn{
     width:95px;
     height:38px;
@@ -120,32 +80,56 @@ body{
     cursor:pointer;
     transition:.2s;
 }
-
 #plusBtn{
     background:#43A047;
 }
-
 #plusBtn:hover{
     background:#388E3C;
 }
-
 #minusBtn{
     background:#EF5350;
-    justify-self:end;
     margin-right:8px;
 }
-
 #minusBtn:hover{
     background:#D84343;
 }
-
-/* 회원 목록 */
+.memberTop{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.sectionTitle{
+    margin:0;
+    margin-left:15px;
+    font-size:22px;
+    font-weight:600;
+    color:#555;
+    white-space:nowrap;
+}
+.memberCount{
+    margin-left:-4px;
+    font-size:14px;
+    letter-spacing:-0.3px;
+    font-weight:400;
+    color:#888;
+}
+.line{
+    border:none;
+    border-top:1px solid #E5DDA8;
+    margin:12px 0;
+}
+#contentArea{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+    width:100%;
+}
 #memberList{
     flex:1;
     min-height:0;
     overflow-y:auto;
 }
-
 .memberItem{
     display:grid;
     grid-template-columns:1fr 1fr 1fr 1fr;
@@ -154,59 +138,49 @@ body{
     column-gap:16px;
     border-bottom:1px solid #EFE7BA;
 }
-
-/* 회원명 */
 .memberNick{
     font-size:15px;
     font-weight:700;
     justify-self:start;
     margin-left:15px;
+    cursor:pointer;
 }
-
-/* 포인트 */
 .memberPoint{
     font-size:16px;
     font-weight:700;
     justify-self:end;
-    margin-right:28px;    
+    margin-right:28px;
 }
-
-/* 마지막수정날짜 */
 .memberDate{
     width:95px;
     text-align:center;
     font-size:13px;
-    margin-right:4px;  
+    margin-right:4px;
     color:#666;
     white-space:nowrap;
 }
-
-/* 상태드롭다운 */
 .stateSelect{
     width:58px;
     height:24px;
     justify-self:end;
-    margin-left:0px;
+    margin-left:0;
     border:1px solid #D5D5D5;
     border-radius:0;
     background:#fff;
     font-size:13px;
+    cursor:pointer;
 }
-
-/* 상태 : 외출 */
 .stateSelect.outing{
     background:#FFE0B2;
     border:1px solid #FB8C00;
     color:#E65100;
     font-weight:600;
 }
-
-/* 저장 버튼 */
 .saveBtn{
     width:58px;
     height:24px;
     justify-self:start;
-    margin-left:0px;
+    margin-left:0;
     border:none;
     border-radius:8px;
     background:#1976D2;
@@ -216,12 +190,9 @@ body{
     cursor:pointer;
     transition:.2s;
 }
-
 .saveBtn:hover{
     background:#1565C0;
 }
-
-/* 상태 선택 */
 .stateRadioGroup{
     display:flex;
     flex-direction:column;
@@ -229,7 +200,6 @@ body{
     margin:24px auto 32px;
     width:fit-content;
 }
-
 .stateRadio{
     display:flex;
     align-items:center;
@@ -239,81 +209,72 @@ body{
     cursor:pointer;
     user-select:none;
 }
-
 .stateRadio input[type="radio"]{
     width:20px;
     height:20px;
     accent-color:#FB8C00;
     cursor:pointer;
 }
-
-/* 상태 선택 버튼 */
 #stateSelectCancel{
     background:#BDBDBD;
     color:#fff;
 }
-
 #stateSelectCancel:hover{
     background:#9E9E9E;
 }
-
 #stateSelectSave{
     background:#1976D2;
     color:#fff;
 }
-
 #stateSelectSave:hover{
     background:#1565C0;
 }
-
-/* 하단 안내 */
-.footerInfo{
+.hidden{
+    display:none;
+}
+#footerArea{
     position:fixed;
     left:0;
     bottom:0;
-
-    width:100%;
-
-    padding:10px;
-
-    background:rgba(255,255,255,.45);
-    border-top:1px solid #D9D9D9;
-
-    text-align:left;
-}
-
-.footerTitle{
-    margin-bottom:1px;
-
-    font-size:13.4px;
-    font-weight:bold;
-    color:#555;
-}
-
-.footerInfo a{
-    font-size:18.5px;
-    font-weight:bold;
-
-    color:#1976D2;
-    text-decoration:none;
-}
-
-.footerInfo a:hover{
-    text-decoration:underline;
-}
-
-.footerManager{
-    margin-top:6px;
-
+    z-index:100;
     display:flex;
     justify-content:space-between;
     align-items:center;
-
-    font-size:12.5px;
+    width:100%;
+    min-height:44px;
+    padding:0 2%;
+    background:rgba(255,255,255,.45);
+    border-top:1px solid #D9D9D9;
+}
+#footerArea .left{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    text-align:left;
+}
+#footerArea .left>div{
+    font-size:10.2px;
+    font-weight:500;
+    color:#555;
+}
+#footerArea a{
+    font-size:12.8px;
+    font-weight:500;
+    color:#1976D2;
+    text-decoration:none;
+}
+#footerArea a:hover{
+    text-decoration:underline;
+}
+#footerArea .right{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    text-align:right;
+    font-size:9.8px;
     color:#777;
 }
-
-.version{
+#footerArea #version{
+    font-size:10.8px;
     color:#999;
-    font-size:12.5px;
 }

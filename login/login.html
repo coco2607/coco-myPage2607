@@ -1,105 +1,95 @@
-<!--login.html-->
-
+<!-- login.html -->
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>으차방 MyPage</title>
-
     <link rel="stylesheet" href="login.css">
-
 </head>
-
 <body>
+    <div class="layout">
+        <header id="topArea">
+            <p id="adminLoginBtn" class="adminLink">관리자 로그인</p>
+        </header>
 
-    <!-- 관리자 로그인 -->
-    <p id="adminLoginBtn" class="adminLink">
-        관리자 로그인
-    </p>
+        <nav id="upperArea"></nav>
 
-    <div class="container">
+        <main id="contentArea">
+            <div class="container">
+                <h1>으차방 MyPage</h1>
+                <input type="text" 
+                    id="nickname" placeholder="닉네임">
+                <button id="enterBtn">로그인</button>
+            </div>
+        </main>
 
-        <h1>으차방 MyPage</h1>
-        <input
-            type="text"
-            id="nickname"
-            placeholder="닉네임을 입력하세요."
-            maxlength="2">
-        <button id="enterBtn">
-            로그인
-        </button>
-
+        <footer id="footerArea">
+            <div class="left">
+                <div>카카오톡 오픈채팅</div>
+                <a href="https://open.kakao.com/o/g7b2DGti" target="_blank" rel="noopener noreferrer">
+                    8090 으차방
+                </a>
+            </div>
+            <div class="right">
+                <div id="version"></div>
+                <div id="admin"></div>
+            </div>
+        </footer>
     </div>
 
-    <!-- 로그인 모달 -->
-    <div id="memberModal" class="modal hidden">
-        <div class="modalBox">
-            <h2>🔑 으차방 멤버 로그인</h2>
-            <input
-                type="password"
-                id="memberPassword"
-                placeholder="비밀번호를 입력하세요.">
+    <div id="loginModal" class="loginModal hidden">
+        <div class="loginBox">
+            <div class="loginHeader">
+                <h2>으차방 멤버 로그인</h2>
+                <button id="memberCancelBtn" class="closeBtn" type="button" aria-label="닫기"></button>
+            </div>
+            <input type="password" id="memberPassword" placeholder="비밀번호">
             <p id="loginMessage"></p>
-            <div class="modalButton">
-                <button id="memberOkBtn">확인</button>
-                <button id="memberCancelBtn">닫기</button>
+            <div class="loginButton">
+                <button id="memberOkBtn">로그인</button>
             </div>
         </div>
     </div>
 
-    <!-- 관리자 로그인 모달 -->
-    <div id="adminModal" class="modal hidden">
-        <div class="modalBox">
-            <h2>🔑 관리자 로그인</h2>
-            <input
-                type="password"
-                id="adminPassword"
-                placeholder="비밀번호를 입력하세요.">
+    <div id="adminModal" class="adminModal hidden">
+        <div class="adminBox">
+            <div class="adminHeader">
+                <h2>관리자 로그인</h2>
+                <button id="adminCancelBtn" class="closeBtn" type="button" aria-label="닫기"></button>
+            </div>
+            <input type="password" id="adminPassword" placeholder="비밀번호를 입력하세요.">
             <p id="adminMessage"></p>
-            <div class="modalButton">
+            <div class="adminButton">
                 <button id="adminOkBtn">확인</button>
-                <button id="adminCancelBtn">닫기</button>
-            </div>
-        </div>
-    </div> 
-
-    <!-- 경고 모달 -->
-    <div id="alertModal" class="modal hidden">
-        <div class="modalBox">
-            <p id="alertMessage"></p>
-
-            <div class="modalButton">
-                <button id="alertCloseBtn">확인</button>
             </div>
         </div>
     </div>
 
-    <!-- 하단 안내 -->
-    <div class="footerInfo">
-        <div class="footerTitle">
-            카카오톡 오픈채팅
+    <div id="pwSetModal" class="loginModal hidden">
+        <div class="loginBox">
+            <div class="loginHeader">
+                <h2>비밀번호 설정</h2>
+                <button id="pwSetCancelBtn" class="closeBtn" type="button" aria-label="닫기"></button>
+            </div>
+            <input type="text" id="pwSetNickname" placeholder="닉네임">
+            <input type="password" id="newPw" placeholder="새 비밀번호">
+            <input type="password" id="newPwCheck" placeholder="새 비밀번호 확인">
+            <p id="pwSetMessage"></p>
+            <div class="loginButton">
+                <button id="pwSetOkBtn">확인</button>
+            </div>
         </div>
+    </div>
 
-        <a
-            href="https://open.kakao.com/o/g7b2DGti"
-            target="_blank">
-            8090 으차방
-        </a>
-
-        <div class="footerManager">
-            <span>운영관리담당 : 코코</span>
-            <span class="version" id="version"></span>
+    <div id="warningModal" class="warningModal hidden">
+        <div class="warningBox">
+            <p id="warningText"></p>
+            <button id="warningOk">확인</button>
         </div>
     </div>
 
     <script type="module" src="login.js"></script>
     <script type="module" src="../admin/adminLogin.js"></script>
-
 </body>
-
 </html>

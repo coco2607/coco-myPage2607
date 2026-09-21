@@ -1,6 +1,6 @@
 // staff.js
 
-import {loadUsers} from "../admin/adminFirebase.js";
+import {loadUsers} from "../adminFirebase.js";
 import { openStateModal } from "../mstate/mstate.js";
 import "../point/adpoint.js";
 

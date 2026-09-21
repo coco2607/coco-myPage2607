@@ -1,5 +1,4 @@
 // loginFirebase.js
-
 import {
     db,
     ref,
@@ -9,106 +8,115 @@ import {
     onDisconnect,
     runTransaction
 } from "../firebase.js";
-
-import { trim, createId } from "../utils.js";
+import {
+    trim,
+    createId
+} from "../utils.js";
 
 const MEMBER = "으차방/member";
-const NICKNAMES = "으차방/nicknames";
+const ACCESS = "으차방/access";
+const DEVICE = "으차방/deviceId";
 const myConnectionId = createId();
-let myNickname = "";
 
-
-// 로그인
-export async function login(nickname, password) {
-
+export async function getMemberState(nickname){
     nickname = trim(nickname);
-    password = trim(password);
 
-    if (nickname.length < 2) {
+    if(nickname.length < 2){
         throw new Error("닉네임 2자를 입력하세요.");
     }
 
-    if (password === "") {
+    const snapshot = await get(ref(db, `${MEMBER}/${nickname}`));
+
+    if(!snapshot.exists()){
+        return "NO_PASSWORD";
+    }
+
+    const data = snapshot.val();
+
+    if(!data.memberPw){
+        return "NO_PASSWORD";
+    }
+
+    return "PASSWORD";
+}
+
+export async function setMemberPassword(nickname,password){
+    nickname = trim(nickname);
+    password = trim(password);
+
+    if(nickname.length < 2){
+        throw new Error("닉네임 2자를 입력하세요.");
+    }
+
+    if(password === ""){
+        throw new Error("새 비밀번호를 입력하세요.");
+    }
+
+    await update(ref(db, `${MEMBER}/${nickname}`),{memberPw:password});
+    return true;
+}
+
+export async function login(nickname,password){
+    nickname = trim(nickname);
+    password = trim(password);
+
+    if(nickname.length < 2){
+        throw new Error("닉네임 2자를 입력하세요.");
+    }
+
+    if(password === ""){
         throw new Error("비밀번호를 입력해주세요.");
     }
 
-    const ok = await checkMemberPassword(nickname, password);
+    const ok = await checkMemberPassword(nickname,password);
 
-    if (!ok) {
+    if(!ok){
         throw new Error("닉네임 또는 비밀번호가 올바르지 않습니다.");
     }
 
     await joinUser(nickname);
-
     return true;
 }
 
+export async function saveDeviceId(deviceId,nickname){
+    deviceId = trim(deviceId);
+    nickname = trim(nickname);
 
-// 회원 확인 및 비밀번호 확인
-async function checkMemberPassword(nickname, password) {
-
-    const userRef = ref(
-        db,
-        `${MEMBER}/${nickname}`
-    );
-
-    const snapshot = await get(userRef);
-
-    // 회원이 없으면
-    if (!snapshot.exists()) {
-
-        // 초기 비밀번호는 1234만 허용
-        if (password !== "1234") {
-            return false;
-        }
-
-        // 자동 회원 생성
-        await set(
-            userRef,
-            {
-                memberPw: "1234"
-            }
-        );
-
-        return true;
+    if(deviceId === ""){
+        throw new Error("디바이스 정보가 없습니다.");
     }
 
-    // 회원이 있으면 비밀번호 확인
+    if(nickname === ""){
+        throw new Error("닉네임 정보가 없습니다.");
+    }
+
+    await set(ref(db, `${DEVICE}/${deviceId}`),{nickname:nickname});
+    return true;
+}
+
+async function checkMemberPassword(nickname,password){
+    const snapshot = await get(ref(db, `${MEMBER}/${nickname}`));
+
+    if(!snapshot.exists()){
+        return false;
+    }
+
     const data = snapshot.val();
 
-    // memberPw가 없으면 최초 로그인으로 간주하고 생성
-    if (!data.memberPw) {
-
-        await update(
-            userRef,
-            {
-                memberPw: password
-            }
-        );
-
-        return true;
+    if(!data.memberPw){
+        return false;
     }
 
-    // memberPw가 있으면 비교
     return data.memberPw === password;
 }
 
-
-// 닉네임 중복 확인
-async function joinUser(nickname) {
-
-    myNickname = nickname;
-
-    const nicknameRef = ref(
-        db,
-        `${NICKNAMES}/${nickname}`
-    );
+async function joinUser(nickname){
+    const accessRef = ref(db, `${ACCESS}/${nickname}`);
 
     const result = await runTransaction(
-        nicknameRef,
+        accessRef,
         current => {
-
-            if (current === null) {
+            if(current === null){
                 return myConnectionId;
             }
 
@@ -116,9 +124,9 @@ async function joinUser(nickname) {
         }
     );
 
-    if (!result.committed) {
+    if(!result.committed){
         throw new Error("이미 사용 중인 닉네임입니다.");
     }
 
-    onDisconnect(nicknameRef).remove();
+    onDisconnect(accessRef).remove();
 }

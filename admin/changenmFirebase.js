@@ -1,57 +1,81 @@
-//changenmFirebase.js
+// changenmFirebase.js
 
 import {
     db,
     ref,
     get,
-    set,
-    update,
-    remove
+    update
 } from "../firebase.js";
 
-export async function changeNickname(oldNickname, newNickname) {
+const MEMBER = "으차방/member";
+const HISTORY = "으차방/history";
+const DEVICE = "으차방/deviceId";
+const ADMIN = "으차방/admin";
 
-    // 기존 회원 읽기
-    const userRef = ref(db, `users/${oldNickname}`);
-    const userSnap = await get(userRef);
+export async function changeNickname(oldNickname,newNickname){
+    if(!oldNickname || !newNickname){
+        throw new Error("닉네임 정보가 없습니다.");
+    }
 
-    if (!userSnap.exists()) {
+    if(oldNickname === newNickname){
+        return true;
+    }
+
+    const memberSnap = await get(
+        ref(db, `${MEMBER}/${oldNickname}`)
+    );
+
+    if(!memberSnap.exists()){
         throw new Error("회원이 존재하지 않습니다.");
     }
 
-    const userData = userSnap.val();
-
-    // 새 닉네임으로 저장
-    await set(
-        ref(db, `users/${newNickname}`),
-        userData
+    const historySnap = await get(
+        ref(db, `${HISTORY}/${oldNickname}`)
     );
 
-    // history 수정
-    const historyRef = ref(db, "history");
-    const historySnap = await get(historyRef);
+    const deviceSnap = await get(
+        ref(db, DEVICE)
+    );
 
-    if (historySnap.exists()) {
+    const adminSnap = await get(
+        ref(db, ADMIN)
+    );
 
-        const history = historySnap.val();
-        const updates = {};
+    const updates = {};
 
-        Object.entries(history).forEach(([key, value]) => {
+    updates[`${MEMBER}/${newNickname}`] = memberSnap.val();
+    updates[`${MEMBER}/${oldNickname}`] = null;
 
-            if (value.nickname === oldNickname) {
+    if(historySnap.exists()){
+        updates[`${HISTORY}/${newNickname}`] = historySnap.val();
+        updates[`${HISTORY}/${oldNickname}`] = null;
+    }
 
-                updates[`${key}/nickname`] = newNickname;
+    if(deviceSnap.exists()){
+        deviceSnap.forEach(child => {
+            const data = child.val();
 
+            if(data?.nickname === oldNickname){
+                updates[
+                    `${DEVICE}/${child.key}/nickname`
+                ] = newNickname;
             }
-
         });
+    }
 
-        if (Object.keys(updates).length > 0) {
-            await update(historyRef, updates);
+    if(adminSnap.exists()){
+        const adminData = adminSnap.val();
+
+        if(adminData.admin === oldNickname){
+            updates[`${ADMIN}/admin`] = newNickname;
+        }
+
+        if(adminData.staff === oldNickname){
+            updates[`${ADMIN}/staff`] = newNickname;
         }
     }
 
-    // 기존 회원 삭제
-    await remove(userRef);
+    await update(ref(db),updates);
 
+    return true;
 }

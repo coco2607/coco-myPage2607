@@ -1,18 +1,15 @@
 // member.js
-
 import {
     loadUser,
-    loadHistory
+    loadHistory,
+    loadAdminInfo
 } from "./memberFirebase.js";
-
 import {
-    getVersion
+    appVersion,
+    adminName
 } from "../utils.js";
 
-// 로그인 닉네임
 const nickname = sessionStorage.getItem("nickname");
-
-// 요소
 const memberNickname = document.getElementById("memberNickname");
 const pointLabel = document.getElementById("pointLabel");
 const totalPoint = document.getElementById("totalPoint");
@@ -20,109 +17,115 @@ const historyList = document.getElementById("historyList");
 const boardPosition = document.getElementById("boardPosition");
 const contentTabs = document.querySelectorAll(".contentTab");
 const tabContents = document.querySelectorAll(".tabContent");
-const version = document.getElementById("version");
+const adminLoginBtn = document.getElementById("adminLoginBtn");
 
-// 회원정보
 let memberUser = null;
 
-memberNickname.textContent = `${nickname}님`;
-version.textContent = `Ver ${getVersion()}`;
+document.getElementById("version").textContent = `Ver ${appVersion}`;
+document.getElementById("admin").textContent = `관리자 ${adminName}`;
 
-// 시작
-loadMember();
+if(!nickname){
+    location.replace("../login/login.html");
+}else{
+    memberNickname.textContent = `${nickname}님`;
+    loadMember();
+    checkManager();
+}
 
-// 회원정보
-async function loadMember() {
-    memberUser = await loadUser(nickname);
+async function loadMember(){
+    try{
+        memberUser = await loadUser(nickname);
 
-    if (memberUser) {
-        boardPosition.textContent = `(보드게임 현 위치 ${memberUser.last ?? 0})`;
-    } else {
-        boardPosition.textContent = "(보드게임 현 위치 0)";
+        if(memberUser){
+            boardPosition.textContent = `(보드게임 현 위치 ${memberUser.last ?? 0})`;
+        }else{
+            boardPosition.textContent = "(보드게임 현 위치 0)";
+        }
+    }catch(error){
+        console.error("회원정보 불러오기 실패:",error);
     }
 }
 
-// 탭 전환
+async function checkManager(){
+    try{
+        const info = await loadAdminInfo();
+
+        if(
+            nickname === info.admin ||
+            nickname === info.staff
+        ){
+            adminLoginBtn.classList.remove("hidden");
+        }
+    }catch(error){
+        console.error("관리자 정보 확인 실패:",error);
+    }
+}
+
 contentTabs.forEach(tab => {
-    tab.addEventListener("click", async () => {
-        contentTabs.forEach(item => {
-            item.classList.remove("active");
-        });
-
+    tab.addEventListener("click",async () => {
+        contentTabs.forEach(item => item.classList.remove("active"));
+        tabContents.forEach(content => content.classList.add("hidden"));
         tab.classList.add("active");
-
-        tabContents.forEach(content => {
-            content.classList.add("hidden");
-        });
 
         const tabName = tab.dataset.tab;
 
-        if (tabName === "attendance") {
+        if(tabName === "attendance"){
             document.getElementById("attendanceContent").classList.remove("hidden");
 
-            if (window.loadAttendance) {
+            const month = new Date().getMonth() + 1;
+            pointLabel.textContent = `${month}월 출석`;
+
+            if(window.loadAttendance){
                 await window.loadAttendance();
             }
+
+            return;
         }
 
-        if (tabName === "point") {
+        if(tabName === "point"){
             document.getElementById("pointContent").classList.remove("hidden");
-
             pointLabel.textContent = "누적포인트";
             totalPoint.textContent = `${memberUser?.totalP ?? 0}점`;
-
             await loadPointHistory();
         }
     });
 });
 
-// 포인트내역
-async function loadPointHistory() {
-    const history = await loadHistory(nickname);
+async function loadPointHistory(){
+    try{
+        const history = await loadHistory(nickname);
+        historyList.innerHTML = "";
+        history.sort((a,b) => getHistoryTime(b) - getHistoryTime(a));
 
-    historyList.innerHTML = "";
+        let hasHistory = false;
 
-    // 최신순 정렬
-    history.sort((a, b) => {
-        const aTime = getHistoryTime(a);
-        const bTime = getHistoryTime(b);
+        history.forEach(data => {
+            const getP = Number(data.getP) || 0;
+            const useP = Number(data.useP) || 0;
 
-        return bTime - aTime;
-    });
+            if(getP === 0 && useP === 0){
+                return;
+            }
 
-    let hasHistory = false;
+            const point = getP !== 0 ? getP : -useP;
+            addHistory(getHistoryDate(data),data.type || "포인트",point);
+            hasHistory = true;
+        });
 
-    history.forEach(data => {
-        const getP = Number(data.getP) || 0;
-        const useP = Number(data.useP) || 0;
-
-        // 획득도 없고 사용도 없으면 표시하지 않음
-        if (getP === 0 && useP === 0) {
-            return;
+        if(!hasHistory){
+            historyList.innerHTML = "<div class='historyItem'>포인트 내역이 없습니다.</div>";
         }
-
-        const point = getP !== 0 ? getP : -useP;
-
-        addHistory(
-            getHistoryDate(data),
-            data.type || "포인트",
-            point
-        );
-
-        hasHistory = true;
-    });
-
-    if (!hasHistory) {
-        historyList.innerHTML = "<div class='historyItem'>포인트 내역이 없습니다.</div>";
+    }catch(error){
+        console.error("포인트 내역 불러오기 실패:",error);
+        historyList.innerHTML = "<div class='historyItem'>포인트 내역을 불러오지 못했습니다.</div>";
     }
 }
 
-// 히스토리 정렬용 시간
-function getHistoryTime(data) {
-    if (data.joinDate) {
+function getHistoryTime(data){
+    if(data.joinDate){
         const time = new Date(data.joinDate).getTime();
 
-        if (!isNaN(time)) {
+        if(!isNaN(time)){
             return time;
         }
     }
@@ -130,38 +133,31 @@ function getHistoryTime(data) {
     return getPushKeyTimestamp(data.key);
 }
 
-// 히스토리 날짜
-function getHistoryDate(data) {
-    if (data.joinDate) {
+function getHistoryDate(data){
+    if(data.joinDate){
         const date = new Date(data.joinDate);
 
-        if (!isNaN(date.getTime())) {
+        if(!isNaN(date.getTime())){
             return data.joinDate;
         }
     }
 
     const timestamp = getPushKeyTimestamp(data.key);
-
-    if (timestamp > 0) {
-        return timestamp;
-    }
-
-    return "";
+    return timestamp > 0 ? timestamp : "";
 }
 
-// Firebase push key의 생성 시간 추출
-function getPushKeyTimestamp(key) {
-    if (!key || key.length < 8) {
+function getPushKeyTimestamp(key){
+    if(!key || key.length < 8){
         return 0;
     }
 
-    const PUSH_CHARS = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
+    const chars = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
     let timestamp = 0;
 
-    for (let i = 0; i < 8; i++) {
-        const index = PUSH_CHARS.indexOf(key.charAt(i));
+    for(let i = 0; i < 8; i++){
+        const index = chars.indexOf(key.charAt(i));
 
-        if (index === -1) {
+        if(index === -1){
             return 0;
         }
 
@@ -171,58 +167,31 @@ function getPushKeyTimestamp(key) {
     return timestamp;
 }
 
-// 날짜 형식
-function formatDate(value) {
-    if (value == null || value === "") {
+function formatDate(value){
+    if(value == null || value === ""){
         return "";
     }
 
-    // timestamp
-    if (typeof value === "number") {
-        const date = new Date(value);
+    const date = new Date(value);
 
-        if (isNaN(date.getTime())) {
-            return "";
-        }
-
-        return `${date.getFullYear()}. ${String(date.getMonth() + 1).padStart(2, "0")}. ${String(date.getDate()).padStart(2, "0")}`;
+    if(isNaN(date.getTime())){
+        return typeof value === "string" ? value : "";
     }
 
-    // 문자열 날짜
-    if (typeof value === "string") {
-        const date = new Date(value);
-
-        if (!isNaN(date.getTime())) {
-            return `${date.getFullYear()}. ${String(date.getMonth() + 1).padStart(2, "0")}. ${String(date.getDate()).padStart(2, "0")}`;
-        }
-
-        return value;
-    }
-
-    return "";
+    return `${date.getFullYear()}. ${String(date.getMonth() + 1).padStart(2,"0")}. ${String(date.getDate()).padStart(2,"0")}`;
 }
 
-// 히스토리 출력
-function addHistory(date, memo, point) {
+function addHistory(date,memo,point){
     const item = document.createElement("div");
-
     item.className = "historyItem";
 
     item.innerHTML = `
         <div class="historyRow">
-            <div class="historyDate">
-                ${formatDate(date)}
-            </div>
-            <div class="historyMemo">
-                ${memo}
-            </div>
+            <div class="historyDate">${formatDate(date)}</div>
+            <div class="historyMemo">${memo}</div>
             <div class="historyPoint ${point >= 0 ? "plus" : "minus"}">
-                <span class="sign">
-                    ${point >= 0 ? "+" : "-"}
-                </span>
-                <span class="pointValue">
-                    ${Math.abs(point)}점
-                </span>
+                <span class="sign">${point >= 0 ? "+" : "-"}</span>
+                <span class="pointValue">${Math.abs(point)}점</span>
             </div>
         </div>
     `;

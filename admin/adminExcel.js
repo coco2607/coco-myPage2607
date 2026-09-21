@@ -1,191 +1,126 @@
 // adminExcel.js
 
 import {
-    loadUsers,
+    loadMembers,
     loadHistory,
-    uploadUsers,
+    uploadMembers,
     uploadHistory
 } from "./adminFirebase.js";
 
-// DOM
 const excelBtn = document.getElementById("excelBtn");
 const excelModal = document.getElementById("excelModal");
-
 const excelUploadBtn = document.getElementById("excelUploadBtn");
 const excelDownloadBtn = document.getElementById("excelDownloadBtn");
-
 const excelFile = document.getElementById("excelFile");
 
-const downloadModal = document.getElementById("downloadModal");
-const downloadStartBtn = document.getElementById("downloadStartBtn");
-
-// Excel UP/DOWN 모달
-
-// 열기
-excelBtn.addEventListener("click", (e) => {
-
-    e.preventDefault();
+excelBtn.addEventListener("click",event => {
+    event.preventDefault();
     excelModal.classList.remove("hidden");
-
 });
 
-// ESC 닫기
-document.addEventListener("keydown", (e) => {
-
-    if (e.key === "Escape") {
-
+document.addEventListener("keydown",event => {
+    if(event.key === "Escape"){
         excelModal.classList.add("hidden");
-        downloadModal.classList.add("hidden");
-
     }
-
 });
 
-// 모달 바깥 클릭(모바일 포함)
-excelModal.addEventListener("click", (e) => {
-
-    if (e.target === excelModal) {
-
+excelModal.addEventListener("click",event => {
+    if(event.target === excelModal){
         excelModal.classList.add("hidden");
-        downloadModal.classList.add("hidden");
-
     }
-
 });
 
-// Upload
-
-excelUploadBtn.addEventListener("click", () => {
-
+excelUploadBtn.addEventListener("click",() => {
     excelModal.classList.add("hidden");
-
     excelFile.value = "";
     excelFile.click();
-
 });
 
-excelFile.addEventListener("change", uploadExcel);
+excelFile.addEventListener("change",uploadExcel);
 
-async function uploadExcel() {
-
+async function uploadExcel(){
     const file = excelFile.files[0];
-    if (!file) return;
 
-    try {
+    if(!file){
+        return;
+    }
 
+    try{
         const buffer = await file.arrayBuffer();
 
-        const workbook = XLSX.read(buffer, {
-            type: "array"
+        const workbook = XLSX.read(buffer,{
+            type:"array"
         });
 
         let uploaded = false;
 
-        // users
-        const usersSheet = workbook.Sheets["users"];
+        const memberSheet = workbook.Sheets["member"];
 
-        if (usersSheet) {
+        if(memberSheet){
+            const members = XLSX.utils.sheet_to_json(memberSheet);
 
-            const users = XLSX.utils.sheet_to_json(usersSheet);
-
-            if (users.length > 0) {
-
-                await uploadUsers(users);
+            if(members.length > 0){
+                await uploadMembers(members);
                 uploaded = true;
-
             }
-
         }
 
-        // history
         const historySheet = workbook.Sheets["history"];
 
-        if (historySheet) {
-
+        if(historySheet){
             const history = XLSX.utils.sheet_to_json(historySheet);
 
-            if (history.length > 0) {
-
+            if(history.length > 0){
                 await uploadHistory(history);
                 uploaded = true;
-
             }
-
         }
 
-        if (uploaded) {
-
+        if(uploaded){
             alert("업로드가 완료되었습니다.");
-
-        } else {
-
-            alert("users 또는 history 시트를 찾을 수 없습니다.");
-
+        }else{
+            alert("member 또는 history 시트를 찾을 수 없습니다.");
         }
-
-    } catch (err) {
-
-        console.error(err);
+    }catch(error){
+        console.error("엑셀 업로드 오류:",error);
         alert("업로드 중 오류가 발생했습니다.");
-
-    } finally {
-
-        // 같은 파일을 다시 선택할 수 있도록 초기화
+    }finally{
         excelFile.value = "";
-
     }
-
 }
 
-// Download
+excelDownloadBtn.addEventListener("click",downloadExcel);
 
-const historyCheck = document.getElementById("historyCheck");
-const usersCheck = document.getElementById("usersCheck");
+async function downloadExcel(){
+    try{
+        excelModal.classList.add("hidden");
 
-// 다운로드 선택창 열기
-excelDownloadBtn.addEventListener("click", () => {
-
-    excelModal.classList.add("hidden");
-    downloadModal.classList.remove("hidden");
-
-});
-
-// 다운로드 모달 바깥 클릭 시 닫기
-downloadModal.addEventListener("click", (e) => {
-
-    if (e.target === downloadModal) {
-        downloadModal.classList.add("hidden");
-    }
-
-});
-
-// 다운로드 시작
-downloadStartBtn.addEventListener("click", startDownload);
-
-async function startDownload() {
-
-    if (!historyCheck.checked && !usersCheck.checked) {
-        return;
-    }
-
-    const workbook = XLSX.utils.book_new();
-
-    if (usersCheck.checked) {
-        const users = await loadUsers();
-        const sheet = XLSX.utils.json_to_sheet(users);
-        XLSX.utils.book_append_sheet(workbook, sheet, "users");
-    }
-
-    if (historyCheck.checked) {
+        const members = await loadMembers();
         const history = await loadHistory();
-        const sheet = XLSX.utils.json_to_sheet(history);
-        XLSX.utils.book_append_sheet(workbook, sheet, "history");
+
+        const workbook = XLSX.utils.book_new();
+
+        const memberSheet = XLSX.utils.json_to_sheet(members);
+        const historySheet = XLSX.utils.json_to_sheet(history);
+
+        XLSX.utils.book_append_sheet(
+            workbook,
+            memberSheet,
+            "member"
+        );
+
+        XLSX.utils.book_append_sheet(
+            workbook,
+            historySheet,
+            "history"
+        );
+
+        XLSX.writeFile(
+            workbook,
+            "backup.xlsx"
+        );
+    }catch(error){
+        console.error("엑셀 다운로드 오류:",error);
+        alert("다운로드 중 오류가 발생했습니다.");
     }
-
-    XLSX.writeFile(workbook, "backup.xlsx");
-
-    historyCheck.checked = false;
-    usersCheck.checked = false;
-
-    downloadModal.classList.add("hidden");
 }

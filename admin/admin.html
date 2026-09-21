@@ -1,132 +1,101 @@
 <!-- admin.html -->
-
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자</title>
-
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="../mstate/mstate.css">
     <link rel="stylesheet" href="../point/adpoint.css">
-
 </head>
-
 <body>
-
-    <div class="container">
-
-        <!-- 상단 -->
-        <div class="header">
-
-            <div class="leftHeader">
-
-                <p class="hello">
-                    안녕하세요!
-                </p>
-
-                <h2 class="title">
-                    관리자님
-                </h2>
-
+    <div class="layout">
+        <header id="topArea">
+            <div class="adminTitle">
+                <span class="hello">안녕하세요!</span>
+                <span class="title">관리자님</span>
             </div>
 
-            <div class="rightHeader">
+            <a href="#" id="excelBtn" class="excelLink">
+                Excel UP/DOWN
+            </a>
+        </header>
 
-                <a
-                    href="#"
-                    id="excelBtn"
-                    class="excelLink">
-                    Excel UP/DOWN
-                </a>
-
-            </div>
-
-        </div>
-
-        <!-- Excel 모달 -->
-        <div id="excelModal" class="modal hidden">
-
-            <div class="modalBox">
-
-                <div class="excelButton">
-
-                    <button id="excelUploadBtn">
-                        Excel Upload
+        <nav id="upperArea">
+            <div class="upperInfo">
+                <div class="pointHeader">
+                    <button id="plusBtn" class="pointBtn">
+                        포인트 적립
                     </button>
 
-                    <button id="excelDownloadBtn">
-                        Excel Download
+                    <button id="minusBtn" class="pointBtn">
+                        포인트 사용
                     </button>
-
                 </div>
-
             </div>
-
-        </div>
-
-        <hr class="line">
-
-        <!-- 회원 관리 -->
-        <div class="memberBox">
 
             <div class="memberTop">
-
                 <h3 class="sectionTitle">
                     회원관리
                     <span id="memberCount" class="memberCount">(0명)</span>
                 </h3>
-
-                <div class="pointHeader">
-
-                    <button
-                        id="plusBtn"
-                        class="pointBtn">
-                        포인트 적립
-                    </button>
-
-                    <button
-                        id="minusBtn"
-                        class="pointBtn">
-                        포인트 사용
-                    </button>
-
-                </div>
-
             </div>
 
-            <hr class="line">            
+            <hr class="line">
+        </nav>
 
+        <main id="contentArea">
             <div id="memberList">
-
                 <!-- JS 생성 -->
-
             </div>
-            
-        </div>
+        </main>
 
+        <footer id="footerArea">
+            <div class="left">
+                <div>카카오톡 오픈채팅</div>
+                <a
+                    href="https://open.kakao.com/o/g7b2DGti"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    8090 으차방
+                </a>
+            </div>
+
+            <div class="right">
+                <div id="version"></div>
+                <div id="admin"></div>
+            </div>
+        </footer>
     </div>
 
-    <!-- 포인트 모달 -->
+    <!-- Excel UP/DOWN -->
+    <div id="excelModal" class="modal hidden">
+        <div class="modalBox">
+            <div class="excelButton">
+                <button id="excelUploadBtn">
+                    Excel Upload
+                </button>
+
+                <button id="excelDownloadBtn">
+                    Excel Download
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 포인트 입력 -->
     <div id="pointModal" class="modal hidden">
-
         <div class="modalBox pointBox">
-
-            <h3 id="pointTitle">포인트 적립</h3>
+            <h3 id="pointTitle">
+                포인트 적립
+            </h3>
 
             <div class="pointScroll">
                 <div id="pointRows"></div>
             </div>
 
             <div class="pointBtnBox">
-
                 <button id="pointApplyBtn">
                     적용
                 </button>
@@ -134,28 +103,22 @@
                 <button id="pointCancelBtn">
                     취소
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-    <!-- 포인트 확인 모달 -->
+    <!-- 포인트 확인 -->
     <div id="pointConfirmModal" class="modal hidden">
-
         <div class="modalBox">
-
             <p class="modalText">
                 포인트를 적용하시겠습니까?
             </p>
 
             <div id="pointConfirmList" class="pointConfirmList">
-                <!-- JS에서 생성 -->
+                <!-- JS 생성 -->
             </div>
 
             <div class="modalBtnBox">
-
                 <button id="pointConfirmBtn">
                     예
                 </button>
@@ -163,80 +126,58 @@
                 <button id="pointConfirmCancelBtn">
                     아니오
                 </button>
-
             </div>
-
-        </div>
-
-    </div>
-
-    <!-- 하단 안내 -->
-    <div class="footerInfo">
-        <div class="footerTitle">
-            카카오톡 오픈채팅
-        </div>
-
-        <a
-            href="https://open.kakao.com/o/g7b2DGti"
-            target="_blank">
-            8090 으차방
-        </a>
-
-        <div class="footerManager">
-            <span>운영관리담당 : 코코</span>
-            <span class="version" id="version"></span>
         </div>
     </div>
 
-
-    <!-- 알림 모달 -->
+    <!-- 알림 -->
     <div id="alertModal" class="modal hidden">
-
         <div class="modalBox">
-
             <p id="alertMessage"></p>
 
             <div class="modalBtnBox">
-
                 <button id="alertCloseBtn">
                     확인
                 </button>
-
             </div>
-
         </div>
+    </div>
 
-    </div>    
-
-
-    <!-- 상태 선택 모달 -->
+    <!-- 상태 선택 -->
     <div id="stateSelectModal" class="modal hidden">
-
         <div class="modalBox">
-
             <h3>상태 변경</h3>
 
             <div class="stateRadioGroup">
-
                 <label class="stateRadio">
-                    <input type="radio" name="memberState" class="stateChoice" data-state="활동">
+                    <input
+                        type="radio"
+                        name="memberState"
+                        class="stateChoice"
+                        data-state="활동">
                     <span>활동</span>
                 </label>
 
                 <label class="stateRadio">
-                    <input type="radio" name="memberState" class="stateChoice" data-state="외출">
+                    <input
+                        type="radio"
+                        name="memberState"
+                        class="stateChoice"
+                        data-state="외출">
                     <span>외출</span>
                 </label>
 
                 <label class="stateRadio">
-                    <input type="radio" name="memberState" class="stateChoice" data-state="삭제">
+                    <input
+                        type="radio"
+                        name="memberState"
+                        class="stateChoice"
+                        data-state="삭제">
                     <span>삭제</span>
                 </label>
-
             </div>
 
             <div class="modalBtnBox">
-
                 <button id="stateSelectSave">
                     저장
                 </button>
@@ -244,25 +185,18 @@
                 <button id="stateSelectCancel">
                     취소
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-
-    <!-- 상태 변경 확인 모달 -->
+    <!-- 상태 변경 확인 -->
     <div id="mstateModal" class="modal hidden">
-
         <div class="modalBox">
-
             <p id="mstateText" class="modalText">
                 회원님을 외출 상태로 변경하시겠습니까?
             </p>
 
             <div class="modalBtnBox">
-
                 <button id="mstateConfirm">
                     예
                 </button>
@@ -270,67 +204,50 @@
                 <button id="mstateCancel">
                     아니오
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-
-    <!-- 회원 포인트 내역 모달 -->
+    <!-- 회원 포인트 내역 -->
     <div id="historyModal" class="modal hidden">
-
         <div class="modalBox historyBox">
-
             <div class="historyHeader">
-
                 <h3 id="historyTitle">
                     포인트 내역
                 </h3>
 
-                <button id="nicknameChangeBtn">
-                    이름변경
-                </button>
+                <div class="historyHeaderRight">
+                    <button id="nicknameChangeBtn">
+                        이름변경
+                    </button>
 
-            </div>           
+                    <button
+                        id="historyCloseBtn"
+                        class="historyCloseBtn"
+                        type="button"
+                        aria-label="닫기">
+                    </button>
+                </div>
+            </div>
 
             <div id="historyList">
-
                 <!-- JS 생성 -->
-
             </div>
-
-            <div class="modalBtnBox">
-
-                <button id="historyCloseBtn">
-                    닫기
-                </button>
-
-            </div>
-
         </div>
+    </div>
 
-    </div>    
-
-    <!-- 닉네임 변경 입력 모달 -->
+    <!-- 닉네임 변경 -->
     <div id="nicknameModal" class="modal hidden">
-
         <div class="modalBox">
-
-            <h3>
-                이름 변경
-            </h3>
+            <h3>이름 변경</h3>
 
             <input
                 type="text"
                 id="nicknameInput"
                 class="nicknameInput"
-                maxlength="2"
                 placeholder="새 닉네임">
 
             <div class="modalBtnBox">
-
                 <button id="nicknameSaveBtn">
                     확인
                 </button>
@@ -338,26 +255,19 @@
                 <button id="nicknameCancelBtn">
                     취소
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-
-    <!-- 닉네임 변경 확인 모달 -->
+    <!-- 닉네임 변경 확인 -->
     <div id="nicknameConfirmModal" class="modal hidden">
-
         <div class="modalBox">
-
             <p
                 id="nicknameConfirmText"
                 class="modalText">
             </p>
 
             <div class="modalBtnBox">
-
                 <button id="nicknameConfirmBtn">
                     예
                 </button>
@@ -365,13 +275,9 @@
                 <button id="nicknameConfirmCancelBtn">
                     아니오
                 </button>
-
             </div>
-
         </div>
-
     </div>
-        
 
     <!-- Excel 파일 선택 -->
     <input
@@ -380,46 +286,8 @@
         accept=".xlsb,.xlsm,.xlsx,.xls"
         hidden>
 
-    <!-- Excel 다운로드 모달 -->
-    <div id="downloadModal" class="modal hidden">
-
-        <div class="modalBox downloadBox">
-
-        <p id="downloadTitle" class="downloadTitle">
-            다운로드 항목을 선택하세요.
-        </p>
-
-            <div class="downloadCheck">
-
-                <label>
-                    <input type="checkbox" id="historyCheck">
-                    history
-                </label>
-
-                <label>
-                    <input type="checkbox" id="usersCheck">
-                    users
-                </label>
-
-            </div>
-
-
-            <div class="downloadButton">
-
-                <button id="downloadStartBtn">
-                    Download
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script type="module" src="admin.js"></script>
     <script type="module" src="adminExcel.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
 </body>
-
 </html>

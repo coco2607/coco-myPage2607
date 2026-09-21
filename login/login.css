@@ -1,270 +1,283 @@
 /* login.css */
-
-/* 기본 설정 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:"Pretendard", sans-serif;
+    font-family:"Pretendard",sans-serif;
+    -webkit-tap-highlight-color:transparent;
 }
-
+html,
 body{
-    position:relative;
-
-    background-image:url("bgImage.webp");
-    background-size:cover;
-    background-repeat:no-repeat;
-    background-position:center bottom;
-
+    width:100%;
+    height:100%;
+}
+body{
     min-height:100dvh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:20px;
-    padding-bottom:120px;
+    background:url("bgImage.webp") center bottom/cover no-repeat;
 }
-
-/* 접속 화면 */
-.container{
-    width:100%;
-    max-width:240px;
-    text-align:center;
-    margin-top:-240px;
-}
-
-h1{
-    font-size:36px;
-    color:#FFF;
-    font-weight:700;
-    margin-bottom:30px;
-    text-shadow:
-        0 3px 10px rgba(0,0,0,.45);
-}
-
-/* 닉네임 입력창 */
 input{
-    width:100%;
-    height:52px;
-
-    padding:0 16px;
+    user-select:text;
+}
+.layout{
+    display:flex;
+    flex-direction:column;
+    min-height:100dvh;
+    padding-bottom:44px;
+}
+#topArea{
+    min-height:36px;
+}
+#upperArea{
+    min-height:60px;
+}
+#contentArea{
+    display:flex;
+    flex:1;
+}
+.container{
+    display:flex;
+    flex:1;
+    flex-direction:column;
+    align-items:center;
+    padding-top:20px;
+}
+.container h1{
     margin-bottom:18px;
-
-    border:1px solid rgba(255,255,255,.6);
-    border-radius:12px;
-
-    background:rgba(255,255,255,.28);
-
-    outline:none;
-
-    color:#2c2c2c;
-    font-size:18px;
-    text-align:center;
-
-    box-shadow:0 3px 10px rgba(0,0,0,.15);
-}
-
-input::placeholder{
-    color:#2c2c2c;
-}
-
-input:focus{
-    border-color:#90CAF9;
-    background:rgba(255,255,255,.80);
-}
-
-/* 공통 버튼 */
-button{
-    width:100%;
-    height:52px;
-
-    border:none;
-    border-radius:12px;
-
-    border:1px solid rgba(255,255,255,.18);
-
-    background:#2F7FA3;
     color:#FFF;
-
-    font-size:20px;
-    font-weight:bold;
-
-    cursor:pointer;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.25);
-
+    font-size:28px;
+    font-weight:700;
+    text-shadow:0 3px 10px rgba(0,0,0,.45);
+}
+#nickname{
+    width:200px;
+    height:46px;
+    margin-bottom:12px;
+    padding:0 14px;
+    border:1px solid rgba(255,255,255,.65);
+    border-radius:12px;
+    outline:none;
+    background:rgba(255,255,255,.35);
+    color:#333;
+    font-size:17px;
+    text-align:center;
     transition:.2s;
 }
-
-button:hover{
+#nickname::placeholder{
+    color:#333;
+}
+#nickname:focus{
+    background:#FFF;
+}
+#enterBtn{
+    width:200px;
+    height:48px;
+    border:none;
+    border-radius:12px;
+    background:#2F7FA3;
+    color:#FFF;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+}
+#enterBtn:hover{
     background:#286F8F;
 }
-
-button:active{
-    background:#235F7A;
-}
-
-/* 로그인 모달 */
-.modal{
+.loginModal,
+.adminModal,
+.warningModal{
     position:fixed;
     inset:0;
-
+    z-index:1000;
     display:flex;
     justify-content:center;
     align-items:center;
-
+    padding:22px;
     background:rgba(0,0,0,.45);
-
-    z-index:9999;
 }
-
 .hidden{
     display:none;
 }
-
-.modalBox{
-    width:90%;
-    max-width:330px;
-
-    padding:25px;
-
+.loginBox,
+.adminBox,
+.warningBox{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    width:80%;
+    max-width:360px;
+    padding:24px 18px;
+    border-radius:14px;
     background:#FFF;
-    border-radius:15px;
-
+    box-shadow:0 4px 20px rgba(0,0,0,.15);
+}
+.loginHeader,
+.adminHeader{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    margin-bottom:12px;
+}
+.loginHeader h2,
+.adminHeader h2{
+    color:#333;
+    font-size:19px;
+    font-weight:700;
+}
+.adminHeader h2{
+    color:#2F7FA3;
+}
+.closeBtn{
+    position:absolute;
+    right:0;
+    width:22px;
+    height:22px;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+}
+.closeBtn::before,
+.closeBtn::after{
+    content:"";
+    position:absolute;
+    top:10px;
+    left:2px;
+    width:19px;
+    height:1px;
+    background:#333;
+}
+.closeBtn::before{
+    transform:rotate(45deg);
+}
+.closeBtn::after{
+    transform:rotate(-45deg);
+}
+.loginBox input,
+.adminBox input{
+    width:80%;
+    height:34px;
+    border:none;
+    border-bottom:1px solid #CCC;
+    outline:none;
+    background:transparent;
+    color:#333;
+    font-size:17px;
     text-align:center;
 }
-
-.modalBox h2{
-    margin-bottom:14px;
-    color:#1E88E5;
-    font-weight:bold;
+.loginBox input:focus,
+.adminBox input:focus{
+    border-bottom:2px solid #2F7FA3;
 }
-
-.modalBox input{
-    margin-bottom:8px;
+#memberPassword,
+#newPw,
+#newPwCheck,
+#adminPassword{
+    font-size:22px;
 }
-
-.modalButton{
+#memberPassword::placeholder,
+#newPw::placeholder,
+#newPwCheck::placeholder,
+#adminPassword::placeholder{
+    font-size:17px;
+}
+.loginButton,
+.adminButton{
     display:flex;
-    gap:8px;
-    margin-top:-8px;
+    width:81%;
 }
-
-.modalButton button{
-    flex:1;
-}
-
-.modalButton button:first-child{
-    background:#2F7FA3;
-}
-
-.modalButton button:first-child:hover{
-    background:#286F8F;
-}
-
-.modalButton button:last-child{
-    background:#D9D9D9;
-    color:#444;
-}
-
-.modalButton button:last-child:hover{
-    background:#CFCFCF;
-}
-
-#alertMessage{
-    font-size:18px;
-    font-weight:300;
-    color:#333;
-    line-height:1.6;
-    white-space:pre-line;
-    word-break:keep-all;
-    margin-bottom:25px;
-}
-
-#alertCloseBtn{
+#memberOkBtn,
+#pwSetOkBtn,
+#adminOkBtn,
+#warningOk{
+    width:100%;
+    height:40px;
+    border:none;
+    border-radius:8px;
     background:#2F7FA3;
     color:#FFF;
-}
-
-#alertCloseBtn:hover{
-    background:#286F8F;
-}
-
-/* 관리자 로그인 */
-.adminLink{
-    position:absolute;
-    top:20px;
-    right:20px;
-
-    margin:0;
-
-    color:#e2e2e2;
     font-size:14px;
     font-weight:600;
-
     cursor:pointer;
-    user-select:none;
-
-    transition:.2s;
 }
-
+#memberOkBtn:hover,
+#pwSetOkBtn:hover,
+#adminOkBtn:hover,
+#warningOk:hover{
+    background:#286F8F;
+}
+#loginMessage,
+#pwSetMessage,
+#adminMessage{
+    color:#F13F86;
+    font-size:12px;
+    text-align:center;
+}
+#warningText{
+    color:#333;
+    font-size:15px;
+    line-height:1.6;
+    text-align:center;
+}
+.adminLink{
+    padding:8px 4%;
+    color:#E2E2E2;
+    font-size:13px;
+    font-weight:600;
+    text-align:right;
+    cursor:pointer;
+}
 .adminLink:hover{
     color:#FFEB3B;
-    text-decoration:underline;
 }
-
-/* 로그인 메시지 */
-#loginMessage,
-#adminMessage{
-    font-size:14px;
-    margin-bottom:15px;
-    color:#ff0000;
-    font-weight:350;
-}
-
-/* 하단 안내 */
-.footerInfo{
+#footerArea{
     position:fixed;
-    left:50%;
+    left:0;
     bottom:0;
-    width:100%;
-    max-width:430px;
-    padding:7px 15px;
-    background:transparent;
-    border-top:none;
-    text-align:left;
-    transform:translateX(-50%);
-}
-
-.footerTitle{
-    margin-bottom:-2px;
-    font-size:9px;
-    font-weight:500;
-    color:#FFF;
-}
-
-.footerInfo a{
-    font-size:12.5px;
-    font-weight:500;
-    color:#FFF;
-    text-decoration:none;
-}
-
-.footerInfo a:hover{
-    text-decoration:underline;
-}
-
-.footerManager{
-    margin-top:1px;
+    z-index:100;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:8.5px;
-    color:#FFF;
+    width:100%;
+    min-height:44px;
+    padding:0 2%;
+    border-top:1px solid rgba(255,255,255,.35);
+    background:transparent;
 }
-
-.version{
+#footerArea .left{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    text-align:left;
+}
+#footerArea .left>div{
     color:#FFF;
-    font-size:9.5px;
+    font-size:10.2px;
+    font-weight:500;
+    letter-spacing:-0.4px;
+}
+#footerArea a{
+    color:#FFF;
+    font-size:12.8px;
+    font-weight:500;
+    letter-spacing:0.4px;
+    text-decoration:none;
+}
+#footerArea a:hover{
+    text-decoration:underline;
+}
+#footerArea .right{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    text-align:right;
+    color:#FFF;
+    font-size:9.8px;
+}
+#footerArea #version{
+    color:#FFF;
+    font-size:10.8px;
+    letter-spacing:0px;
 }

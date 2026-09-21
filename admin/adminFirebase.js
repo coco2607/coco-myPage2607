@@ -9,103 +9,173 @@ import {
     set
 } from "../firebase.js";
 
-// 관리자 로그인 확인
-export async function checkAdmin(password) {
+const ADMIN = "으차방/admin";
+const MEMBER = "으차방/member";
+const HISTORY = "으차방/history";
 
-    const snapshot = await get(ref(db, "admin"));
+export async function checkAdmin(password){
+    const snapshot = await get(
+        ref(db, "으차방/admin")
+    );
 
-    if (!snapshot.exists()) {
+    if(!snapshot.exists()){
         return null;
     }
 
     const data = snapshot.val();
 
-    if (password === data.adminPassword) {
+    const inputPassword = String(password).trim();
+    const adminPassword = String(data.adminPassword ?? "").trim();
+    const staffPassword = String(data.staffPassword ?? "").trim();
+
+    if(inputPassword === adminPassword){
         return "admin";
     }
 
-    if (password === data.staffPassword) {
+    if(inputPassword === staffPassword){
         return "staff";
     }
 
     return null;
 }
 
-// history 전체 가져오기
-export async function loadHistory() {
+export async function loadHistory(nickname = ""){
+    if(nickname){
+        const snapshot = await get(
+            ref(db, `${HISTORY}/${nickname}`)
+        );
 
-    const snapshot = await get(ref(db, "history"));
+        if(!snapshot.exists()){
+            return [];
+        }
 
-    if (!snapshot.exists()) {
+        const list = [];
+
+        snapshot.forEach(child => {
+            list.push({
+                key:child.key,
+                nickname,
+                ...child.val()
+            });
+        });
+
+        return list;
+    }
+
+    const snapshot = await get(
+        ref(db, HISTORY)
+    );
+
+    if(!snapshot.exists()){
         return [];
     }
 
-    return Object.values(snapshot.val());
+    const list = [];
 
+    snapshot.forEach(memberSnap => {
+        const nickname = memberSnap.key;
+
+        memberSnap.forEach(historySnap => {
+            list.push({
+                key:historySnap.key,
+                nickname,
+                ...historySnap.val()
+            });
+        });
+    });
+
+    return list;
 }
 
-// users 전체 가져오기
-export async function loadUsers() {
+export async function loadMembers(){
+    const snapshot = await get(
+        ref(db, MEMBER)
+    );
 
-    const snapshot = await get(ref(db, "users"));
-
-    if (!snapshot.exists()) {
+    if(!snapshot.exists()){
         return [];
     }
 
     const data = snapshot.val();
 
-    return Object.entries(data).map(([nickname, value]) => ({
-        nickname,
-        ...value
-    }));
-
+    return Object.entries(data).map(
+        ([nickname,value]) => ({
+            nickname,
+            ...value
+        })
+    );
 }
 
-// 회원 상태 저장
-export async function updateMemberState(nickname, state) {
+export async function updateMemberState(nickname,state){
+    const updates = {
+        state,
+        lastUpdate:Date.now()
+    };
+
+    if(state === "외출"){
+        updates.point = 0;
+    }
 
     await update(
-        ref(db, `users/${nickname}`),
-        {
-            state,
-            totalP: 0
-        }
+        ref(db, `${MEMBER}/${nickname}`),
+        updates
     );
-
 }
 
-// 엑셀 업로드 history 추가
-export async function uploadHistory(historyList) {
+export async function uploadHistory(historyList){
+    for(const history of historyList){
+        const nickname = history.nickname;
 
-    for (const history of historyList) {
+        if(!nickname){
+            continue;
+        }
 
-        // timestamp가 없으면 date로 생성
-        if (!history.timestamp && history.date) {
-            history.timestamp = new Date(history.date).getTime();
+        const data = {
+            ...history
+        };
+
+        delete data.nickname;
+
+        if(!data.timestamp && data.date){
+            data.timestamp =
+                new Date(data.date).getTime();
         }
 
         await set(
-            push(ref(db, "history")),
-            history
+            push(
+                ref(
+                    db,
+                    `${HISTORY}/${nickname}`
+                )
+            ),
+            data
         );
     }
 }
 
-// 엑셀 업로드 users 업데이트
-export async function uploadUsers(userList) {
+export async function uploadMembers(memberList){
+    for(const member of memberList){
+        const {
+            nickname,
+            memberPw,
+            totalP,
+            ...data
+        } = member;
 
-    for (const user of userList) {
+        if(!nickname){
+            continue;
+        }
 
-        const { nickname, memberPw, ...data } = user;
-
-        if (!nickname) continue;
+        if(
+            totalP !== undefined &&
+            totalP !== ""
+        ){
+            data.point = Number(totalP);
+        }
 
         await update(
-            ref(db, `users/${nickname}`),
+            ref(db, `${MEMBER}/${nickname}`),
             data
         );
-
     }
-
 }

@@ -1,93 +1,64 @@
 /* member.css */
-
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-/* 기본 */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
     font-family:"Pretendard",sans-serif;
+    -webkit-tap-highlight-color:transparent;
 }
 
 html,
 body{
+    width:100%;
     height:100%;
 }
 
 body{
     background:#F6EFE3;
+    color:#4A4038;
+    overflow:hidden;
 }
 
-/* 메인 */
-.container{
+.layout{
+    display:flex;
+    flex-direction:column;
     width:100%;
     max-width:430px;
-    height:100vh;
+    height:100dvh;
     margin:0 auto;
-    padding:20px 15px 0;
-    display:flex;
-    flex-direction:column;
-    min-height:0;
+    padding-bottom:44px;
 }
 
-/* 상단 */
-.topHeader{
+#topArea{
     display:flex;
     justify-content:space-between;
-    align-items:flex-start;
-    padding:0px 18px;
-    margin-bottom:0px;
-}
-
-.leftBox{
-    display:flex;
-    flex-direction:column;
+    align-items:center;
+    width:100%;
+    padding:10px 4% 2px;
 }
 
 .hello{
-    font-size:14px;
+    color:#786B5F;
+    font-size:13px;
     font-weight:450;
-    color:#786B5F;
-    margin-bottom:2px;
+    letter-spacing:-0.5px;
 }
 
-/* 닉네임 및 보드게임 현 위치 */
-.nameRow{
+.topLinks{
     display:flex;
-    align-items:baseline;
-    gap:4px;
-}
-
-#memberNickname{
-    margin:0;
-    font-size:25px;
-    font-weight:bold;
-    color:#4A4038;
-}
-
-.boardPosition{
-    margin-top:2px;
-    font-size:12px;
-    font-weight:350;
-    color:#786B5F;
-    text-align:right;
-    letter-spacing:-0.3px;
-}
-
-.rightBox{
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
+    align-items:center;
+    gap:20px;
 }
 
 .textLink{
+    color:#786B5F;
     font-size:12px;
     font-weight:400;
-    color:#786B5F;
     cursor:pointer;
     user-select:none;
-    transition:.2s;
+    white-space:nowrap;
 }
 
 .textLink:hover{
@@ -95,48 +66,78 @@ body{
     text-decoration:underline;
 }
 
-.point{
-    margin-top:10px;
-    font-size:16px;
-    font-weight:500;
+#upperArea{
+    width:100%;
+    flex-shrink:0;
+}
+
+.upperInfo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    padding:0 4% 4px;
+}
+
+.nameRow{
+    display:flex;
+    align-items:baseline;
+    min-width:0;
+    gap:4px;
+}
+
+#memberNickname{
+    margin:0;
+    color:#4A4038;
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:0.8px;
+    white-space:nowrap;
+}
+
+.boardPosition{
     color:#786B5F;
+    font-size:12px;
+    font-weight:350;
+    letter-spacing:-0.4px;
+    white-space:nowrap;
+}
+
+.point{
+    display:flex;
+    align-items:baseline;
+    color:#786B5F;
+    font-size:15px;
+    font-weight:500;
+    white-space:nowrap;
 }
 
 #totalPoint{
     margin-left:8px;
-    font-size:18px;
-    font-weight:bold;
     color:#A65D3B;
+    font-size:17px;
+    font-weight:700;
 }
 
-/* 구분선 */
-hr{
-    margin:12px 0;
-    border:none;
-    border-top:1px solid #4A4038;
-}
-
-
-/* 콘텐츠 탭 */
 .contentTabs{
     display:flex;
     width:100%;
-    margin:2px 0 12px;
+    margin-top:4px;
+    border-top:1px solid #D8CBB9;
     border-bottom:1px solid #D8CBB9;
 }
 
 .contentTab{
     flex:1;
-    height:42px;
+    height:38px;
     padding:0;
     border:none;
     border-bottom:2px solid transparent;
     background:transparent;
     color:#9A8C7D;
-    font-size:19px;
-    font-weight:700;
+    font-size:15px;
+    font-weight:500;
     cursor:pointer;
-    transition:.2s;
 }
 
 .contentTab:hover{
@@ -145,7 +146,27 @@ hr{
 
 .contentTab.active{
     color:#A65D3B;
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:0.5px;
     border-bottom-color:#A65D3B;
+}
+
+#contentArea{
+    display:flex;
+    flex:1;
+    width:100%;
+    min-height:0;
+    overflow:hidden;
+}
+
+.container{
+    display:flex;
+    flex:1;
+    flex-direction:column;
+    width:100%;
+    min-height:0;
+    padding:10px 0 0;
 }
 
 .tabContent{
@@ -157,8 +178,6 @@ hr{
     display:none;
 }
 
-
-/* 포인트 내역 */
 #pointContent{
     display:flex;
     flex-direction:column;
@@ -169,46 +188,39 @@ hr{
     display:none;
 }
 
-
-/* 포인트 상세 제목 */
 .historyTitle{
     flex-shrink:0;
+    padding:0 18px;
+    color:#A65D3B;
     font-size:18px;
     font-weight:700;
-    padding:0px 18px;
-    color:#A65D3B;
     text-align:center;
 }
 
-/* 포인트 상세 제목 아래 구분선 */
-.historyTitle + hr{
+.historyTitle+hr{
     flex-shrink:0;
+    margin:12px 0;
+    border:none;
     border-top:1px solid #D8CBB9;
 }
 
-/* 히스토리 목록 */
 #historyList{
     flex:1;
     min-height:0;
     margin-top:2px;
+    padding-bottom:10px;
     overflow-y:auto;
-    padding-bottom:55px;
 }
 
-/* 히스토리(상세내용) */
 .historyBox{
-    flex:1;
     display:flex;
+    flex:1;
     flex-direction:column;
     min-height:0;
 }
 
 .historyItem{
     padding:3px 18px;
-}
-
-.historyItem:last-child{
-    border-bottom:none;
 }
 
 .historyRow{
@@ -219,25 +231,24 @@ hr{
 }
 
 .historyDate{
-    font-size:12.5px;
     color:#9A8C7D;
+    font-size:12.5px;
     font-variant-numeric:tabular-nums;
-    font-feature-settings:"tnum";
 }
 
 .historyMemo{
-    font-size:14px;
     color:#4A4038;
+    font-size:14px;
 }
 
 .historyPoint{
     display:flex;
     justify-content:flex-end;
     align-items:center;
-    white-space:nowrap;
-    font-size:14px;
-    font-weight:bold;
     color:#D9534F;
+    font-size:14px;
+    font-weight:700;
+    white-space:nowrap;
 }
 
 .historyPoint.minus{
@@ -246,8 +257,8 @@ hr{
 
 .sign{
     width:4px;
-    text-align:center;
     flex-shrink:0;
+    text-align:center;
 }
 
 .pointValue{
@@ -256,49 +267,189 @@ hr{
     font-variant-numeric:tabular-nums;
 }
 
+/* 관리자 로그인 */
+.adminModal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:22px;
+    background:rgba(0,0,0,.45);
+}
 
-/* 하단 안내 */
-.footerInfo{
+.adminModal.hidden{
+    display:none;
+}
+
+.adminBox{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    width:80%;
+    max-width:360px;
+    padding:24px 18px;
+    border-radius:14px;
+    background:#FFF;
+    box-shadow:0 4px 20px rgba(0,0,0,.15);
+}
+
+.adminHeader{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    margin-bottom:12px;
+}
+
+.adminHeader h2{
+    color:#2F7FA3;
+    font-size:19px;
+    font-weight:700;
+}
+
+.closeBtn{
+    position:absolute;
+    right:0;
+    width:22px;
+    height:22px;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+}
+
+.closeBtn::before,
+.closeBtn::after{
+    content:"";
+    position:absolute;
+    top:10px;
+    left:2px;
+    width:19px;
+    height:1px;
+    background:#333;
+}
+
+.closeBtn::before{
+    transform:rotate(45deg);
+}
+
+.closeBtn::after{
+    transform:rotate(-45deg);
+}
+
+.adminBox input{
+    width:80%;
+    height:34px;
+    border:none;
+    border-bottom:1px solid #CCC;
+    outline:none;
+    background:transparent;
+    color:#333;
+    font-size:17px;
+    text-align:center;
+    user-select:text;
+}
+
+.adminBox input:focus{
+    border-bottom:2px solid #2F7FA3;
+}
+
+#adminPassword{
+    font-size:22px;
+}
+
+#adminPassword::placeholder{
+    font-size:17px;
+}
+
+#adminMessage{
+    width:80%;
+    min-height:0px;
+    color:#F13F86;
+    font-size:12px;
+    line-height:8px;
+    text-align:center;
+}
+
+#adminMessage:empty{
+    visibility:hidden;
+}
+
+.adminButton{
+    display:flex;
+    width:81%;
+}
+
+#adminOkBtn{
+    width:100%;
+    height:40px;
+    border:none;
+    border-radius:8px;
+    background:#2F7FA3;
+    color:#FFF;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+#adminOkBtn:hover{
+    background:#286F8F;
+}
+
+#footerArea{
     position:fixed;
     left:50%;
     bottom:0;
-    width:100%;
-    max-width:430px;
-    padding:7px 15px;
-    background:transparent;
-    border-top:none;
-    text-align:left;
-    transform:translateX(-50%);
-}
-
-.footerTitle{
-    margin-bottom:-2px;
-    font-size:9px;
-    font-weight:500;
-    color:#786B5F;
-}
-
-.footerInfo a{
-    font-size:12.5px;
-    font-weight:500;
-    color:#A65D3B;
-    text-decoration:none;
-}
-
-.footerInfo a:hover{
-    text-decoration:underline;
-}
-
-.footerManager{
-    margin-top:1px;
+    z-index:100;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:8.5px;
-    color:#786B5F;
+    width:100%;
+    max-width:430px;
+    min-height:44px;
+    padding:0 15px;
+    border-top:1px solid #D8CBB9;
+    background:#F6EFE3;
+    transform:translateX(-50%);
 }
 
-.version{
+#footerArea .left{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    text-align:left;
+}
+
+#footerArea .left>div{
     color:#786B5F;
-    font-size:9.5px;
+    font-size:9px;
+    font-weight:500;
+}
+
+#footerArea a{
+    color:#A65D3B;
+    font-size:12.5px;
+    font-weight:500;
+    text-decoration:none;
+}
+
+#footerArea a:hover{
+    text-decoration:underline;
+}
+
+#footerArea .right{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    color:#786B5F;
+    font-size:8.5px;
+    text-align:right;
+}
+
+#footerArea #version{
+    font-size:10.8px;
+    letter-spacing:0;
 }
