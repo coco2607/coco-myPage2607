@@ -13,9 +13,12 @@ import {
 
 const MEMBER = "으차방/member";
 const HISTORY = "으차방/history";
-const DEVICE = "으차방/deviceId";
 
-export async function saveMemberState(nickname,state){
+export async function saveMemberState(
+    nickname,
+    state,
+    returnDate = ""
+){
     const memberRef = ref(db, `${MEMBER}/${nickname}`);
     const snapshot = await get(memberRef);
 
@@ -24,15 +27,20 @@ export async function saveMemberState(nickname,state){
     }
 
     const member = snapshot.val();
+    const currentState = member.state || "활동";
     const point = Number(member.point) || 0;
 
-    if((member.state || "") === state){
+    if(currentState === state){
         return false;
     }
 
     const lastUpdate = Date.now();
 
     if(state === "외출"){
+        if(!returnDate){
+            throw new Error("복귀일이 없습니다.");
+        }
+
         await push(
             ref(db, `${HISTORY}/${nickname}`),
             {
@@ -48,37 +56,22 @@ export async function saveMemberState(nickname,state){
         await update(memberRef,{
             state:"외출",
             point:0,
+            returnDate:returnDate,
             lastUpdate:lastUpdate
         });
 
         return true;
     }
 
-    if(state === "삭제"){
-        const deviceSnapshot = await get(ref(db, DEVICE));
-        const updates = {
-            [`${MEMBER}/${nickname}`]:null,
-            [`${HISTORY}/${nickname}`]:null
-        };
+    if(state === "활동"){
+        await update(memberRef,{
+            state:"활동",
+            returnDate:null,
+            lastUpdate:lastUpdate
+        });
 
-        if(deviceSnapshot.exists()){
-            deviceSnapshot.forEach(child => {
-                const data = child.val();
-
-                if(data?.nickname === nickname){
-                    updates[`${DEVICE}/${child.key}`] = null;
-                }
-            });
-        }
-
-        await update(ref(db),updates);
         return true;
     }
 
-    await update(memberRef,{
-        state:state,
-        lastUpdate:lastUpdate
-    });
-
-    return true;
+    return false;
 }

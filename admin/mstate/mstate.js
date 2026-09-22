@@ -1,11 +1,10 @@
 // mstate.js
-
 import {saveMemberState} from "./mstateFirebase.js";
 
-const stateSelectModal = document.getElementById("stateSelectModal");
-const stateSelectSave = document.getElementById("stateSelectSave");
-const stateSelectCancel = document.getElementById("stateSelectCancel");
-const stateChoices = document.querySelectorAll(".stateChoice");
+const outingModal = document.getElementById("outingModal");
+const returnDate = document.getElementById("returnDate");
+const outingSaveBtn = document.getElementById("outingSaveBtn");
+const outingCancelBtn = document.getElementById("outingCancelBtn");
 
 const mstateModal = document.getElementById("mstateModal");
 const mstateText = document.getElementById("mstateText");
@@ -14,82 +13,89 @@ const mstateCancel = document.getElementById("mstateCancel");
 
 let currentNickname = "";
 let currentState = "";
-let selectedState = "";
 
 export function openStateSelect(nickname,state){
     currentNickname = nickname;
     currentState = state;
-    selectedState = state;
 
-    stateChoices.forEach(radio => {
-        radio.checked =
-            radio.dataset.state === state;
-    });
-
-    stateSelectModal.classList.remove("hidden");
-}
-
-stateChoices.forEach(radio => {
-    radio.addEventListener("change",() => {
-        if(radio.checked){
-            selectedState = radio.dataset.state;
-        }
-    });
-});
-
-stateSelectSave.addEventListener("click",() => {
-    stateSelectModal.classList.add("hidden");
-
-    if(selectedState === currentState){
+    if(state === "외출"){
+        openActivityConfirm();
         return;
     }
 
-    openStateConfirm();
-});
+    openOutingModal();
+}
 
-stateSelectCancel.addEventListener("click",() => {
-    stateSelectModal.classList.add("hidden");
-});
+function openOutingModal(){
+    returnDate.value = "";
+    returnDate.required = true;
+    outingModal.classList.remove("hidden");
+}
 
-function openStateConfirm(){
-    if(selectedState === "삭제"){
-        mstateText.textContent =
-            `${currentNickname}님을 "삭제" 하시겠습니까?`;
-    }else{
-        mstateText.textContent =
-            `${currentNickname}님을 "${selectedState}" 로 변경하시겠습니까?`;
-    }
+function closeOutingModal(){
+    outingModal.classList.add("hidden");
+    returnDate.value = "";
+}
+
+function openActivityConfirm(){
+    mstateText.textContent =
+        `${currentNickname}님을 활동 상태로 변경하시겠습니까?`;
 
     mstateModal.classList.remove("hidden");
 }
 
-function closeStateConfirm(){
+function closeActivityConfirm(){
     mstateModal.classList.add("hidden");
 }
 
-mstateConfirm.addEventListener("click",async () => {
+outingSaveBtn.addEventListener("click",async () => {
+    if(!returnDate.value){
+        returnDate.reportValidity();
+        return;
+    }
+
     try{
         const changed = await saveMemberState(
             currentNickname,
-            selectedState
+            "외출",
+            returnDate.value
         );
-
-        closeStateConfirm();
 
         if(!changed){
             return;
         }
 
-        currentState = selectedState;
-
-        document.dispatchEvent(
-            new Event("memberUpdated")
-        );
+        currentState = "외출";
+        closeOutingModal();
+        document.dispatchEvent(new Event("memberUpdated"));
     }catch(error){
-        console.error("회원 상태 변경 실패:",error);
+        console.error("외출 상태 변경 실패:",error);
+    }
+});
+
+outingCancelBtn.addEventListener("click",() => {
+    closeOutingModal();
+});
+
+mstateConfirm.addEventListener("click",async () => {
+    try{
+        const changed = await saveMemberState(
+            currentNickname,
+            "활동"
+        );
+
+        if(!changed){
+            return;
+        }
+
+        currentState = "활동";
+        closeActivityConfirm();
+        document.dispatchEvent(new Event("memberUpdated"));
+    }catch(error){
+        console.error("활동 상태 변경 실패:",error);
     }
 });
 
 mstateCancel.addEventListener("click",() => {
-    closeStateConfirm();
+    closeActivityConfirm();
 });

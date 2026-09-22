@@ -1,5 +1,4 @@
 // adminFirebase.js
-
 import {
     db,
     ref,
@@ -9,35 +8,8 @@ import {
     set
 } from "../firebase.js";
 
-const ADMIN = "으차방/admin";
 const MEMBER = "으차방/member";
 const HISTORY = "으차방/history";
-
-export async function checkAdmin(password){
-    const snapshot = await get(
-        ref(db, "으차방/admin")
-    );
-
-    if(!snapshot.exists()){
-        return null;
-    }
-
-    const data = snapshot.val();
-
-    const inputPassword = String(password).trim();
-    const adminPassword = String(data.adminPassword ?? "").trim();
-    const staffPassword = String(data.staffPassword ?? "").trim();
-
-    if(inputPassword === adminPassword){
-        return "admin";
-    }
-
-    if(inputPassword === staffPassword){
-        return "staff";
-    }
-
-    return null;
-}
 
 export async function loadHistory(nickname = ""){
     if(nickname){
@@ -103,22 +75,6 @@ export async function loadMembers(){
             nickname,
             ...value
         })
-    );
-}
-
-export async function updateMemberState(nickname,state){
-    const updates = {
-        state,
-        lastUpdate:Date.now()
-    };
-
-    if(state === "외출"){
-        updates.point = 0;
-    }
-
-    await update(
-        ref(db, `${MEMBER}/${nickname}`),
-        updates
     );
 }
 

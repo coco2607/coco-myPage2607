@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자</title>
     <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="adminHistory.css">
     <link rel="stylesheet" href="mstate/mstate.css">
     <link rel="stylesheet" href="point/adpoint.css">
 </head>
@@ -16,7 +17,6 @@
                 <span class="hello">안녕하세요!</span>
                 <span class="title">관리자님</span>
             </div>
-
             <a href="#" id="excelBtn" class="excelLink">
                 Excel UP/DOWN
             </a>
@@ -29,24 +29,30 @@
                     <span id="memberCount" class="memberCount">(0명)</span>
                 </h3>
             </div>
-
             <div class="upperInfo">
                 <div class="pointHeader">
                     <button id="plusBtn" class="pointBtn">
                         포인트 적립
                     </button>
-
                     <button id="minusBtn" class="pointBtn">
                         포인트 사용
                     </button>
                 </div>
             </div>
         </nav>
+
         <hr class="line">
+
         <main id="contentArea">
-            <div id="memberList">
-                <!-- JS 생성 -->
+            <div class="memberListHeader">
+                <div>닉네임(P)</div>
+                <div>최근접속</div>
+                <div>상태</div>
+                <div>복귀일</div>
+                <div>삭제</div>
             </div>
+
+            <div id="memberList"></div>
         </main>
 
         <footer id="footerArea">
@@ -59,7 +65,6 @@
                     8090 으차방
                 </a>
             </div>
-
             <div class="right">
                 <div id="version"></div>
                 <div id="admin"></div>
@@ -67,14 +72,12 @@
         </footer>
     </div>
 
-    <!-- Excel UP/DOWN -->
     <div id="excelModal" class="modal hidden">
         <div class="modalBox">
             <div class="excelButton">
                 <button id="excelUploadBtn">
                     Excel Upload
                 </button>
-
                 <button id="excelDownloadBtn">
                     Excel Download
                 </button>
@@ -82,22 +85,18 @@
         </div>
     </div>
 
-    <!-- 포인트 입력 -->
     <div id="pointModal" class="modal hidden">
         <div class="modalBox pointBox">
             <h3 id="pointTitle">
                 포인트 적립
             </h3>
-
             <div class="pointScroll">
                 <div id="pointRows"></div>
             </div>
-
             <div class="pointBtnBox">
                 <button id="pointApplyBtn">
                     적용
                 </button>
-
                 <button id="pointCancelBtn">
                     취소
                 </button>
@@ -105,22 +104,16 @@
         </div>
     </div>
 
-    <!-- 포인트 확인 -->
     <div id="pointConfirmModal" class="modal hidden">
         <div class="modalBox">
             <p class="modalText">
                 포인트를 적용하시겠습니까?
             </p>
-
-            <div id="pointConfirmList" class="pointConfirmList">
-                <!-- JS 생성 -->
-            </div>
-
+            <div id="pointConfirmList" class="pointConfirmList"></div>
             <div class="modalBtnBox">
                 <button id="pointConfirmBtn">
                     예
                 </button>
-
                 <button id="pointConfirmCancelBtn">
                     아니오
                 </button>
@@ -128,11 +121,9 @@
         </div>
     </div>
 
-    <!-- 알림 -->
     <div id="alertModal" class="modal hidden">
         <div class="modalBox">
             <p id="alertMessage"></p>
-
             <div class="modalBtnBox">
                 <button id="alertCloseBtn">
                     확인
@@ -141,64 +132,37 @@
         </div>
     </div>
 
-    <!-- 상태 선택 -->
-    <div id="stateSelectModal" class="modal hidden">
-        <div class="modalBox">
-            <h3>상태 변경</h3>
-
-            <div class="stateRadioGroup">
-                <label class="stateRadio">
-                    <input
-                        type="radio"
-                        name="memberState"
-                        class="stateChoice"
-                        data-state="활동">
-                    <span>활동</span>
+    <div id="outingModal" class="modal hidden">
+        <div class="modalBox outingBox">
+            <h3>멤버 외출 설정</h3>
+            <div class="returnDateBox">
+                <label for="returnDate">
+                    복귀일
                 </label>
-
-                <label class="stateRadio">
-                    <input
-                        type="radio"
-                        name="memberState"
-                        class="stateChoice"
-                        data-state="외출">
-                    <span>외출</span>
-                </label>
-
-                <label class="stateRadio">
-                    <input
-                        type="radio"
-                        name="memberState"
-                        class="stateChoice"
-                        data-state="삭제">
-                    <span>삭제</span>
-                </label>
+                <input
+                    type="date"
+                    id="returnDate">
             </div>
-
             <div class="modalBtnBox">
-                <button id="stateSelectSave">
-                    저장
+                <button id="outingSaveBtn">
+                    외출
                 </button>
-
-                <button id="stateSelectCancel">
+                <button id="outingCancelBtn">
                     취소
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 상태 변경 확인 -->
     <div id="mstateModal" class="modal hidden">
         <div class="modalBox">
             <p id="mstateText" class="modalText">
-                회원님을 외출 상태로 변경하시겠습니까?
+                회원님을 활동 상태로 변경하시겠습니까?
             </p>
-
             <div class="modalBtnBox">
                 <button id="mstateConfirm">
                     예
                 </button>
-
                 <button id="mstateCancel">
                     아니오
                 </button>
@@ -206,19 +170,16 @@
         </div>
     </div>
 
-    <!-- 회원 포인트 내역 -->
     <div id="historyModal" class="modal hidden">
         <div class="modalBox historyBox">
             <div class="historyHeader">
                 <h3 id="historyTitle">
                     포인트 내역
                 </h3>
-
                 <div class="historyHeaderRight">
                     <button id="nicknameChangeBtn">
                         이름변경
                     </button>
-
                     <button
                         id="historyCloseBtn"
                         class="historyCloseBtn"
@@ -227,29 +188,22 @@
                     </button>
                 </div>
             </div>
-
-            <div id="historyList">
-                <!-- JS 생성 -->
-            </div>
+            <div id="historyList"></div>
         </div>
     </div>
 
-    <!-- 닉네임 변경 -->
     <div id="nicknameModal" class="modal hidden">
         <div class="modalBox">
             <h3>이름 변경</h3>
-
             <input
                 type="text"
                 id="nicknameInput"
                 class="nicknameInput"
                 placeholder="새 닉네임">
-
             <div class="modalBtnBox">
                 <button id="nicknameSaveBtn">
                     확인
                 </button>
-
                 <button id="nicknameCancelBtn">
                     취소
                 </button>
@@ -257,19 +211,16 @@
         </div>
     </div>
 
-    <!-- 닉네임 변경 확인 -->
     <div id="nicknameConfirmModal" class="modal hidden">
         <div class="modalBox">
             <p
                 id="nicknameConfirmText"
                 class="modalText">
             </p>
-
             <div class="modalBtnBox">
                 <button id="nicknameConfirmBtn">
                     예
                 </button>
-
                 <button id="nicknameConfirmCancelBtn">
                     아니오
                 </button>
@@ -277,7 +228,6 @@
         </div>
     </div>
 
-    <!-- Excel 파일 선택 -->
     <input
         type="file"
         id="excelFile"

@@ -9,29 +9,24 @@ import {
     adminName
 } from "../utils.js";
 
+const memberList = document.getElementById("memberList");
+const memberCount = document.getElementById("memberCount");
+const version = document.getElementById("version");
+const admin = document.getElementById("admin");
+
 const managerRole = sessionStorage.getItem("managerRole");
 
 if(managerRole !== "admin"){
     location.replace("../login/login.html");
 }
 
-const memberList = document.getElementById("memberList");
-const memberCount = document.getElementById("memberCount");
-const version = document.getElementById("version");
-const admin = document.getElementById("admin");
-
-if(version){
-    version.textContent = `Ver ${appVersion}`;
-}
-
-if(admin){
-    admin.textContent = `관리자 ${adminName}`;
-}
+version.textContent = `Ver ${appVersion}`;
+admin.textContent = `관리자 ${adminName}`;
 
 init();
 
-document.addEventListener("memberUpdated",async () => {
-    await init();
+document.addEventListener("memberUpdated",() => {
+    init();
 });
 
 async function init(){
@@ -58,34 +53,59 @@ function render(list){
     }
 
     list.forEach(member => {
+        const nickname = member.nickname;
+        const point = Number(member.point) || 0;
+        const state = member.state || "활동";
+        const lastUpdate = formatLastUpdate(
+            member.lastUpdate
+        );
+        const returnDate = formatReturnDate(
+            member.returnDate
+        );
+
         memberList.innerHTML += `
             <div class="memberItem">
                 <div
                     class="memberNick"
-                    data-key="${member.nickname}">
-                    ${member.nickname}
-                </div>
-
-                <div class="memberPoint">
-                    ${Number(member.point) || 0}P
+                    data-key="${nickname}">
+                    ${nickname}
+                    <span class="memberPoint">
+                        (${point})
+                    </span>
                 </div>
 
                 <div class="memberDate">
-                    ${formatLastUpdate(member.lastUpdate)}
+                    ${lastUpdate}
                 </div>
 
                 <button
-                    class="stateSelect ${member.state === "외출" ? "outing" : ""}"
-                    data-key="${member.nickname}">
-                    ${member.state || "활동"}
+                    class="stateSelect ${state === "외출" ? "outing" : ""}"
+                    data-key="${nickname}"
+                    data-state="${state}">
+                    ${state}
                 </button>
+
+                <div class="memberReturnDate">
+                    ${returnDate}
+                </div>
+
+                <button
+                    class="memberDeleteBtn"
+                    data-key="${nickname}">
+                    삭제
+                </button>                
             </div>
         `;
     });
 
+    bindMemberEvents();
+}
+
+function bindMemberEvents(){
     document.querySelectorAll(".memberNick").forEach(nick => {
         nick.addEventListener("click",async () => {
             const nickname = nick.dataset.key;
+
             setNicknameTarget(nickname);
             await openHistory(nickname);
         });
@@ -93,9 +113,12 @@ function render(list){
 
     document.querySelectorAll(".stateSelect").forEach(button => {
         button.addEventListener("click",() => {
+            const nickname = button.dataset.key;
+            const state = button.dataset.state;
+
             openStateSelect(
-                button.dataset.key,
-                button.textContent.trim()
+                nickname,
+                state
             );
         });
     });
@@ -104,14 +127,51 @@ function render(list){
 function formatLastUpdate(value){
     const timestamp = Number(value);
 
-    if(!Number.isFinite(timestamp) || timestamp <= 0){
+    if(
+        !Number.isFinite(timestamp) ||
+        timestamp <= 0
+    ){
         return "";
     }
 
     const date = new Date(timestamp);
+
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2,"0");
-    const day = String(date.getDate()).padStart(2,"0");
+    const month = String(
+        date.getMonth() + 1
+    ).padStart(2,"0");
+    const day = String(
+        date.getDate()
+    ).padStart(2,"0");
+
+    return `${year}.${month}.${day}`;
+}
+
+function formatReturnDate(value){
+    if(!value){
+        return "";
+    }
+
+    if(
+        typeof value === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ){
+        return value.replaceAll("-",".");
+    }
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+        return "";
+    }
+
+    const year = date.getFullYear();
+    const month = String(
+        date.getMonth() + 1
+    ).padStart(2,"0");
+    const day = String(
+        date.getDate()
+    ).padStart(2,"0");
 
     return `${year}.${month}.${day}`;
 }

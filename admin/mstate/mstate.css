@@ -1,73 +1,109 @@
 /* mstate.css */
-
-/* 상태 변경 모달 */
-.modal{
+#outingModal,
+#mstateModal{
     position:fixed;
     inset:0;
+    z-index:9999;
     display:flex;
     justify-content:center;
     align-items:center;
+    padding:22px;
     background:rgba(0,0,0,.35);
-    z-index:9999;
 }
-
-.hidden{
+#outingModal.hidden,
+#mstateModal.hidden{
     display:none;
 }
-
-.modalBox{
-    width:320px;
-    padding:28px 24px;
-    background:#ffffff;
+#outingModal .modalBox,
+#mstateModal .modalBox{
+    width:100%;
+    max-width:320px;
+    padding:26px 24px;
     border-radius:18px;
+    background:#FFF;
     box-shadow:0 8px 24px rgba(0,0,0,.18);
 }
-
-.modalText{
-    margin-bottom:32px;
+#outingModal h3,
+#mstateModal h3{
+    margin-bottom:22px;
+    color:#333;
+    font-size:20px;
+    font-weight:700;
     text-align:center;
-    color:#333333;
-    font-size:18px;
-    line-height:1.6;
 }
-
-.modalBtnBox{
+.returnDateBox{
     display:flex;
+    align-items:center;
     gap:12px;
+    margin-bottom:26px;
 }
-
-.modalBtnBox button{
+.returnDateBox label{
+    flex:0 0 52px;
+    color:#555;
+    font-size:14px;
+    font-weight:600;
+}
+#returnDate{
     flex:1;
-
-    height:42px;
-
+    min-width:0;
+    height:40px;
+    padding:0 10px;
+    border:1px solid #D8D8D8;
+    border-radius:9px;
+    background:#FFF;
+    color:#333;
+    font-size:14px;
+    outline:none;
+}
+#returnDate:focus{
+    border-color:#FB8C00;
+}
+#mstateModal .modalText{
+    margin-bottom:28px;
+    color:#333;
+    font-size:16px;
+    line-height:1.6;
+    text-align:center;
+    word-break:keep-all;
+}
+#outingModal .modalBtnBox,
+#mstateModal .modalBtnBox{
+    display:flex;
+    gap:10px;
+}
+#outingModal .modalBtnBox button,
+#mstateModal .modalBtnBox button{
+    flex:1;
+    height:40px;
     border:none;
-    border-radius:10px;
-
+    border-radius:9px;
+    color:#FFF;
     font-size:14px;
     font-weight:700;
-
     cursor:pointer;
-
     transition:.2s;
 }
-
-/* 아니오 */
-#mstateCancel{
-    background:#BDBDBD;
-    color:#fff;
+#outingSaveBtn{
+    background:#FB8C00;
 }
-
-#mstateCancel:hover{
+#outingSaveBtn:hover{
+    background:#F57C00;
+}
+#outingCancelBtn{
+    background:#BDBDBD;
+}
+#outingCancelBtn:hover{
     background:#9E9E9E;
 }
-
-/* 예 */
 #mstateConfirm{
-    background:#1976D2;
-    color:#fff;
+    background:#43A047;
 }
-
 #mstateConfirm:hover{
-    background:#1565C0;
+    background:#388E3C;
+}
+#mstateCancel{
+    background:#BDBDBD;
+}
+#mstateCancel:hover{
+    background:#9E9E9E;
 }

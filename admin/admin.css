@@ -1,24 +1,21 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
     font-family:"Pretendard",sans-serif;
+    -webkit-tap-highlight-color:transparent;
 }
-
 html,
 body{
     width:100%;
     height:100%;
 }
-
 body{
     background:#FFF7CF;
     color:#222;
     overflow:hidden;
 }
-
 .layout{
     display:flex;
     flex-direction:column;
@@ -28,7 +25,6 @@ body{
     margin:0 auto;
     padding-bottom:44px;
 }
-
 #topArea{
     display:flex;
     justify-content:space-between;
@@ -36,27 +32,23 @@ body{
     width:100%;
     padding:10px 4% 2px;
 }
-
 .adminTitle{
     display:flex;
     align-items:baseline;
     gap:6px;
     white-space:nowrap;
 }
-
 .hello{
     margin:0;
     color:#666;
     font-size:13px;
 }
-
 .title{
     margin:0;
     color:#222;
     font-size:15px;
     font-weight:700;
 }
-
 .excelLink{
     margin-right:8px;
     color:#1976D2;
@@ -94,8 +86,6 @@ body{
 .upperInfo{
     display:flex;
     align-items:center;
-    width:auto;
-    margin:0;
 }
 .pointHeader{
     display:flex;
@@ -127,12 +117,10 @@ body{
     background:#D84343;
 }
 .line{
-    grid-column:1/-1;
     width:100%;
     border:none;
     border-top:1px solid #E5DDA8;
 }
-
 #contentArea{
     display:flex;
     flex:1;
@@ -140,131 +128,153 @@ body{
     width:100%;
     min-height:0;
 }
-
+.memberListHeader{
+    display:grid;
+    grid-template-columns:54px 84px 55px 84px 40px;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    min-height:30px;
+    padding:0 4%;
+    border-bottom:1px solid #E5DDA8;
+    background:#FFF1A8;
+    color:#333;
+    font-size:12px;
+    font-weight:600;
+}
+.memberListHeader div{
+    text-align:center;
+    white-space:nowrap;
+}
+.memberListHeader div:first-child{
+    text-align:left;
+}
+.memberListHeader div:last-child{
+    color:#D75A5A;
+}
 #memberList{
     flex:1;
     min-height:0;
     overflow-y:auto;
 }
-
 .memberItem{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
+    grid-template-columns:54px 82px 55px 82px 40px;
+    justify-content:center;
     align-items:center;
-    padding:6px 18px;
-    column-gap:16px;
+    width:100%;
+    min-height:34px;
+    padding:6px 0%;
     border-bottom:1px solid #EFE7BA;
 }
-
 .memberNick{
     justify-self:start;
-    margin-left:15px;
-    font-size:15px;
+    width:100%;
+    min-width:0;
+    overflow:hidden;
+    color:#222;
+    font-size:13px;
     font-weight:700;
+    text-overflow:ellipsis;
+    white-space:nowrap;
     cursor:pointer;
 }
-
 .memberPoint{
-    justify-self:end;
-    margin-right:28px;
-    font-size:16px;
-    font-weight:700;
+    margin-left:1px;
+    color:#777;
+    font-size:12px;
+    font-weight:500;
+    white-space:nowrap;
 }
-
-.memberDate{
-    width:95px;
-    margin-right:4px;
-    color:#666;
-    font-size:13px;
+.memberDate,
+.memberReturnDate{
+    justify-self:center;
+    color:#777;
+    font-size:11px;
     text-align:center;
     white-space:nowrap;
 }
-
 .stateSelect{
-    width:58px;
-    height:24px;
-    justify-self:end;
-    margin-left:0;
-    border:1px solid #D5D5D5;
-    border-radius:0;
-    background:#FFF;
-    font-size:13px;
+    justify-self:center;
+    width:48px;
+    height:25px;
+    padding:0;
+    border:1px solid #66BB6A;
+    border-radius:8px;
+    background:#E8F5E9;
+    color:#2E7D32;
+    font-size:11px;
+    font-weight:600;
     cursor:pointer;
 }
-
 .stateSelect.outing{
-    border:1px solid #FB8C00;
+    border-color:#FB8C00;
     background:#FFE0B2;
     color:#E65100;
-    font-weight:600;
 }
-
-.saveBtn{
-    width:58px;
-    height:24px;
-    justify-self:start;
-    margin-left:0;
+.memberDeleteBtn{
+    justify-self:center;
+    padding:0;
     border:none;
-    border-radius:8px;
-    background:#1976D2;
-    color:#FFF;
+    background:none;
+    color:#D32F2F;
     font-size:12px;
-    font-weight:500;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.saveBtn:hover{
-    background:#1565C0;
-}
-
-.stateRadioGroup{
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-    width:fit-content;
-    margin:24px auto 32px;
-}
-
-.stateRadio{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:17px;
     font-weight:600;
     cursor:pointer;
-    user-select:none;
 }
-
-.stateRadio input[type="radio"]{
-    width:20px;
-    height:20px;
-    accent-color:#FB8C00;
-    cursor:pointer;
+.memberDeleteBtn:hover{
+    text-decoration:underline;
 }
-
-#stateSelectCancel{
-    background:#BDBDBD;
-    color:#FFF;
-}
-
-#stateSelectCancel:hover{
-    background:#9E9E9E;
-}
-
-#stateSelectSave{
-    background:#1976D2;
-    color:#FFF;
-}
-
-#stateSelectSave:hover{
-    background:#1565C0;
-}
-
 .hidden{
     display:none;
 }
-
+#excelModal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:22px;
+    background:rgba(0,0,0,.4);
+}
+#excelModal.hidden{
+    display:none;
+}
+#excelModal .modalBox{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:80%;
+    max-width:320px;
+    min-height:110px;
+    padding:22px 18px;
+    border-radius:14px;
+    background:#FFF;
+    box-shadow:0 4px 20px rgba(0,0,0,.18);
+}
+.excelButton{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    gap:10px;
+}
+#excelUploadBtn,
+#excelDownloadBtn{
+    width:100%;
+    height:40px;
+    border:none;
+    border-radius:8px;
+    background:#217346;
+    color:#FFF;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+}
+#excelUploadBtn:hover,
+#excelDownloadBtn:hover{
+    background:#185C37;
+}
 #footerArea{
     position:fixed;
     left:50%;
@@ -281,20 +291,17 @@ body{
     background:rgba(255,255,255,.45);
     transform:translateX(-50%);
 }
-
 #footerArea .left{
     display:flex;
     flex-direction:column;
     gap:1px;
     text-align:left;
 }
-
 #footerArea .left>div{
     color:#555;
     font-size:9px;
     font-weight:500;
 }
-
 #footerArea a{
     color:#1976D2;
     font-size:12.5px;

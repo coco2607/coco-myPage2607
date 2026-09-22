@@ -1,0 +1,125 @@
+/* adminHistory.css */
+#historyModal .historyBox{
+    display:flex;
+    flex-direction:column;
+    width:80%;
+    max-width:320px;
+    max-height:72dvh;
+    padding:18px 8%;
+    overflow:hidden;
+    border-radius:12px;
+    background:#FFF;
+}
+.historyHeader{
+    display:flex;
+    flex:0 0 auto;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    margin-bottom:12px;
+}
+#historyTitle{
+    min-width:0;
+    margin:0;
+    overflow:hidden;
+    color:#222;
+    font-size:15px;
+    font-weight:700;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.historyHeaderRight{
+    display:flex;
+    flex:0 0 auto;
+    align-items:center;
+    gap:8px;
+}
+#nicknameChangeBtn{
+    padding:0;
+    border:none;
+    background:none;
+    color:#777;
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+    white-space:nowrap;
+}
+#nicknameChangeBtn:hover{
+    color:#222;
+}
+.historyCloseBtn{
+    position:relative;
+    flex:0 0 24px;
+    width:24px;
+    height:24px;
+    padding:0;
+    border:none;
+    background:none;
+    cursor:pointer;
+}
+.historyCloseBtn::before,
+.historyCloseBtn::after{
+    position:absolute;
+    top:11px;
+    width:16px;
+    height:1px;
+    background:#777;
+    content:"";
+}
+.historyCloseBtn::before{
+    transform:rotate(45deg);
+}
+.historyCloseBtn::after{
+    transform:rotate(-45deg);
+}
+#historyList{
+    flex:1;
+    width:100%;
+    min-height:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+.historyItem{
+    width:100%;
+}
+.historyRow{
+    display:grid;
+    grid-template-columns:60px minmax(0,1fr) 20px;
+    align-items:center;
+    width:100%;
+    min-height:25px;
+}
+.historyDate{
+    min-width:0;
+    color:#888;
+    font-size:11px;
+    white-space:nowrap;
+}
+.historyMemo{
+    min-width:0;
+    overflow:hidden;
+    color:#444;
+    font-size:12px;
+    text-align:left;
+    text-overflow:ellipsis;
+    padding-left:14px;
+    white-space:nowrap;
+}
+.historyPoint{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    min-width:0;
+    font-size:12px;
+    font-weight:600;
+    white-space:nowrap;
+}
+.historyPoint.plus{
+    color:#2E7D32;
+}
+.historyPoint.minus{
+    color:#D32F2F;
+}
+.historyPoint .sign{
+    margin-right:2px;
+}
