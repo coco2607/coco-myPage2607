@@ -1,4 +1,16 @@
 /* adminHistory.css */
+#historyModal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.4);
+}
+#historyModal.hidden{
+    display:none;
+}
 #historyModal .historyBox{
     display:flex;
     flex-direction:column;
@@ -98,11 +110,11 @@
 .historyMemo{
     min-width:0;
     overflow:hidden;
+    padding-left:14px;
     color:#444;
     font-size:12px;
     text-align:left;
     text-overflow:ellipsis;
-    padding-left:14px;
     white-space:nowrap;
 }
 .historyPoint{

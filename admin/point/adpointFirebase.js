@@ -1,5 +1,4 @@
-// adpointFirebase.js
-
+// point/adpointFirebase.js
 import {
     db,
     ref,
@@ -8,11 +7,7 @@ import {
     push,
     set
 } from "../../firebase.js";
-
-import {
-    koDate,
-    koClock
-} from "../../utils.js";
+import {koDate} from "../../utils.js";
 
 const MEMBER = "으차방/member";
 const HISTORY = "으차방/history";
@@ -25,13 +20,10 @@ export async function applyPoint(mode,pointData){
         );
 
         const snapshot = await get(memberRef);
+        const member = snapshot.exists()
+            ? snapshot.val()
+            : {};
 
-        if(!snapshot.exists()){
-            console.warn(`${item.nickname} 회원 없음`);
-            continue;
-        }
-
-        const member = snapshot.val();
         const currentPoint = Number(member.point) || 0;
         const point = Number(item.point) || 0;
 
@@ -48,17 +40,11 @@ export async function applyPoint(mode,pointData){
             );
         }
 
-        const changePoint =
-            mode === "plus"
-                ? point
-                : -point;
-
-        const totalPoint =
-            currentPoint + changePoint;
+        const totalPoint = mode === "plus"
+            ? currentPoint + point
+            : currentPoint - point;
 
         const now = Date.now();
-        const date = koDate();
-        const time = koClock();
 
         await update(
             memberRef,
@@ -75,26 +61,20 @@ export async function applyPoint(mode,pointData){
             )
         );
 
+        const history = {
+            joinDate:koDate(),
+            type:item.event
+        };
+
+        if(mode === "plus"){
+            history.getP = point;
+        }else{
+            history.useP = point;
+        }
+
         await set(
             historyRef,
-            {
-                date:date,
-                time:time,
-                joinDate:date,
-                type:item.event || (
-                    mode === "plus"
-                        ? "포인트 적립"
-                        : "포인트 사용"
-                ),
-                getP:mode === "plus"
-                    ? point
-                    : 0,
-                useP:mode === "minus"
-                    ? point
-                    : 0,
-                tpoint:totalPoint,
-                timestamp:now
-            }
+            history
         );
     }
 

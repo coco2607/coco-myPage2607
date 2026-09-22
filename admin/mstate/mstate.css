@@ -7,24 +7,23 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    padding:22px;
+    padding:22px 8%;
     background:rgba(0,0,0,.35);
 }
 #outingModal.hidden,
 #mstateModal.hidden{
     display:none;
 }
-#outingModal .modalBox,
-#mstateModal .modalBox{
+.outingBox,
+.mstateBox{
     width:100%;
     max-width:320px;
-    padding:26px 24px;
+    padding:26px 10%;
     border-radius:18px;
     background:#FFF;
     box-shadow:0 8px 24px rgba(0,0,0,.18);
 }
-#outingModal h3,
-#mstateModal h3{
+.outingBox h3{
     margin-bottom:22px;
     color:#333;
     font-size:20px;
@@ -34,14 +33,16 @@
 .returnDateBox{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:10px;
     margin-bottom:26px;
 }
 .returnDateBox label{
     flex:0 0 52px;
+    padding-left:8px;
     color:#555;
     font-size:14px;
     font-weight:600;
+    white-space:nowrap;
 }
 #returnDate{
     flex:1;
@@ -58,23 +59,25 @@
 #returnDate:focus{
     border-color:#FB8C00;
 }
-#mstateModal .modalText{
+.mstateText{
     margin-bottom:28px;
     color:#333;
     font-size:16px;
     line-height:1.6;
     text-align:center;
+    white-space:pre-line;
     word-break:keep-all;
 }
-#outingModal .modalBtnBox,
-#mstateModal .modalBtnBox{
+.outingBtnBox,
+.mstateBtnBox{
     display:flex;
     gap:10px;
 }
-#outingModal .modalBtnBox button,
-#mstateModal .modalBtnBox button{
+.outingBtnBox button,
+.mstateBtnBox button{
     flex:1;
     height:40px;
+    padding:0;
     border:none;
     border-radius:9px;
     color:#FFF;

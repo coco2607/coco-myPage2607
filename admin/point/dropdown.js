@@ -1,5 +1,4 @@
 // dropdown.js
-
 export function createDropdown(options){
     const {
         items = [],
@@ -16,11 +15,10 @@ export function createDropdown(options){
     input.placeholder = placeholder;
     input.className = "dropdownInput";
 
-    wrapper.appendChild(input);
-
     const list = document.createElement("div");
     list.className = "dropdownList";
 
+    wrapper.appendChild(input);
     document.body.appendChild(list);
 
     function renderList(keyword = ""){
@@ -38,11 +36,12 @@ export function createDropdown(options){
             )
             .forEach(item => {
                 const div = document.createElement("div");
-
                 div.className = "dropdownItem";
                 div.textContent = item;
 
-                div.addEventListener("click",() => {
+                div.addEventListener("mousedown",event => {
+                    event.preventDefault();
+
                     input.value = item;
                     hideList();
 
@@ -58,11 +57,9 @@ export function createDropdown(options){
     function positionList(){
         const rect = input.getBoundingClientRect();
 
-        list.style.position = "fixed";
         list.style.left = `${rect.left}px`;
         list.style.top = `${rect.bottom + 2}px`;
         list.style.width = `${rect.width}px`;
-        list.style.zIndex = "99999";
     }
 
     function showList(){
@@ -83,14 +80,22 @@ export function createDropdown(options){
         list.classList.remove("show");
     }
 
-    document.addEventListener("mousedown",event => {
+    function handleOutside(event){
         if(
             !wrapper.contains(event.target) &&
             !list.contains(event.target)
         ){
             hideList();
         }
-    });
+    }
+
+    function handlePosition(){
+        if(list.classList.contains("show")){
+            positionList();
+        }
+    }
+
+    document.addEventListener("mousedown",handleOutside);
 
     input.addEventListener("input",() => {
         if(onInput){
@@ -102,18 +107,8 @@ export function createDropdown(options){
 
     input.addEventListener("click",showList);
     input.addEventListener("focus",showList);
-
-    window.addEventListener("scroll",() => {
-        if(list.classList.contains("show")){
-            positionList();
-        }
-    },true);
-
-    window.addEventListener("resize",() => {
-        if(list.classList.contains("show")){
-            positionList();
-        }
-    });
+    window.addEventListener("scroll",handlePosition,true);
+    window.addEventListener("resize",handlePosition);
 
     return {
         element:wrapper,

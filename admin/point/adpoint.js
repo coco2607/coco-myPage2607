@@ -1,28 +1,21 @@
 // point/adpoint.js
-
 import {applyPoint} from "./adpointFirebase.js";
 import {createDropdown} from "./dropdown.js";
-import {loadMembers} from "../adminFirebase.js";
 
 const plusBtn = document.getElementById("plusBtn");
 const minusBtn = document.getElementById("minusBtn");
-
 const pointModal = document.getElementById("pointModal");
 const pointTitle = document.getElementById("pointTitle");
 const pointRows = document.getElementById("pointRows");
 const pointScroll = document.querySelector(".pointScroll");
-
 const pointApplyBtn = document.getElementById("pointApplyBtn");
 const pointCancelBtn = document.getElementById("pointCancelBtn");
-
 const pointConfirmModal = document.getElementById("pointConfirmModal");
 const pointConfirmList = document.getElementById("pointConfirmList");
 const pointConfirmBtn = document.getElementById("pointConfirmBtn");
 const pointConfirmCancelBtn = document.getElementById("pointConfirmCancelBtn");
-
 const alertModal = document.getElementById("alertModal");
 const alertMessage = document.getElementById("alertMessage");
-const alertCloseBtn = document.getElementById("alertCloseBtn");
 
 const START_ROW = 5;
 
@@ -43,20 +36,16 @@ const plusEventList = [
 
 let mode = "plus";
 let pointData = [];
-let memberNames = [];
+let alertTimer = null;
 
-plusBtn.addEventListener("click",async () => {
+plusBtn.addEventListener("click",() => {
     mode = "plus";
-    await openPointModal();
+    openPointModal();
 });
 
-minusBtn.addEventListener("click",async () => {
+minusBtn.addEventListener("click",() => {
     mode = "minus";
-    await openPointModal();
-});
-
-alertCloseBtn.addEventListener("click",() => {
-    alertModal.classList.add("hidden");
+    openPointModal();
 });
 
 pointCancelBtn.addEventListener("click",() => {
@@ -75,42 +64,39 @@ pointConfirmCancelBtn.addEventListener("click",() => {
 pointConfirmBtn.addEventListener("click",applyPointData);
 
 function showAlert(message){
+    if(alertTimer){
+        clearTimeout(alertTimer);
+    }
+
     alertMessage.textContent = message;
     alertModal.classList.remove("hidden");
+
+    alertTimer = setTimeout(() => {
+        alertModal.classList.add("hidden");
+        alertTimer = null;
+    },2000);
 }
 
-async function openPointModal(){
-    try{
-        const members = await loadMembers();
-
-        memberNames = members
-            .map(member => member.nickname)
-            .filter(Boolean);
-
-        if(mode === "plus"){
-            pointTitle.textContent = "포인트 적립";
-            pointTitle.className = "plus";
-        }else{
-            pointTitle.textContent = "포인트 사용";
-            pointTitle.className = "minus";
-        }
-
-        pointRows.innerHTML = "";
-
-        for(let i = 0; i < START_ROW; i++){
-            addRow();
-        }
-
-        pointModal.classList.remove("hidden");
-    }catch(error){
-        console.error("회원 목록 불러오기 실패:",error);
-        showAlert("회원 목록을 불러오지 못했습니다.");
+function openPointModal(){
+    if(mode === "plus"){
+        pointTitle.textContent = "포인트 적립";
+        pointTitle.className = "plus";
+    }else{
+        pointTitle.textContent = "포인트 사용";
+        pointTitle.className = "minus";
     }
+
+    pointRows.innerHTML = "";
+
+    for(let i = 0; i < START_ROW; i++){
+        addRow();
+    }
+
+    pointModal.classList.remove("hidden");
 }
 
 function hideAllDropdown(){
     [...pointRows.children].forEach(row => {
-        row.nicknameDropdown?.hide();
         row.eventDropdown?.hide();
     });
 }
@@ -119,22 +105,18 @@ function addRow(){
     const row = document.createElement("div");
     row.className = "pointRow";
 
-    const nickname = createDropdown({
-        items:memberNames,
-        placeholder:"닉네임"
-    });
+    const nickname = document.createElement("input");
+    nickname.type = "text";
+    nickname.placeholder = "닉네임";
 
     const event = createDropdown({
         items:mode === "plus"
             ? plusEventList
             : Object.keys(minusPointMap),
-
         placeholder:"내용",
-
         onInput(value){
             updatePointByEvent(value);
         },
-
         onSelect(item){
             updatePointByEvent(item);
         }
@@ -146,7 +128,7 @@ function addRow(){
     point.min = 1;
     point.step = 1;
 
-    row.nicknameDropdown = nickname;
+    row.nicknameInput = nickname;
     row.eventDropdown = event;
     row.pointInput = point;
 
@@ -164,10 +146,9 @@ function addRow(){
         }
     }
 
-    row.appendChild(nickname.element);
+    row.appendChild(nickname);
     row.appendChild(event.element);
     row.appendChild(point);
-
     pointRows.appendChild(row);
 
     requestAnimationFrame(() => {
@@ -176,15 +157,12 @@ function addRow(){
         }
     });
 
-    const nicknameInput =
-        nickname.element.querySelector(".dropdownInput");
-
-    nicknameInput.addEventListener("input",() => {
+    nickname.addEventListener("input",() => {
         const rows = [...pointRows.children];
 
         if(
             rows[rows.length - 1] === row &&
-            nickname.value !== ""
+            nickname.value.trim() !== ""
         ){
             addRow();
         }
@@ -199,7 +177,7 @@ function preparePoint(){
     let hasError = false;
 
     rows.forEach(row => {
-        const nickname = row.nicknameDropdown.value;
+        const nickname = row.nicknameInput.value.trim();
         const event = row.eventDropdown.value;
         const point = Number(row.pointInput.value);
 
@@ -237,15 +215,12 @@ function preparePoint(){
 
     pointData.forEach(item => {
         const row = document.createElement("div");
-
         row.className = "pointConfirmRow";
-
         row.innerHTML = `
             <span>${item.nickname}</span>
             <span>${item.event}</span>
             <span>${item.point}P</span>
         `;
-
         pointConfirmList.appendChild(row);
     });
 
@@ -274,9 +249,7 @@ async function applyPointData(){
         );
     }catch(error){
         console.error("포인트 적용 실패:",error);
-
         pointConfirmModal.classList.add("hidden");
-
         showAlert(
             error.message ||
             "포인트 적용 중 오류가 발생했습니다."

@@ -39,8 +39,7 @@ function closeOutingModal(){
 
 function openActivityConfirm(){
     mstateText.textContent =
-        `${currentNickname}님을 활동 상태로 변경하시겠습니까?`;
-
+        `${currentNickname}님을 활동 상태로\n변경하시겠습니까?`;
     mstateModal.classList.remove("hidden");
 }
 

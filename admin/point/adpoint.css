@@ -1,287 +1,286 @@
 /* adpoint.css */
-
-/* 포인트 모달 */
-/* 제목 */
+#pointModal,
+#pointConfirmModal,
+#alertModal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.4);
+}
+#pointModal.hidden,
+#pointConfirmModal.hidden,
+#alertModal.hidden{
+    display:none;
+}
+/* 포인트 입력 */
+#pointModal .pointBox{
+    display:flex;
+    flex-direction:column;
+    width:80%;
+    max-width:320px;
+    max-height:72dvh;
+    padding:18px 20px;
+    overflow:hidden;
+    border-radius:12px;
+    background:#FFF;
+}
 #pointTitle{
-    text-align:center;
-    font-size:24px;
+    margin:0 0 12px;
+    color:#222;
+    font-size:15px;
     font-weight:700;
-    margin-bottom:18px;
+    text-align:center;
 }
-
-/* 적립 / 사용 */
 #pointTitle.plus{
-    color:#43A047;
+    color:#2E7D32;
 }
-
 #pointTitle.minus{
-    color:#E53935;
+    color:#D32F2F;
 }
-
-/* 입력 영역 */
 .pointScroll{
-    max-height:230px;      /* 5줄 정도 */
-    overflow-y:auto;
-    overflow-x:hidden;
+    width:100%;
+    max-height:260px;
     margin-bottom:12px;
+    overflow-x:hidden;
+    overflow-y:auto;
 }
-
 #pointRows{
     display:flex;
     flex-direction:column;
+    gap:6px;
+    width:100%;
 }
-
 .pointRow{
-    display:flex;
+    display:grid;
+    grid-template-columns:60px minmax(0,1fr) 52px;
     align-items:center;
-    gap:8px;
-    width:95%;
-    margin:0 auto;
+    gap:6px;
+    width:100%;
 }
-
-/* 공통 */
 .pointRow input{
-    box-sizing:border-box;
-    height:34px;
-    padding:0 8px;
-    margin-bottom:8px;
+    width:100%;
+    height:30px;
+    min-width:0;
+    margin:0;
+    padding:0 6px;
     border:1px solid #DDD;
-    border-radius:8px;
-    font-size:13px;
+    border-radius:6px;
+    outline:none;
+    background:#FFF;
+    color:#444;
+    font-size:12px;
 }
-
-/* 닉네임 */
-.pointRow > :nth-child(1){
-    flex:1.5;
-    min-width:0;
-    text-align:center;
+.pointRow input:focus{
+    border-color:#999;
 }
-
-.pointRow > .dropdown:first-child .dropdownInput{
-    text-align:center;
+.pointRow input::placeholder{
+    color:#AAA;
 }
-
-/* 상세내용 */
+.pointRow > :nth-child(1),
 .pointRow > :nth-child(2){
-    flex:4;
     min-width:0;
 }
-
-/* 포인트 */
+.pointRow > :first-child{
+    text-align:center;
+}
+.pointRow > :first-child input{
+    text-align:center;
+}
 .pointRow input[type="number"]{
-    flex:0 0 60px;
-    width:50px;
+    width:52px;
+    padding:0 3px;
     text-align:center;
     appearance:textfield;
     -moz-appearance:textfield;
 }
-
 .pointRow input[type="number"]::-webkit-inner-spin-button,
 .pointRow input[type="number"]::-webkit-outer-spin-button{
-    -webkit-appearance:none;
     margin:0;
+    -webkit-appearance:none;
 }
-
-/* 커스텀 드롭다운 */
+.pointRow input[type="number"]:read-only{
+    background:#F5F5F5;
+    color:#555;
+}
+/* 내용 드롭다운 */
 .dropdown{
     position:relative;
-    flex:4;
+    width:100%;
     min-width:0;
 }
-
 .dropdownInput{
     width:100%;
-    margin-bottom:0;
 }
-
 .dropdownList{
-    display:none;
-
-    max-height:180px;
-    overflow-y:auto;
-
-    background:#FFF;
-    border:1px solid #DDD;
-    border-radius:8px;
-
-    box-shadow:0 4px 12px rgba(0,0,0,.15);
-
+    position:fixed;
     z-index:99999;
+    display:none;
+    max-height:180px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #DDD;
+    border-radius:6px;
+    background:#FFF;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
 }
-
 .dropdownList.show{
     display:block;
 }
-
 .dropdownItem{
-    padding:8px 10px;
-    font-size:13px;
-    cursor:pointer;
-    transition:.15s;
+    width:100%;
+    padding:7px 8px;
+    color:#444;
+    font-size:12px;
     text-align:left;
+    cursor:pointer;
 }
-
 .dropdownItem:hover{
     background:#F5F5F5;
 }
-
 .dropdownItem.hidden{
     display:none;
 }
-
-/* 버튼 */
+/* 적용 / 취소 */
 .pointBtnBox{
     display:flex;
     justify-content:center;
-    gap:10px;
-    margin-top:12px;
+    gap:8px;
+    width:100%;
+    margin-top:4px;
 }
-
 #pointApplyBtn,
 #pointCancelBtn{
-    width:124px;
-    height:38px;
+    flex:1;
+    height:34px;
+    padding:0;
     border:none;
-    border-radius:8px;
+    border-radius:7px;
     color:#FFF;
-    font-size:14px;
-    font-weight:700;
+    font-size:12px;
+    font-weight:600;
     cursor:pointer;
 }
-
 #pointApplyBtn{
     background:#1976D2;
 }
-
 #pointApplyBtn:hover{
     background:#1565C0;
 }
-
 #pointCancelBtn{
     background:#BDBDBD;
 }
-
 #pointCancelBtn:hover{
     background:#9E9E9E;
 }
-
-/* 적립/사용 재확인 버튼 */
-/* 확인 목록 */
-.pointConfirmList{
+/* 포인트 적용 확인 */
+#pointConfirmModal .pointConfirmBox{
     display:flex;
     flex-direction:column;
-    gap:8px;
-    margin:18px 0;
+    width:80%;
+    max-width:320px;
+    max-height:72dvh;
+    padding:18px 20px;
+    overflow:hidden;
+    border-radius:12px;
+    background:#FFF;
 }
-
-/* 한 줄 */
-.pointConfirmRow{
-    display:flex;
-    align-items:center;
-    gap:20px;
-    width:300px;      /* 원하는 크기로 조절 */
-    padding:4px 0;
-    font-size:14px;
-}
-
-/* 닉네임 */
-.pointConfirmRow span:nth-child(1){
-    width:38px;
-    font-weight:600;
-    text-align:left;
-    margin-left:20px;
-}
-
-/* 내용 */
-.pointConfirmRow span:nth-child(2){
-    width:120px;
-    text-align:left;
-}
-
-/* 포인트 */
-.pointConfirmRow span:nth-child(3){
-    width:30px;
+.pointConfirmText{
+    margin:0 0 12px;
+    color:#222;
+    font-size:15px;
     font-weight:700;
-    text-align:left;
-    margin-left:20px;
+    text-align:center;
 }
-
-/* 예 */
+.pointConfirmList{
+    width:100%;
+    max-height:260px;
+    margin-bottom:12px;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+.pointConfirmRow{
+    display:grid;
+    grid-template-columns:60px minmax(0,1fr) 52px;
+    align-items:center;
+    gap:6px;
+    width:100%;
+    min-height:25px;
+    font-size:12px;
+}
+.pointConfirmRow span:nth-child(1){
+    min-width:0;
+    overflow:hidden;
+    color:#444;
+    font-weight:600;
+    text-align:center;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.pointConfirmRow span:nth-child(2){
+    min-width:0;
+    overflow:hidden;
+    color:#444;
+    text-align:left;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.pointConfirmRow span:nth-child(3){
+    min-width:0;
+    color:#333;
+    font-weight:600;
+    text-align:center;
+    white-space:nowrap;
+}
+.pointConfirmBtnBox{
+    display:flex;
+    gap:8px;
+    width:100%;
+}
+#pointConfirmBtn,
+#pointConfirmCancelBtn{
+    flex:1;
+    height:34px;
+    padding:0;
+    border:none;
+    border-radius:7px;
+    color:#FFF;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
 #pointConfirmBtn{
     background:#1976D2;
-    color:#fff;
 }
-
 #pointConfirmBtn:hover{
     background:#1565C0;
 }
-
-/* 아니오 */
 #pointConfirmCancelBtn{
     background:#BDBDBD;
-    color:#fff;
 }
-
 #pointConfirmCancelBtn:hover{
     background:#9E9E9E;
 }
-
-/* 알림팝업 */
-.modal{
-    position:fixed;
-    inset:0;
-
+/* 알림 */
+#alertModal .alertBox{
     display:flex;
     justify-content:center;
     align-items:center;
-
-    background:rgba(0,0,0,.45);
-
-    z-index:9999;
-}
-
-.hidden{
-    display:none;
-}
-
-.modalBox{
-    width:90%;
-    max-width:330px;
-
-    padding:25px;
-
+    width:80%;
+    max-width:320px;
+    min-height:70px;
+    padding:18px 20px;
+    border-radius:12px;
     background:#FFF;
-    border-radius:15px;
-
-    text-align:center;
 }
-
 #alertMessage{
-    font-size:18px;
-    font-weight:300;
-    color:#333;
+    margin:0;
+    color:#444;
+    font-size:13px;
     line-height:1.6;
+    text-align:center;
     white-space:pre-line;
     word-break:keep-all;
-    margin-bottom:25px;
-}
-
-#alertCloseBtn{
-    width:100%;
-    height:52px;
-
-    border:none;
-    border-radius:12px;
-
-    background:#2196F3;
-    color:#FFF;
-
-    font-size:20px;
-    font-weight:bold;
-
-    cursor:pointer;
-}
-
-#alertCloseBtn:hover{
-    background:#1E88E5;
 }
