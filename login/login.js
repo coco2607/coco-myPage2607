@@ -107,7 +107,7 @@ async function checkPassword(){
         }
         const deviceId = getDeviceId();
         await joinUser(loginNickname);
-        await completeLogin(loginNickname,deviceId);
+        await completeLogin(loginNickname,deviceId,member);
     }catch(error){
         loginMessage.textContent = error.message;
         memberPassword.select();
@@ -149,7 +149,7 @@ async function setPassword(){
         const deviceId = getDeviceId();
         await saveMemberPassword(name,password);
         await joinUser(name);
-        await completeLogin(name,deviceId);
+        await completeLogin(name,deviceId,member);
     }catch(error){
         pwSetMessage.textContent = error.message;
     }
@@ -164,9 +164,23 @@ function getDeviceId(){
     return deviceId;
 }
 
-async function completeLogin(name,deviceId){
+async function completeLogin(name,deviceId,member){
     await saveDeviceId(deviceId,name);
     sessionStorage.setItem("nickname",name);
+    sessionStorage.setItem("deviceId",deviceId);
+
+    if(member?.admin === true){
+        sessionStorage.setItem("admin","true");
+    }else{
+        sessionStorage.removeItem("admin");
+    }
+
+    if(member?.staff === true){
+        sessionStorage.setItem("staff","true");
+    }else{
+        sessionStorage.removeItem("staff");
+    }
+
     loginModal.classList.add("hidden");
     pwSetModal.classList.add("hidden");
     location.replace("../member/member.html");

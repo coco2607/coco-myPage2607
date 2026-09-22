@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자</title>
     <link rel="stylesheet" href="admin.css">
-    <link rel="stylesheet" href="../mstate/mstate.css">
-    <link rel="stylesheet" href="../point/adpoint.css">
+    <link rel="stylesheet" href="mstate/mstate.css">
+    <link rel="stylesheet" href="point/adpoint.css">
 </head>
 <body>
     <div class="layout">
@@ -23,6 +23,13 @@
         </header>
 
         <nav id="upperArea">
+            <div class="memberTop">
+                <h3 class="sectionTitle">
+                    회원관리
+                    <span id="memberCount" class="memberCount">(0명)</span>
+                </h3>
+            </div>
+
             <div class="upperInfo">
                 <div class="pointHeader">
                     <button id="plusBtn" class="pointBtn">
@@ -34,17 +41,8 @@
                     </button>
                 </div>
             </div>
-
-            <div class="memberTop">
-                <h3 class="sectionTitle">
-                    회원관리
-                    <span id="memberCount" class="memberCount">(0명)</span>
-                </h3>
-            </div>
-
-            <hr class="line">
         </nav>
-
+        <hr class="line">
         <main id="contentArea">
             <div id="memberList">
                 <!-- JS 생성 -->

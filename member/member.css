@@ -228,6 +228,109 @@ body{
     text-align:right;
     font-variant-numeric:tabular-nums;
 }
+.adminModal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:22px;
+    background:rgba(0,0,0,.45);
+}
+.adminModal.hidden{
+    display:none;
+}
+.adminBox{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    width:80%;
+    max-width:360px;
+    padding:24px 18px;
+    border-radius:14px;
+    background:#FFF;
+    box-shadow:0 4px 20px rgba(0,0,0,.15);
+}
+.adminHeader{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    margin-bottom:12px;
+}
+.adminHeader h2{
+    color:#333;
+    font-size:19px;
+    font-weight:700;
+}
+.closeBtn{
+    position:absolute;
+    right:0;
+    width:22px;
+    height:22px;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+}
+.closeBtn::before,
+.closeBtn::after{
+    content:"";
+    position:absolute;
+    top:10px;
+    left:2px;
+    width:19px;
+    height:1px;
+    background:#333;
+}
+.closeBtn::before{
+    transform:rotate(45deg);
+}
+.closeBtn::after{
+    transform:rotate(-45deg);
+}
+#adminPassword{
+    width:80%;
+    height:34px;
+    border:none;
+    border-bottom:1px solid #CCC;
+    outline:none;
+    background:transparent;
+    color:#333;
+    font-size:22px;
+    text-align:center;
+}
+#adminPassword::placeholder{
+    font-size:17px;
+}
+#adminPassword:focus{
+    border-bottom:2px solid #2F7FA3;
+}
+#adminMessage{
+    color:#F13F86;
+    font-size:12px;
+    text-align:center;
+}
+.adminButton{
+    display:flex;
+    width:81%;
+}
+#adminOkBtn{
+    width:100%;
+    height:40px;
+    border:none;
+    border-radius:8px;
+    background:#2F7FA3;
+    color:#FFF;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+#adminOkBtn:hover{
+    background:#286F8F;
+}
 #footerArea{
     position:fixed;
     left:50%;

@@ -15,8 +15,14 @@
         <header id="topArea">
             <span class="hello">어서오세요!</span>
             <div class="topLinks">
-                <span id="adminLoginBtn" class="textLink hidden">관리자로그인</span>
-                <span id="changePasswordBtn" class="textLink">비밀번호 변경</span>
+                <span id="adminLoginBtn" 
+                    class="textLink hidden">
+                    관리자로그인
+                </span>
+                <span id="changePasswordBtn" 
+                    class="textLink">
+                    비밀번호 변경
+                </span>
             </div>
         </header>
 
@@ -24,7 +30,8 @@
             <div class="upperInfo">
                 <div class="nameRow">
                     <h1 id="memberNickname">회원님</h1>
-                    <div id="boardPosition" class="boardPosition">
+                    <div id="boardPosition" 
+                        class="boardPosition">
                         (보드게임 현 위치 0)
                     </div>
                 </div>
@@ -36,10 +43,14 @@
             </div>
 
             <div class="contentTabs">
-                <button type="button" class="contentTab active" data-tab="attendance">
+                <button type="button" 
+                    class="contentTab active" 
+                    data-tab="attendance">
                     출석체크
                 </button>
-                <button type="button" class="contentTab" data-tab="point">
+                <button type="button" 
+                    class="contentTab" 
+                    data-tab="point">
                     포인트내역
                 </button>
             </div>
@@ -49,8 +60,11 @@
             <div class="container">
                 <div id="attendanceContent" class="tabContent">
                     <div class="attendanceHeader">
-                        <div class="attendanceTitle">오늘의 한마디</div>
-                        <div id="attendanceDate" class="attendanceDate"></div>
+                        <div class="attendanceTitle">
+                            오늘의 한마디</div>
+                        <div id="attendanceDate" 
+                            class="attendanceDate">
+                        </div>
                     </div>
 
                     <div class="attendanceWrite">
@@ -58,15 +72,23 @@
                             id="attendanceInput"
                             maxlength="100"
                             rows="1"
-                            placeholder="오늘의 출석 한마디를 남겨주세요."></textarea>
-                        <button type="button" id="attendanceBtn">등록</button>
+                            placeholder="오늘의 출석 한마디를 남겨주세요.">
+                        </textarea>
+                        <button type="button" 
+                            id="attendanceBtn">
+                            등록
+                        </button>
                     </div>
 
-                    <div id="attendanceList" class="attendanceList"></div>
+                    <div id="attendanceList" 
+                        class="attendanceList">
+                    </div>
                 </div>
 
                 <div id="pointContent" class="tabContent hidden">
-                    <div class="historyTitle">포인트 상세내역</div>
+                    <div class="historyTitle">
+                        포인트 상세내역
+                    </div>
                     <hr>
                     <div id="historyList"></div>
                 </div>
@@ -95,7 +117,9 @@
             <h2>출석체크보상</h2>
             <p id="attendanceRewardPoint"></p>
             <div class="modalButton">
-                <button id="attendanceRewardOk">확인</button>
+                <button id="attendanceRewardOk">
+                    확인
+                </button>
             </div>
         </div>
     </div>
@@ -103,10 +127,18 @@
     <div id="pwModal" class="modal hidden">
         <div class="modalBox">
             <h2>비밀번호 변경</h2>
-            <input type="password" id="currentPw" placeholder="현재 비밀번호">
-            <input type="password" id="newPw" placeholder="새 비밀번호">
-            <input type="password" id="newPwCheck" placeholder="새 비밀번호 확인">
+            <input type="password" 
+                id="currentPw" 
+                placeholder="현재 비밀번호">
+            <input type="password" 
+                id="newPw" 
+                placeholder="새 비밀번호">
+            <input type="password" 
+                id="newPwCheck" 
+                placeholder="새 비밀번호 확인">
+
             <div id="pwError" class="pwError"></div>
+
             <div class="modalButton">
                 <button id="pwOk">확인</button>
                 <button id="pwCancel">취소</button>
@@ -128,7 +160,8 @@
                     id="adminCancelBtn"
                     class="closeBtn"
                     type="button"
-                    aria-label="닫기"></button>
+                    aria-label="닫기">
+                </button>
             </div>
 
             <input
