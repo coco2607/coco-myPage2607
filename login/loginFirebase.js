@@ -35,13 +35,20 @@ export async function saveDeviceId(deviceId,nickname){
     }
     const memberData = snapshot.val();
     const oldDeviceId = memberData.deviceId || "";
+    const deviceData = {
+        nickname:nickname
+    };
+    if(memberData.admin === true){
+        deviceData.admin = true;
+    }
+    if(memberData.staff === true){
+        deviceData.staff = true;
+    }
     const updates = {};
     if(oldDeviceId && oldDeviceId !== deviceId){
         updates[`${DEVICE}/${oldDeviceId}`] = null;
     }
-    updates[`${DEVICE}/${deviceId}`] = {
-        nickname:nickname
-    };
+    updates[`${DEVICE}/${deviceId}`] = deviceData;
     updates[`${MEMBER}/${nickname}/deviceId`] = deviceId;
     await update(ref(db),updates);
 }

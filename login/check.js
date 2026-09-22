@@ -1,7 +1,8 @@
 // check.js
 import {
     appVersion,
-    adminName} from "../utils.js";
+    adminName
+} from "../utils.js";
 import {findMemberByDeviceId} from "./checkFirebase.js";
 
 const checkDots = document.getElementById("checkDots");
@@ -14,23 +15,19 @@ let firstCycleDone = false;
 
 setInterval(() => {
     dotCount++;
-
     if(dotCount > 3){
         dotCount = 0;
         firstCycleDone = true;
     }
-
     checkDots.textContent = ".".repeat(dotCount);
 },700);
 
 function getDeviceId(){
     let deviceId = localStorage.getItem("deviceId");
-
     if(!deviceId){
         deviceId = crypto.randomUUID();
         localStorage.setItem("deviceId",deviceId);
     }
-
     sessionStorage.setItem("deviceId",deviceId);
     return deviceId;
 }
@@ -50,15 +47,27 @@ async function check(){
     try{
         const deviceId = getDeviceId();
         const member = await findMemberByDeviceId(deviceId);
-
         await waitFirstCycle();
 
-        if(!member){
+        if(!member || !member.nickname){
             location.replace("login.html");
             return;
         }
 
         sessionStorage.setItem("nickname",member.nickname);
+
+        if(member.admin === true){
+            sessionStorage.setItem("admin","true");
+        }else{
+            sessionStorage.removeItem("admin");
+        }
+
+        if(member.staff === true){
+            sessionStorage.setItem("staff","true");
+        }else{
+            sessionStorage.removeItem("staff");
+        }
+
         location.replace("../member/member.html");
     }catch(error){
         console.error("자동 로그인 확인 실패:",error);
