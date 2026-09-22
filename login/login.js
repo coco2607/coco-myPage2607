@@ -1,14 +1,15 @@
 // login.js
 import {
     trim,
+    createId,
     appVersion,
     adminName
 } from "../utils.js";
 import {
-    login,
+    getMember,
+    saveMemberPassword,
     saveDeviceId,
-    getMemberState,
-    setMemberPassword
+    joinUser
 } from "./loginFirebase.js";
 
 const nickname = document.getElementById("nickname");
@@ -39,7 +40,6 @@ memberCancelBtn.addEventListener("click",closeLoginModal);
 memberOkBtn.addEventListener("click",checkPassword);
 pwSetCancelBtn.addEventListener("click",closePwSetModal);
 pwSetOkBtn.addEventListener("click",setPassword);
-
 warningOk.addEventListener("click",() => {
     warningModal.classList.add("hidden");
 });
@@ -51,21 +51,17 @@ function showWarning(message){
 
 async function checkMember(){
     const name = trim(nickname.value);
-
-    if(name === ""){
-        showWarning("닉네임을 입력하세요.");
+    if(name.length < 2){
+        showWarning("닉네임 2자를 입력하세요.");
         nickname.focus();
         return;
     }
-
     try{
-        const state = await getMemberState(name);
-
-        if(state === "NO_PASSWORD"){
+        const member = await getMember(name);
+        if(!member || !member.memberPw){
             openPwSetModal(name);
             return;
         }
-
         openLoginModal(name);
     }catch(error){
         showWarning(error.message);
@@ -99,16 +95,18 @@ function closePwSetModal(){
 
 async function checkPassword(){
     const password = trim(memberPassword.value);
-
     if(password === ""){
         loginMessage.textContent = "비밀번호를 입력해주세요.";
         memberPassword.focus();
         return;
     }
-
     try{
+        const member = await getMember(loginNickname);
+        if(!member || !member.memberPw || member.memberPw !== password){
+            throw new Error("닉네임 또는 비밀번호가 올바르지 않습니다.");
+        }
         const deviceId = getDeviceId();
-        await login(loginNickname,password);
+        await joinUser(loginNickname);
         await completeLogin(loginNickname,deviceId);
     }catch(error){
         loginMessage.textContent = error.message;
@@ -120,45 +118,37 @@ async function setPassword(){
     const name = trim(pwSetNickname.value);
     const password = trim(newPw.value);
     const passwordCheck = trim(newPwCheck.value);
-
     pwSetMessage.textContent = "";
-
-    if(name === ""){
-        pwSetMessage.textContent = "닉네임을 입력하세요.";
+    if(name.length < 2){
+        pwSetMessage.textContent = "닉네임 2자를 입력하세요.";
         pwSetNickname.focus();
         return;
     }
-
     if(password === ""){
         pwSetMessage.textContent = "새 비밀번호를 입력하세요.";
         newPw.focus();
         return;
     }
-
     if(passwordCheck === ""){
         pwSetMessage.textContent = "새 비밀번호 확인을 입력하세요.";
         newPwCheck.focus();
         return;
     }
-
     if(password !== passwordCheck){
         pwSetMessage.textContent = "새 비밀번호가 서로 일치하지 않습니다.";
         newPwCheck.focus();
         return;
     }
-
     try{
-        const state = await getMemberState(name);
-
-        if(state === "PASSWORD"){
+        const member = await getMember(name);
+        if(member && member.memberPw){
             pwSetMessage.textContent = "이미 비밀번호가 설정된 닉네임입니다.";
             pwSetNickname.focus();
             return;
         }
-
         const deviceId = getDeviceId();
-        await setMemberPassword(name,password);
-        await login(name,password);
+        await saveMemberPassword(name,password);
+        await joinUser(name);
         await completeLogin(name,deviceId);
     }catch(error){
         pwSetMessage.textContent = error.message;
@@ -166,12 +156,11 @@ async function setPassword(){
 }
 
 function getDeviceId(){
-    const deviceId = sessionStorage.getItem("deviceId");
-
+    let deviceId = localStorage.getItem("deviceId");
     if(!deviceId){
-        throw new Error("디바이스 정보를 확인할 수 없습니다.");
+        deviceId = createId();
+        localStorage.setItem("deviceId",deviceId);
     }
-
     return deviceId;
 }
 

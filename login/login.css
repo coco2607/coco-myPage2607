@@ -59,12 +59,13 @@ input{
     outline:none;
     background:rgba(255,255,255,.35);
     color:#333;
-    font-size:17px;
+    font-size:19px;
     text-align:center;
     transition:.2s;
 }
 #nickname::placeholder{
     color:#333;
+    font-size:16px;
 }
 #nickname:focus{
     background:#FFF;
@@ -84,7 +85,6 @@ input{
     background:#286F8F;
 }
 .loginModal,
-.adminModal,
 .warningModal{
     position:fixed;
     inset:0;
@@ -99,7 +99,6 @@ input{
     display:none;
 }
 .loginBox,
-.adminBox,
 .warningBox{
     display:flex;
     flex-direction:column;
@@ -112,8 +111,7 @@ input{
     background:#FFF;
     box-shadow:0 4px 20px rgba(0,0,0,.15);
 }
-.loginHeader,
-.adminHeader{
+.loginHeader{
     position:relative;
     display:flex;
     justify-content:center;
@@ -121,14 +119,10 @@ input{
     width:100%;
     margin-bottom:12px;
 }
-.loginHeader h2,
-.adminHeader h2{
+.loginHeader h2{
     color:#333;
     font-size:19px;
     font-weight:700;
-}
-.adminHeader h2{
-    color:#2F7FA3;
 }
 .closeBtn{
     position:absolute;
@@ -155,8 +149,7 @@ input{
 .closeBtn::after{
     transform:rotate(-45deg);
 }
-.loginBox input,
-.adminBox input{
+.loginBox input{
     width:80%;
     height:34px;
     border:none;
@@ -167,30 +160,25 @@ input{
     font-size:17px;
     text-align:center;
 }
-.loginBox input:focus,
-.adminBox input:focus{
+.loginBox input:focus{
     border-bottom:2px solid #2F7FA3;
 }
 #memberPassword,
 #newPw,
-#newPwCheck,
-#adminPassword{
+#newPwCheck{
     font-size:22px;
 }
 #memberPassword::placeholder,
 #newPw::placeholder,
-#newPwCheck::placeholder,
-#adminPassword::placeholder{
+#newPwCheck::placeholder{
     font-size:17px;
 }
-.loginButton,
-.adminButton{
+.loginButton{
     display:flex;
     width:81%;
 }
 #memberOkBtn,
 #pwSetOkBtn,
-#adminOkBtn,
 #warningOk{
     width:100%;
     height:40px;
@@ -204,13 +192,11 @@ input{
 }
 #memberOkBtn:hover,
 #pwSetOkBtn:hover,
-#adminOkBtn:hover,
 #warningOk:hover{
     background:#286F8F;
 }
 #loginMessage,
-#pwSetMessage,
-#adminMessage{
+#pwSetMessage{
     color:#F13F86;
     font-size:12px;
     text-align:center;
@@ -220,17 +206,6 @@ input{
     font-size:15px;
     line-height:1.6;
     text-align:center;
-}
-.adminLink{
-    padding:8px 4%;
-    color:#E2E2E2;
-    font-size:13px;
-    font-weight:600;
-    text-align:right;
-    cursor:pointer;
-}
-.adminLink:hover{
-    color:#FFEB3B;
 }
 #footerArea{
     position:fixed;

@@ -10,7 +10,6 @@
 <body>
     <div class="layout">
         <header id="topArea">
-            <p id="adminLoginBtn" class="adminLink">관리자 로그인</p>
         </header>
 
         <nav id="upperArea"></nav>
@@ -19,7 +18,7 @@
             <div class="container">
                 <h1>으차방 MyPage</h1>
                 <input type="text" 
-                    id="nickname" placeholder="닉네임">
+                    id="nickname" placeholder="닉네임 2자를 입력하세요.">
                 <button id="enterBtn">로그인</button>
             </div>
         </main>
@@ -42,26 +41,17 @@
         <div class="loginBox">
             <div class="loginHeader">
                 <h2>으차방 멤버 로그인</h2>
-                <button id="memberCancelBtn" class="closeBtn" type="button" aria-label="닫기"></button>
+                <button id="memberCancelBtn" 
+                    class="closeBtn" 
+                    type="button" 
+                    aria-label="닫기"></button>
             </div>
-            <input type="password" id="memberPassword" placeholder="비밀번호">
+            <input type="password" 
+                id="memberPassword" 
+                placeholder="비밀번호">
             <p id="loginMessage"></p>
             <div class="loginButton">
                 <button id="memberOkBtn">로그인</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="adminModal" class="adminModal hidden">
-        <div class="adminBox">
-            <div class="adminHeader">
-                <h2>관리자 로그인</h2>
-                <button id="adminCancelBtn" class="closeBtn" type="button" aria-label="닫기"></button>
-            </div>
-            <input type="password" id="adminPassword" placeholder="비밀번호를 입력하세요.">
-            <p id="adminMessage"></p>
-            <div class="adminButton">
-                <button id="adminOkBtn">확인</button>
             </div>
         </div>
     </div>
@@ -70,12 +60,22 @@
         <div class="loginBox">
             <div class="loginHeader">
                 <h2>비밀번호 설정</h2>
-                <button id="pwSetCancelBtn" class="closeBtn" type="button" aria-label="닫기"></button>
+                <button id="pwSetCancelBtn" 
+                    class="closeBtn" 
+                    type="button" 
+                    aria-label="닫기"></button>
             </div>
-            <input type="text" id="pwSetNickname" placeholder="닉네임">
-            <input type="password" id="newPw" placeholder="새 비밀번호">
-            <input type="password" id="newPwCheck" placeholder="새 비밀번호 확인">
+            <input type="text" 
+                id="pwSetNickname" 
+                placeholder="닉네임">
+            <input type="password" 
+                id="newPw" 
+                placeholder="새 비밀번호">
+            <input type="password" 
+                id="newPwCheck" 
+                placeholder="새 비밀번호 확인">
             <p id="pwSetMessage"></p>
+
             <div class="loginButton">
                 <button id="pwSetOkBtn">확인</button>
             </div>
