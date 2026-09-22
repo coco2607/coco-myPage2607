@@ -1,4 +1,5 @@
 // adminLogin.js
+
 import {getAdminPasswords} from "./adminLoginFirebase.js";
 
 document.addEventListener("DOMContentLoaded",initAdminLogin);
@@ -21,6 +22,8 @@ function initAdminLogin(){
 
     adminPassword.addEventListener("keydown",event => {
         if(event.key === "Enter"){
+            event.preventDefault();
+
             adminLogin(
                 adminPassword,
                 adminMessage
@@ -41,6 +44,11 @@ async function adminLogin(adminPassword,adminMessage){
     try{
         const passwords = await getAdminPasswords();
 
+        if(!passwords){
+            adminMessage.textContent = "관리자 정보를 불러올 수 없습니다.";
+            return;
+        }
+
         if(password === passwords.adminPw){
             sessionStorage.setItem("managerRole","admin");
             location.replace("../admin/admin.html");
@@ -49,7 +57,7 @@ async function adminLogin(adminPassword,adminMessage){
 
         if(password === passwords.staffPw){
             sessionStorage.setItem("managerRole","staff");
-            location.replace("../admin/staff/staff.html");
+            location.replace("../admin/staff.html");
             return;
         }
 

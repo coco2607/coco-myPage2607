@@ -1,0 +1,174 @@
+<!-- staff.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스태프</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="mstate/mstate.css">
+    <link rel="stylesheet" href="point/adpoint.css">
+</head>
+<body>
+    <div class="layout">
+        <header id="topArea">
+            <div class="adminTitle">
+                <span class="hello">안녕하세요!</span>
+                <span class="title">운영자님</span>
+            </div>
+        </header>
+
+        <nav id="upperArea">
+            <div class="memberTop">
+                <h3 class="sectionTitle">
+                    회원관리
+                    <span id="memberCount" class="memberCount">(0명)</span>
+                </h3>
+            </div>
+
+            <div class="upperInfo">
+                <div class="pointHeader">
+                    <button id="plusBtn" class="pointBtn">
+                        포인트 적립
+                    </button>
+
+                    <button id="minusBtn" class="pointBtn">
+                        포인트 사용
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <hr class="line">
+
+        <main id="contentArea">
+            <div class="memberListHeader">
+                <div>닉네임(P)</div>
+                <div>최근접속</div>
+                <div>상태</div>
+                <div>복귀일</div>
+                <div>삭제</div>
+            </div>
+
+            <div id="memberList"></div>
+        </main>
+
+        <footer id="footerArea">
+            <div class="left">
+                <div>카카오톡 오픈채팅</div>
+
+                <a
+                    href="https://open.kakao.com/o/g7b2DGti"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    8090 으차방
+                </a>
+            </div>
+
+            <div class="right">
+                <div id="version"></div>
+                <div id="admin"></div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="pointModal" class="hidden">
+        <div class="pointBox">
+            <h3 id="pointTitle">
+                포인트 적립
+            </h3>
+
+            <div class="pointScroll">
+                <div id="pointRows"></div>
+            </div>
+
+            <div class="pointBtnBox">
+                <button id="pointApplyBtn">
+                    적용
+                </button>
+
+                <button id="pointCancelBtn">
+                    취소
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pointConfirmModal" class="hidden">
+        <div class="pointConfirmBox">
+            <p class="pointConfirmText">
+                포인트를 적용하시겠습니까?
+            </p>
+
+            <div
+                id="pointConfirmList"
+                class="pointConfirmList">
+            </div>
+
+            <div class="pointConfirmBtnBox">
+                <button id="pointConfirmBtn">
+                    예
+                </button>
+
+                <button id="pointConfirmCancelBtn">
+                    아니오
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertModal" class="hidden">
+        <div class="alertBox">
+            <p id="alertMessage"></p>
+        </div>
+    </div>
+
+    <div id="outingModal" class="hidden">
+        <div class="outingBox">
+            <h3>멤버 외출 설정</h3>
+
+            <div class="returnDateBox">
+                <label for="returnDate">
+                    복귀일
+                </label>
+
+                <input
+                    type="date"
+                    id="returnDate">
+            </div>
+
+            <div class="outingBtnBox">
+                <button id="outingSaveBtn">
+                    외출
+                </button>
+
+                <button id="outingCancelBtn">
+                    취소
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mstateModal" class="hidden">
+        <div class="mstateBox">
+            <p
+                id="mstateText"
+                class="mstateText">
+                회원님을 활동 상태로 변경하시겠습니까?
+            </p>
+
+            <div class="mstateBtnBox">
+                <button id="mstateConfirm">
+                    예
+                </button>
+
+                <button id="mstateCancel">
+                    아니오
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="staff.js"></script>
+</body>
+</html>
