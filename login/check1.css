@@ -1,4 +1,4 @@
-/* check.css */
+/* check1.css */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 *{
@@ -19,7 +19,7 @@ body{
 
 body{
     min-height:100dvh;
-    background:url("bgImage.webp") center bottom/cover no-repeat;
+    background:url("추석.webp") center bottom/cover no-repeat;
 }
 
 .layout{
@@ -63,19 +63,19 @@ body{
     width:24px;
     height:24px;
     flex-shrink:0;
-    border:2px solid rgba(255,255,255,.35);
-    border-top-color:#FFF;
-    border-right-color:#FFF;
+    border:2px solid rgba(217,130,0,.22);
+    border-top-color:#D98200;
+    border-right-color:#D98200;
     border-radius:50%;
     animation:checkSpin .8s linear infinite;
 }
 
 .checkText{
-    color:#FFF;
+    color:#684516;
     font-size:19px;
     font-weight:600;
     letter-spacing:.2px;
-    text-shadow:0 2px 6px rgba(0,0,0,.55);
+    text-shadow:0 1px 3px rgba(255,255,255,.55);
     white-space:nowrap;
 }
 
@@ -97,8 +97,10 @@ body{
     max-width:430px;
     min-height:44px;
     padding:0 15px;
-    border-top:1px solid rgba(255,255,255,.35);
-    background:transparent;
+    border-top:1px solid rgba(139,94,34,.16);
+    background:rgba(255,248,231,.62);
+    backdrop-filter:blur(2px);
+    -webkit-backdrop-filter:blur(2px);
     transform:translateX(-50%);
 }
 
@@ -110,16 +112,16 @@ body{
 }
 
 #footerArea .left>div{
-    color:#FFF;
+    color:#9A7040;
     font-size:10.2px;
     font-weight:500;
     letter-spacing:-0.4px;
 }
 
 #footerArea a{
-    color:#FFF;
+    color:#A0641E;
     font-size:12.8px;
-    font-weight:500;
+    font-weight:600;
     letter-spacing:.4px;
     text-decoration:none;
 }
@@ -132,12 +134,14 @@ body{
     display:flex;
     flex-direction:column;
     gap:1px;
-    color:#FFF;
+    color:#9A7040;
     font-size:9.8px;
     text-align:right;
 }
 
 #footerArea #version{
+    color:#A0641E;
     font-size:10.8px;
+    font-weight:600;
     letter-spacing:0;
 }

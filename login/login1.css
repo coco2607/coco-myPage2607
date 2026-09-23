@@ -1,0 +1,321 @@
+/* login1.css */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Pretendard",sans-serif;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+}
+
+body{
+    min-height:100dvh;
+    background:url("추석.webp") center bottom/cover no-repeat;
+}
+
+input{
+    user-select:text;
+}
+
+.layout{
+    display:flex;
+    flex-direction:column;
+    min-height:100dvh;
+    padding-bottom:44px;
+}
+
+#topArea{
+    min-height:36px;
+}
+
+#upperArea{
+    min-height:60px;
+}
+
+#contentArea{
+    display:flex;
+    flex:1;
+}
+
+.container{
+    display:flex;
+    flex:1;
+    flex-direction:column;
+    align-items:center;
+    padding-top:20px;
+}
+
+.container h1{
+    margin-bottom:18px;
+    color:#D98200;
+    font-size:28px;
+    font-weight:700;
+    text-shadow:
+        0 2px 4px rgba(92,58,15,.15);
+}
+
+#nickname{
+    width:200px;
+    height:46px;
+    margin-bottom:12px;
+    padding:0 14px;
+    border:1px solid rgba(255,255,255,.9);
+    border-radius:12px;
+    outline:none;
+    background:rgba(255,250,238,.72);
+    color:#684516;
+    font-size:19px;
+    text-align:center;
+    box-shadow:0 2px 8px rgba(121,78,17,.08);
+    transition:
+        background .2s,
+        border-color .2s,
+        box-shadow .2s;
+}
+
+#nickname::placeholder{
+    color:#775225;
+    font-size:16px;
+}
+
+#nickname:focus{
+    border-color:#E4A23A;
+    background:#FFFDF7;
+    box-shadow:0 2px 10px rgba(180,112,13,.15);
+}
+
+#enterBtn{
+    width:200px;
+    height:48px;
+    border:none;
+    border-radius:12px;
+    background:#D98200;
+    color:#FFF;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 3px 8px rgba(136,78,0,.16);
+    transition:
+        background .2s,
+        transform .1s;
+}
+
+#enterBtn:hover{
+    background:#C57400;
+}
+
+#enterBtn:active{
+    transform:translateY(1px);
+}
+
+.loginModal,
+.warningModal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:22px;
+    background:rgba(68,45,16,.48);
+}
+
+.hidden{
+    display:none;
+}
+
+.loginBox,
+.warningBox{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    width:80%;
+    max-width:360px;
+    padding:24px 18px;
+    border:1px solid rgba(206,163,89,.25);
+    border-radius:14px;
+    background:#FFFDF8;
+    box-shadow:0 5px 22px rgba(82,53,12,.18);
+}
+
+.loginHeader{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    margin-bottom:12px;
+}
+
+.loginHeader h2{
+    color:#5E421F;
+    font-size:19px;
+    font-weight:700;
+}
+
+.closeBtn{
+    position:absolute;
+    right:0;
+    width:22px;
+    height:22px;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+}
+
+.closeBtn::before,
+.closeBtn::after{
+    content:"";
+    position:absolute;
+    top:10px;
+    left:2px;
+    width:19px;
+    height:1px;
+    background:#73522A;
+}
+
+.closeBtn::before{
+    transform:rotate(45deg);
+}
+
+.closeBtn::after{
+    transform:rotate(-45deg);
+}
+
+.loginBox input{
+    width:80%;
+    height:34px;
+    border:none;
+    border-bottom:1px solid #D8C7AA;
+    outline:none;
+    background:transparent;
+    color:#4E3A21;
+    font-size:17px;
+    text-align:center;
+}
+
+.loginBox input:focus{
+    border-bottom:2px solid #D98200;
+}
+
+#memberPassword,
+#newPw,
+#newPwCheck{
+    font-size:22px;
+}
+
+#memberPassword::placeholder,
+#newPw::placeholder,
+#newPwCheck::placeholder{
+    color:#A18B70;
+    font-size:17px;
+}
+
+.loginButton{
+    display:flex;
+    width:81%;
+}
+
+#memberOkBtn,
+#pwSetOkBtn,
+#warningOk{
+    width:100%;
+    height:40px;
+    border:none;
+    border-radius:8px;
+    background:#D98200;
+    color:#FFF;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .2s;
+}
+
+#memberOkBtn:hover,
+#pwSetOkBtn:hover,
+#warningOk:hover{
+    background:#C57400;
+}
+
+#loginMessage,
+#pwSetMessage{
+    color:#D4583E;
+    font-size:12px;
+    text-align:center;
+}
+
+#warningText{
+    color:#5C452A;
+    font-size:15px;
+    line-height:1.6;
+    text-align:center;
+}
+
+#footerArea{
+    position:fixed;
+    left:50%;
+    bottom:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    max-width:430px;
+    min-height:44px;
+    padding:0 15px;
+    border-top:1px solid rgba(139,94,34,.16);
+    background:rgba(255,248,231,.62);
+    backdrop-filter:blur(2px);
+    -webkit-backdrop-filter:blur(2px);
+    transform:translateX(-50%);
+}
+
+#footerArea .left{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    text-align:left;
+}
+
+#footerArea .left>div{
+    color:#9A7040;
+    font-size:10.2px;
+    font-weight:500;
+    letter-spacing:-0.4px;
+}
+
+#footerArea a{
+    color:#A0641E;
+    font-size:12.8px;
+    font-weight:600;
+    letter-spacing:0.4px;
+    text-decoration:none;
+}
+
+#footerArea a:hover{
+    text-decoration:underline;
+}
+
+#footerArea .right{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    color:#9A7040;
+    font-size:9.8px;
+    text-align:right;
+}
+
+#footerArea #version{
+    color:#A0641E;
+    font-size:10.8px;
+    font-weight:600;
+    letter-spacing:0;
+}

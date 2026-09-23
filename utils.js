@@ -62,3 +62,12 @@ export function getDeviceId(){
 
     return deviceId;
 }
+
+export function chuseokThemePeriod(){
+    const now = koDateTime();
+
+    const start = "2026-09-24 00:00:00";
+    const end = "2026-09-27 23:59:00";
+
+    return now >= start && now <= end;
+}

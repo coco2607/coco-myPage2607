@@ -1,9 +1,9 @@
 // login.js
 import {
     trim,
-    createId,
     appVersion,
-    adminName
+    adminName,
+    chuseokThemePeriod
 } from "../utils.js";
 import {
     getMember,
@@ -29,6 +29,13 @@ const pwSetCancelBtn = document.getElementById("pwSetCancelBtn");
 const warningModal = document.getElementById("warningModal");
 const warningText = document.getElementById("warningText");
 const warningOk = document.getElementById("warningOk");
+
+const pageStyle = document.getElementById("pageStyle");
+
+if(chuseokThemePeriod()){
+    pageStyle.href = "login1.css";
+}
+
 
 let loginNickname = "";
 
