@@ -1,64 +1,66 @@
 /* attendCard.css */
 
-/* 카드 전체 화면 */
 .attendanceCardOverlay{
     position:fixed;
     inset:0;
+    z-index:9999;
     display:flex;
     justify-content:center;
     align-items:center;
+    width:100%;
+    height:100dvh;
     padding:20px;
+    overflow:hidden;
+    box-sizing:border-box;
     background:rgba(0,0,0,.8);
-    z-index:9999;
 }
 
-/* 카드 영역 */
 .attendanceCardModal{
     width:100%;
     max-width:360px;
-    padding:0;
+    min-width:0;
+    margin:0 auto;
+    padding:0 6px;
+    box-sizing:border-box;
     background:transparent;
     text-align:center;
 }
 
-/* 카드 제목 */
 .attendanceCardTitle{
-    margin-bottom:8px;
+    margin:0 0 8px;
+    color:#FFF;
     font-size:24px;
     font-weight:700;
-    color:#FFFFFF;
 }
 
-/* 카드 안내 */
 .attendanceCardGuide{
-    margin-bottom:16px;
+    margin:0 0 16px;
+    color:#FFF;
     font-size:15px;
     font-weight:500;
-    color:#FFFFFF;
 }
 
-/* 카드 배열 */
 .attendanceCardGrid{
     display:grid;
-    grid-template-columns:repeat(6, 1fr);
+    grid-template-columns:repeat(6,minmax(0,1fr));
     gap:8px;
     width:100%;
+    min-width:0;
 }
 
-/* 카드 버튼 */
 .attendanceCard{
     position:relative;
     width:100%;
+    min-width:0;
     padding:0;
     border:none;
+    outline:none;
     background:transparent;
     cursor:pointer;
     perspective:1000px;
-    outline:none;
     -webkit-tap-highlight-color:transparent;
 }
 
-/* 1번째 줄 2장 */
 .attendanceCard:nth-child(1){
     grid-column:2 / span 2;
 }
@@ -67,7 +69,6 @@
     grid-column:4 / span 2;
 }
 
-/* 2번째 줄 3장 */
 .attendanceCard:nth-child(3){
     grid-column:1 / span 2;
 }
@@ -80,7 +81,6 @@
     grid-column:5 / span 2;
 }
 
-/* 3번째 줄 2장 */
 .attendanceCard:nth-child(6){
     grid-column:2 / span 2;
 }
@@ -89,16 +89,15 @@
     grid-column:4 / span 2;
 }
 
-/* 카드 본체 */
 .attendanceCardInner{
     position:relative;
     display:block;
     width:100%;
     aspect-ratio:4 / 5;
     transform-style:preserve-3d;
+    -webkit-transform-style:preserve-3d;
 }
 
-/* 카드 뒤집기 */
 .attendanceCard.flipped .attendanceCardInner{
     animation:
         attendanceCardFlip
@@ -107,7 +106,6 @@
         forwards;
 }
 
-/* 카드 뒤집기 애니메이션 */
 @keyframes attendanceCardFlip{
     0%{
         transform:
@@ -120,21 +118,21 @@
         transform:
             rotateY(35deg)
             rotateZ(-2deg)
-            scale(1.06);
+            scale(1.04);
     }
 
     45%{
         transform:
             rotateY(100deg)
             rotateZ(2deg)
-            scale(1.13);
+            scale(1.07);
     }
 
     70%{
         transform:
             rotateY(155deg)
             rotateZ(-1deg)
-            scale(1.05);
+            scale(1.04);
     }
 
     100%{
@@ -145,19 +143,18 @@
     }
 }
 
-/* 선택 카드 빛 효과 */
 .attendanceCard.selected .attendanceCardInner::after{
-    content:"";
     position:absolute;
-    inset:-6px;
+    inset:-4px;
     border-radius:14px;
     pointer-events:none;
     opacity:0;
     box-shadow:
         0 0 0 2px rgba(255,255,255,.9),
         0 0 10px rgba(255,255,255,.9),
-        0 0 24px rgba(255,220,150,.8),
-        0 0 40px rgba(255,190,90,.5);
+        0 0 20px rgba(255,220,150,.8),
+        0 0 30px rgba(255,190,90,.5);
+    content:"";
     animation:
         attendanceCardFlash
         .65s
@@ -165,7 +162,6 @@
         forwards;
 }
 
-/* 번쩍이는 빛 */
 @keyframes attendanceCardFlash{
     0%{
         opacity:0;
@@ -179,21 +175,20 @@
 
     35%{
         opacity:.75;
-        transform:scale(1.08);
+        transform:scale(1.06);
     }
 
     60%{
         opacity:.25;
-        transform:scale(1.12);
+        transform:scale(1.08);
     }
 
     100%{
         opacity:0;
-        transform:scale(1.16);
+        transform:scale(1.1);
     }
 }
 
-/* 카드 앞면 / 뒷면 */
 .attendanceCardFace{
     position:absolute;
     inset:0;
@@ -206,21 +201,18 @@
     -webkit-backface-visibility:hidden;
 }
 
-/* 카드 뒷면 */
 .attendanceCardBack{
     background:transparent;
 }
 
-/* 카드 뒷면 이미지 */
 .attendanceCardBack img{
+    display:block;
     width:100%;
     height:100%;
-    display:block;
-    object-fit:cover;
     border-radius:10px;
+    object-fit:cover;
 }
 
-/* 카드 앞면 */
 .attendanceCardFront{
     transform:rotateY(180deg);
     border:1px solid #D8CBB9;
@@ -228,78 +220,78 @@
     box-shadow:0 3px 8px rgba(0,0,0,.08);
 }
 
-/* 당첨 */
 .attendanceCardFront.win{
     color:#A65D3B;
 }
 
-/* 꽝 */
 .attendanceCardFront.lose{
     color:#9A8C7D;
 }
 
-/* 카드 결과 글자 */
 .attendanceCardFront strong{
     font-size:20px;
     font-weight:700;
 }
 
-/* 선택한 카드 */
 .attendanceCard.selected{
     transform:translateY(-4px);
 }
 
-/* 선택한 카드 강조 */
 .attendanceCard.selected .attendanceCardFace{
     box-shadow:
         0 0 0 3px #A65D3B,
         0 4px 12px rgba(166,93,59,.3);
 }
 
-/* 비활성 카드 */
 .attendanceCard:disabled{
     cursor:default;
 }
 
-/* 결과 팝업 */
 .attendanceCardResultPopup{
     position:fixed;
     inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:rgba(0,0,0,.25);
     z-index:10000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:100dvh;
+    padding:20px;
+    overflow:hidden;
+    box-sizing:border-box;
+    background:rgba(0,0,0,.25);
 }
 
-/* 결과 팝업 박스 */
 .attendanceCardResultBox{
-    width:260px;
+    width:100%;
+    max-width:260px;
+    margin:0 auto;
     padding:22px 20px 18px;
     border-radius:12px;
-    background:#FFFFFF;
+    box-sizing:border-box;
+    background:#FFF;
     text-align:center;
     box-shadow:0 6px 20px rgba(0,0,0,.25);
 }
 
-/* 결과 문구 */
 .attendanceCardResultMessage{
+    margin:0;
+    color:#4A4038;
     font-size:20px;
     font-weight:700;
     line-height:1.5;
-    color:#4A4038;
+    word-break:keep-all;
 }
 
-/* 결과 확인 버튼 */
 .attendanceCardResultButton{
     width:100%;
     height:40px;
     margin-top:18px;
+    padding:0;
     border:none;
     border-radius:8px;
     background:#A65D3B;
-    color:#FFFFFF;
+    color:#FFF;
     font-size:13px;
     font-weight:600;
     cursor:pointer;

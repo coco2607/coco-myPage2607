@@ -35,7 +35,10 @@
     margin:2px 6%;
 }
 #attendanceInput{
+    display:block;
     flex:1;
+    width:100%;
+    height:40px;
     min-width:0;
     min-height:40px;
     padding:9px 8px;
@@ -49,6 +52,7 @@
     line-height:20px;
     resize:none;
     overflow:hidden;
+    vertical-align:top;
 }
 #attendanceInput::placeholder{
     color:#A59A8F;
@@ -61,6 +65,7 @@
     flex-shrink:0;
     width:52px;
     height:40px;
+    padding:0;
     border:none;
     border-radius:8px;
     background:#A65D3B;
@@ -126,8 +131,15 @@
     font-size:13px;
     text-align:center;
 }
-.attendanceRewardBox{
-    width:280px;
+#attendanceRewardModal{
+    width:100%;
+    box-sizing:border-box;
+}
+#attendanceRewardModal .attendanceRewardBox{
+    width:80%;
+    max-width:280px;
+    margin:0 auto;
+    box-sizing:border-box;
     text-align:center;
 }
 .attendanceRewardBox h2{
@@ -145,10 +157,12 @@
 .attendanceRewardBox .modalButton{
     display:flex;
     justify-content:center;
+    width:100%;
 }
 #attendanceRewardOk{
     width:100%;
     height:40px;
+    padding:0;
     border:none;
     border-radius:8px;
     background:#A65D3B;

@@ -95,7 +95,7 @@ async function saveAttendance(){
     try{
         const date = koDate();
         const result = await saveTodayAttendance(nickname,date,comment);
-
+        const attendanceInput = document.getElementById("attendanceInput");
         attendanceInput.value = "";
         attendanceInput.style.height = "40px";
 
