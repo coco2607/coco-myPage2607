@@ -2,20 +2,20 @@
 import {
     appVersion,
     adminName,
-    chuseokThemePeriod
+    specialDayPeriod
 } from "../utils.js";
 import {findMemberByDeviceId} from "./checkFirebase.js";
 
 const pageStyle = document.getElementById("pageStyle");
 
-if(chuseokThemePeriod()){
+if(specialDayPeriod()){
     pageStyle.addEventListener("load",() => {
         document.documentElement.style.visibility = "visible";
     },{
         once:true
     });
 
-    pageStyle.href = "check1.css";
+    pageStyle.href = "check할로윈.css";
 }else{
     document.documentElement.style.visibility = "visible";
 }

@@ -1,4 +1,4 @@
-/* check1.css */
+/* check할로윈.css */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 *{
@@ -19,7 +19,7 @@ body{
 
 body{
     min-height:100dvh;
-    background:url("추석.webp") center bottom/cover no-repeat;
+    background:url("할로윈.webp") center bottom/cover no-repeat;
 }
 
 .layout{
@@ -59,23 +59,27 @@ body{
     height:46px;
 }
 
+/* 로딩 원 */
 .checkLoader{
     width:24px;
     height:24px;
     flex-shrink:0;
-    border:2px solid rgba(217,130,0,.22);
-    border-top-color:#D98200;
-    border-right-color:#D98200;
+    border:2px solid rgba(201,180,255,.28);
+    border-top-color:#FFFFFF;
+    border-right-color:#B99AFF;
     border-radius:50%;
     animation:checkSpin .8s linear infinite;
 }
 
+/* 자동 로그인 확인 문구 */
 .checkText{
-    color:#684516;
+    color:#FFFFFF;
     font-size:19px;
     font-weight:600;
     letter-spacing:.2px;
-    text-shadow:0 1px 3px rgba(255,255,255,.55);
+    text-shadow:
+        0 2px 5px rgba(24,7,62,.9),
+        0 0 10px rgba(150,112,255,.45);
     white-space:nowrap;
 }
 
@@ -85,6 +89,7 @@ body{
     }
 }
 
+/* 하단 */
 #footerArea{
     position:fixed;
     left:50%;
@@ -97,10 +102,10 @@ body{
     max-width:430px;
     min-height:44px;
     padding:0 15px;
-    border-top:1px solid rgba(139,94,34,.16);
-    background:rgba(255,248,231,.62);
-    backdrop-filter:blur(2px);
-    -webkit-backdrop-filter:blur(2px);
+    border-top:1px solid rgba(181,155,232,.20);
+    background:rgba(22,10,51,.68);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
     transform:translateX(-50%);
 }
 
@@ -112,14 +117,14 @@ body{
 }
 
 #footerArea .left>div{
-    color:#9A7040;
+    color:#B9A7DD;
     font-size:10.2px;
     font-weight:500;
     letter-spacing:-0.4px;
 }
 
 #footerArea a{
-    color:#A0641E;
+    color:#FFFFFF;
     font-size:12.8px;
     font-weight:600;
     letter-spacing:.4px;
@@ -134,13 +139,13 @@ body{
     display:flex;
     flex-direction:column;
     gap:1px;
-    color:#9A7040;
+    color:#B9A7DD;
     font-size:9.8px;
     text-align:right;
 }
 
 #footerArea #version{
-    color:#A0641E;
+    color:#FFFFFF;
     font-size:10.8px;
     font-weight:600;
     letter-spacing:0;

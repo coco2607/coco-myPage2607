@@ -1,4 +1,4 @@
-/* login1.css */
+/* login할로윈.css */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 *{
@@ -17,7 +17,7 @@ body{
 
 body{
     min-height:100dvh;
-    background:url("추석.webp") center bottom/cover no-repeat;
+    background:url("할로윈.webp") center bottom/cover no-repeat;
 }
 
 input{
@@ -52,28 +52,35 @@ input{
     padding-top:20px;
 }
 
+/* 제목 */
 .container h1{
     margin-bottom:18px;
-    color:#D98200;
+    color:#FFFFFF;
     font-size:28px;
     font-weight:700;
     text-shadow:
-        0 2px 4px rgba(92,58,15,.15);
+        0 2px 5px rgba(28,8,70,.9),
+        0 0 12px rgba(152,112,255,.55);
 }
 
+/* 닉네임 입력 */
 #nickname{
     width:200px;
     height:46px;
     margin-bottom:12px;
     padding:0 14px;
-    border:1px solid rgba(255,255,255,.9);
+    border:1px solid rgba(211,192,255,.85);
     border-radius:12px;
     outline:none;
-    background:rgba(255,250,238,.72);
-    color:#684516;
+    background:rgba(32,17,73,.72);
+    color:#FFFFFF;
     font-size:19px;
     text-align:center;
-    box-shadow:0 2px 8px rgba(121,78,17,.08);
+    box-shadow:
+        0 3px 12px rgba(13,4,35,.30),
+        inset 0 0 8px rgba(171,137,255,.08);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
     transition:
         background .2s,
         border-color .2s,
@@ -81,40 +88,45 @@ input{
 }
 
 #nickname::placeholder{
-    color:#775225;
+    color:#D8CBF5;
     font-size:16px;
 }
 
 #nickname:focus{
-    border-color:#E4A23A;
-    background:#FFFDF7;
-    box-shadow:0 2px 10px rgba(180,112,13,.15);
+    border-color:#B99AFF;
+    background:rgba(38,19,86,.88);
+    box-shadow:
+        0 0 0 2px rgba(174,139,255,.15),
+        0 3px 12px rgba(15,5,40,.35);
 }
 
+/* 로그인 버튼 */
 #enterBtn{
     width:200px;
     height:48px;
     border:none;
     border-radius:12px;
-    background:#D98200;
-    color:#FFF;
+    background:#F36B3D;
+    color:#FFFFFF;
     font-size:20px;
     font-weight:700;
     cursor:pointer;
-    box-shadow:0 3px 8px rgba(136,78,0,.16);
+    box-shadow:
+        0 3px 10px rgba(67,22,9,.30);
     transition:
         background .2s,
         transform .1s;
 }
 
 #enterBtn:hover{
-    background:#C57400;
+    background:#E85B2D;
 }
 
 #enterBtn:active{
     transform:translateY(1px);
 }
 
+/* 모달 배경 */
 .loginModal,
 .warningModal{
     position:fixed;
@@ -124,13 +136,16 @@ input{
     justify-content:center;
     align-items:center;
     padding:22px;
-    background:rgba(68,45,16,.48);
+    background:rgba(15,6,35,.68);
+    backdrop-filter:blur(2px);
+    -webkit-backdrop-filter:blur(2px);
 }
 
 .hidden{
     display:none;
 }
 
+/* 모달 */
 .loginBox,
 .warningBox{
     display:flex;
@@ -140,10 +155,11 @@ input{
     width:80%;
     max-width:360px;
     padding:24px 18px;
-    border:1px solid rgba(206,163,89,.25);
+    border:1px solid rgba(177,145,241,.38);
     border-radius:14px;
-    background:#FFFDF8;
-    box-shadow:0 5px 22px rgba(82,53,12,.18);
+    background:#F9F6FF;
+    box-shadow:
+        0 8px 28px rgba(11,3,31,.38);
 }
 
 .loginHeader{
@@ -156,7 +172,7 @@ input{
 }
 
 .loginHeader h2{
-    color:#5E421F;
+    color:#3D236B;
     font-size:19px;
     font-weight:700;
 }
@@ -179,7 +195,7 @@ input{
     left:2px;
     width:19px;
     height:1px;
-    background:#73522A;
+    background:#65458E;
 }
 
 .closeBtn::before{
@@ -190,20 +206,21 @@ input{
     transform:rotate(-45deg);
 }
 
+/* 모달 입력창 */
 .loginBox input{
     width:80%;
     height:34px;
     border:none;
-    border-bottom:1px solid #D8C7AA;
+    border-bottom:1px solid #C8B8E2;
     outline:none;
     background:transparent;
-    color:#4E3A21;
+    color:#34204F;
     font-size:17px;
     text-align:center;
 }
 
 .loginBox input:focus{
-    border-bottom:2px solid #D98200;
+    border-bottom:2px solid #7C55B8;
 }
 
 #memberPassword,
@@ -215,7 +232,7 @@ input{
 #memberPassword::placeholder,
 #newPw::placeholder,
 #newPwCheck::placeholder{
-    color:#A18B70;
+    color:#9682B1;
     font-size:17px;
 }
 
@@ -224,6 +241,7 @@ input{
     width:81%;
 }
 
+/* 모달 버튼 */
 #memberOkBtn,
 #pwSetOkBtn,
 #warningOk{
@@ -231,8 +249,8 @@ input{
     height:40px;
     border:none;
     border-radius:8px;
-    background:#D98200;
-    color:#FFF;
+    background:#6540A5;
+    color:#FFFFFF;
     font-size:14px;
     font-weight:600;
     cursor:pointer;
@@ -242,23 +260,24 @@ input{
 #memberOkBtn:hover,
 #pwSetOkBtn:hover,
 #warningOk:hover{
-    background:#C57400;
+    background:#55348F;
 }
 
 #loginMessage,
 #pwSetMessage{
-    color:#D4583E;
+    color:#D94B4B;
     font-size:12px;
     text-align:center;
 }
 
 #warningText{
-    color:#5C452A;
+    color:#45335E;
     font-size:15px;
     line-height:1.6;
     text-align:center;
 }
 
+/* 하단 */
 #footerArea{
     position:fixed;
     left:50%;
@@ -271,10 +290,10 @@ input{
     max-width:430px;
     min-height:44px;
     padding:0 15px;
-    border-top:1px solid rgba(139,94,34,.16);
-    background:rgba(255,248,231,.62);
-    backdrop-filter:blur(2px);
-    -webkit-backdrop-filter:blur(2px);
+    border-top:1px solid rgba(181,155,232,.20);
+    background:rgba(22,10,51,.68);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
     transform:translateX(-50%);
 }
 
@@ -286,14 +305,14 @@ input{
 }
 
 #footerArea .left>div{
-    color:#9A7040;
+    color:#B9A7DD;
     font-size:10.2px;
     font-weight:500;
     letter-spacing:-0.4px;
 }
 
 #footerArea a{
-    color:#A0641E;
+    color:#FFFFFF;
     font-size:12.8px;
     font-weight:600;
     letter-spacing:0.4px;
@@ -308,13 +327,13 @@ input{
     display:flex;
     flex-direction:column;
     gap:1px;
-    color:#9A7040;
+    color:#B9A7DD;
     font-size:9.8px;
     text-align:right;
 }
 
 #footerArea #version{
-    color:#A0641E;
+    color:#FFFFFF;
     font-size:10.8px;
     font-weight:600;
     letter-spacing:0;

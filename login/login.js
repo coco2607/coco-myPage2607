@@ -3,7 +3,7 @@ import {
     trim,
     appVersion,
     adminName,
-    chuseokThemePeriod
+    specialDayPeriod
 } from "../utils.js";
 import {
     getMember,
@@ -32,14 +32,14 @@ const warningOk = document.getElementById("warningOk");
 
 const pageStyle = document.getElementById("pageStyle");
 
-if(chuseokThemePeriod()){
+if(specialDayPeriod()){
     pageStyle.addEventListener("load",() => {
         document.documentElement.style.visibility = "visible";
     },{
         once:true
     });
 
-    pageStyle.href = "login1.css";
+    pageStyle.href = "login할로윈.css";
 }else{
     document.documentElement.style.visibility = "visible";
 }
