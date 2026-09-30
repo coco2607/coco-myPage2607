@@ -9,7 +9,15 @@ import {findMemberByDeviceId} from "./checkFirebase.js";
 const pageStyle = document.getElementById("pageStyle");
 
 if(chuseokThemePeriod()){
+    pageStyle.addEventListener("load",() => {
+        document.documentElement.style.visibility = "visible";
+    },{
+        once:true
+    });
+
     pageStyle.href = "check1.css";
+}else{
+    document.documentElement.style.visibility = "visible";
 }
 
 const minimumDisplayTime = 2400;

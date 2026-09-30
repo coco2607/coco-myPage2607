@@ -7,7 +7,6 @@ import {
     push,
     set
 } from "../../firebase.js";
-import {koDate} from "../../utils.js";
 
 const MEMBER = "으차방/member";
 const HISTORY = "으차방/history";
@@ -62,7 +61,6 @@ export async function applyPoint(mode,pointData){
         );
 
         const history = {
-            joinDate:koDate(),
             type:item.event
         };
 

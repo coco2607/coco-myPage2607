@@ -33,7 +33,15 @@ const warningOk = document.getElementById("warningOk");
 const pageStyle = document.getElementById("pageStyle");
 
 if(chuseokThemePeriod()){
+    pageStyle.addEventListener("load",() => {
+        document.documentElement.style.visibility = "visible";
+    },{
+        once:true
+    });
+
     pageStyle.href = "login1.css";
+}else{
+    document.documentElement.style.visibility = "visible";
 }
 
 

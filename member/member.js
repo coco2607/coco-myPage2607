@@ -110,9 +110,19 @@ async function showAttendance(){
 
 async function showPointHistory(){
     const pointContent = document.getElementById("pointContent");
+
     pointContent.classList.remove("hidden");
     pointLabel.textContent = "누적포인트";
-    totalPoint.textContent = `${memberUser?.totalP ?? 0}점`;
+
+    try{
+        memberUser = await loadUser(nickname);
+
+        totalPoint.textContent =
+            `${Number(memberUser?.point) || 0}점`;
+    }catch(error){
+        console.error("포인트 갱신 실패:",error);
+    }
+
     await loadPointHistory();
 }
 
