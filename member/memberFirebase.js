@@ -18,7 +18,7 @@ export async function loadUser(nickname){
     const data = snapshot.val();
 
     return {
-        totalP:data.point !== undefined && data.point !== ""
+        point:data.point !== undefined && data.point !== ""
             ? Number(data.point)
             : 0,
         last:data.lastPosition !== undefined
