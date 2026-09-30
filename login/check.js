@@ -15,7 +15,7 @@ if(specialDayPeriod()){
         once:true
     });
 
-    pageStyle.href = "check할로윈.css";
+    pageStyle.href = "check한글날.css";
 }else{
     document.documentElement.style.visibility = "visible";
 }

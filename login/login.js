@@ -39,7 +39,7 @@ if(specialDayPeriod()){
         once:true
     });
 
-    pageStyle.href = "login할로윈.css";
+    pageStyle.href = "login한글날.css";
 }else{
     document.documentElement.style.visibility = "visible";
 }
