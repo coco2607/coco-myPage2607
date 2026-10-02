@@ -265,7 +265,7 @@ export async function rewardGamePoint(
         historyRef,
         {
             getP:1,
-            type:`${monthKey.substring(2).replace("-","")} 월간 미니 게임`
+            type:`${monthKey.substring(2).replace("-","")}월간 미니 게임`
         }
     );
 
