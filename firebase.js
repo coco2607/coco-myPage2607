@@ -13,6 +13,7 @@ import {
     remove,
     push,
     onValue,
+    onChildAdded,
     onDisconnect,
     serverTimestamp,
     runTransaction,
@@ -21,8 +22,6 @@ import {
     equalTo
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
-
-// Firebase 설정
 const firebaseConfig = {
     apiKey: "AIzaSyDJNLTppKlcIJrLS7F1gu6PYOyVmnKtsfU",
     authDomain: "wany2608.firebaseapp.com",
@@ -33,13 +32,9 @@ const firebaseConfig = {
     appId: "1:270617158648:web:6642e85eeb4155924bec0d"
 };
 
-
-// Firebase 초기화
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-
-// Firebase 함수 내보내기
 export {
     db,
     ref,
@@ -49,6 +44,7 @@ export {
     remove,
     push,
     onValue,
+    onChildAdded,
     onDisconnect,
     serverTimestamp,
     runTransaction,
