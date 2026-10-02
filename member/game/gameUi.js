@@ -53,7 +53,7 @@ export function createGameUI(){
         </div>
 
         <div class="gameChatWrite">
-            <textarea id="gameChatInput" maxlength="100" rows="1" placeholder="댓글을 남겨주세요."></textarea>
+            <textarea id="gameChatInput" maxlength="100" rows="1" placeholder="실시간 채팅"></textarea>
             <button type="button" id="gameChatBtn">등록</button>
         </div>
 
