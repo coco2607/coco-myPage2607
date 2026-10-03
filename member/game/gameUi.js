@@ -68,6 +68,7 @@ export function createGameUI(){
     `;
 
     createGameResultModal();
+    createGameRoundResultModal();
     createGameRuleModal();
 
     const ruleOpenBtn = document.getElementById("gameRuleOpen");
@@ -170,21 +171,84 @@ export function updateGameTop({
     totalPoint.textContent = "선택 대기";
 }
 
-export function showGameResultPopup(message){
+export function showGameResultPopup(message,round,onViewResult){
     return new Promise(resolve => {
         const modal = document.getElementById("gameResultModal");
         const messageElement = document.getElementById("gameResultMessage");
-        const okBtn = document.getElementById("gameResultOk");
+        const closeBtn = document.getElementById("gameResultClose");
+        const resultBtn = document.getElementById("gameResultView");
 
-        if(!modal || !messageElement || !okBtn){
+        if(!modal || !messageElement || !closeBtn || !resultBtn){
             resolve();
             return;
         }
 
         messageElement.innerHTML = message;
+        resultBtn.textContent = `Round${round} 결과보기`;
+        resultBtn.classList.toggle("hidden",!round || typeof onViewResult !== "function");
         modal.classList.remove("hidden");
 
-        okBtn.onclick = () => {
+        closeBtn.onclick = () => {
+            modal.classList.add("hidden");
+            resolve();
+        };
+
+        resultBtn.onclick = async () => {
+            modal.classList.add("hidden");
+
+            if(typeof onViewResult === "function"){
+                await onViewResult(round);
+            }
+
+            resolve();
+        };
+    });
+}
+
+export function showGameRoundResultPopup(round,players,choices){
+    return new Promise(resolve => {
+        const modal = document.getElementById("gameRoundResultModal");
+        const title = document.getElementById("gameRoundResultTitle");
+        const list = document.getElementById("gameRoundResultList");
+        const closeBtn = document.getElementById("gameRoundResultClose");
+
+        if(!modal || !title || !list || !closeBtn){
+            resolve();
+            return;
+        }
+
+        title.textContent = `Round${round} 결과`;
+        list.innerHTML = "";
+
+        choices.forEach(choice => {
+            const column = document.createElement("div");
+            const choiceTitle = document.createElement("div");
+            const names = document.createElement("div");
+
+            column.className = "gameRoundResultColumn";
+            choiceTitle.className = "gameRoundResultChoice";
+            names.className = "gameRoundResultNames";
+
+            choiceTitle.textContent = choice;
+
+            Object.entries(players || {}).forEach(([nickname,selected]) => {
+                if(selected !== choice){
+                    return;
+                }
+
+                const name = document.createElement("div");
+                name.textContent = nickname;
+                names.appendChild(name);
+            });
+
+            column.appendChild(choiceTitle);
+            column.appendChild(names);
+            list.appendChild(column);
+        });
+
+        modal.classList.remove("hidden");
+
+        closeBtn.onclick = () => {
             modal.classList.add("hidden");
             resolve();
         };
@@ -255,6 +319,46 @@ export function showGameRulePopup(){
     });
 }
 
+function createGameResultModal(){
+    if(document.getElementById("gameResultModal")){
+        return;
+    }
+
+    const modal = document.createElement("div");
+    modal.id = "gameResultModal";
+    modal.className = "modal hidden";
+
+    modal.innerHTML = `
+        <div class="modalBox gameResultBox">
+            <button type="button" id="gameResultClose" class="gameResultClose">×</button>
+            <p id="gameResultMessage"></p>
+            <button type="button" id="gameResultView" class="gameResultView hidden"></button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+function createGameRoundResultModal(){
+    if(document.getElementById("gameRoundResultModal")){
+        return;
+    }
+
+    const modal = document.createElement("div");
+    modal.id = "gameRoundResultModal";
+    modal.className = "modal hidden";
+
+    modal.innerHTML = `
+        <div class="modalBox gameRoundResultBox">
+            <button type="button" id="gameRoundResultClose" class="gameResultClose">×</button>
+            <h2 id="gameRoundResultTitle"></h2>
+            <div id="gameRoundResultList" class="gameRoundResultList"></div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+
 function createGameRuleModal(){
     if(document.getElementById("gameRuleModal")){
         return;
@@ -275,27 +379,6 @@ function createGameRuleModal(){
                 <button type="button" id="gameRulePrev">&lt;</button>
                 <button type="button" id="gameRuleNext">&gt;</button>
                 <button type="button" id="gameRuleStart" class="hidden">게임 시작</button>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-}
-
-function createGameResultModal(){
-    if(document.getElementById("gameResultModal")){
-        return;
-    }
-
-    const modal = document.createElement("div");
-    modal.id = "gameResultModal";
-    modal.className = "modal hidden";
-
-    modal.innerHTML = `
-        <div class="modalBox gameResultBox">
-            <p id="gameResultMessage"></p>
-            <div class="modalButton">
-                <button type="button" id="gameResultOk">확인</button>
             </div>
         </div>
     `;

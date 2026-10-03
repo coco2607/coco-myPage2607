@@ -241,21 +241,24 @@
 }
 
 #gameResultModal,
+#gameRoundResultModal,
 #gameRuleModal{
     width:100%;
     box-sizing:border-box;
 }
 
 #gameResultModal .gameResultBox{
+    position:relative;
     width:80%;
     max-width:280px;
     margin:0 auto;
+    padding:28px 20px 20px;
     box-sizing:border-box;
     text-align:center;
 }
 
 #gameResultMessage{
-    margin:0 0 24px;
+    margin:0 0 20px;
     color:#4A4038;
     font-size:15px;
     font-weight:600;
@@ -263,13 +266,27 @@
     text-align:center;
 }
 
-.gameResultBox .modalButton{
-    display:flex;
-    justify-content:center;
-    width:100%;
+.gameResultClose{
+    position:absolute;
+    top:8px;
+    right:10px;
+    width:28px;
+    height:28px;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:#8F4E31;
+    font-size:24px;
+    font-weight:400;
+    line-height:28px;
+    cursor:pointer;
 }
 
-#gameResultOk{
+.gameResultClose:hover{
+    color:#A65D3B;
+}
+
+#gameResultView{
     width:100%;
     height:40px;
     padding:0;
@@ -277,13 +294,69 @@
     border-radius:8px;
     background:#A65D3B;
     color:#FFF;
-    font-size:15px;
+    font-size:14px;
     font-weight:600;
     cursor:pointer;
 }
 
-#gameResultOk:hover{
+#gameResultView:hover{
     background:#8F4E31;
+}
+
+#gameResultView.hidden{
+    display:none;
+}
+
+#gameRoundResultModal .gameRoundResultBox{
+    position:relative;
+    width:92%;
+    max-width:380px;
+    margin:0 auto;
+    padding:26px 14px 22px;
+    box-sizing:border-box;
+    text-align:center;
+}
+
+.gameRoundResultBox h2{
+    margin:0 0 18px;
+    color:#A65D3B;
+    font-size:17px;
+    font-weight:700;
+}
+
+.gameRoundResultList{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:4px;
+    width:100%;
+}
+
+.gameRoundResultColumn{
+    min-width:0;
+    text-align:center;
+}
+
+.gameRoundResultChoice{
+    margin:0 0 8px;
+    padding:6px 0;
+    border-bottom:1px solid #D8CBB9;
+    color:#A65D3B;
+    font-size:15px;
+    font-weight:700;
+}
+
+.gameRoundResultNames{
+    color:#4A4038;
+    font-size:12.5px;
+    font-weight:500;
+    line-height:22px;
+}
+
+.gameRoundResultNames div{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
 #gameRuleModal .gameRuleBox{

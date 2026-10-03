@@ -33,6 +33,7 @@ import {
     renderChoiceState,
     updateGameTop,
     showGameResultPopup,
+    showGameRoundResultPopup,
     showGameRulePopup
 } from "./gameUi.js";
 
@@ -101,51 +102,36 @@ async function processGameTab(){
     gameProcessing = true;
 
     try{
-        const previousResult = await processPreviousGameResult(
-            nickname,
-            gameKey,
-            currentRound
-        );
+        const previousResult = await processPreviousGameResult(nickname,gameKey,currentRound);
 
         if(previousResult?.message){
-            await showGameResultPopup(previousResult.message);
+            await showGameResultPopup(
+                previousResult.message,
+                previousResult.round,
+                round => showRoundResult(previousResult.gameKey,round)
+            );
         }
 
-        await processDueGameResults(
-            gameKey,
-            currentRound
-        );
+        await processDueGameResults(gameKey,currentRound);
 
-        memberGame = await loadMemberGame(
-            nickname,
-            gameKey
-        );
+        memberGame = await loadMemberGame(nickname,gameKey);
+        gameEnd = await loadGameEnd(gameKey);
 
-        gameEnd = await loadGameEnd(
-            gameKey
-        );
-
-        const results = await processMemberResults(
-            nickname,
-            gameKey,
-            currentRound
-        );
+        const results = await processMemberResults(nickname,gameKey,currentRound);
 
         for(const result of results){
             if(result?.message){
                 await showGameResultPopup(
-                    result.message
+                    result.message,
+                    result.round,
+                    round => showRoundResult(gameKey,round)
                 );
             }
         }
 
         await loadGameState();
 
-        if(
-            currentRound === 1 &&
-            !selectedChoice &&
-            !ruleShown
-        ){
+        if(currentRound === 1 && !selectedChoice && !ruleShown){
             ruleShown = true;
             await showGameRulePopup();
         }
@@ -153,6 +139,22 @@ async function processGameTab(){
         console.error("게임 처리 오류:",error);
     }finally{
         gameProcessing = false;
+    }
+}
+
+async function showRoundResult(targetGameKey,round){
+    try{
+        const roundData = await loadGameRound(targetGameKey,round);
+        const players = roundData?.player || {};
+        const choices = getRoundChoices(round);
+
+        await showGameRoundResultPopup(
+            round,
+            players,
+            choices
+        );
+    }catch(error){
+        console.error("라운드 결과 불러오기 오류:",error);
     }
 }
 
@@ -202,15 +204,8 @@ async function confirmChoice(){
             return;
         }
 
-        if(
-            currentRound === 1 &&
-            memberGame?.alive !== true
-        ){
-            await setGameAlive(
-                nickname,
-                gameKey,
-                true
-            );
+        if(currentRound === 1 && memberGame?.alive !== true){
+            await setGameAlive(nickname,gameKey,true);
         }
 
         await loadGameState();
