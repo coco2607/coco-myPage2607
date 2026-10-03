@@ -135,3 +135,19 @@ export async function uploadMembers(memberList){
         );
     }
 }
+
+export async function deleteMember(nickname){
+    if(!nickname){
+        return;
+    }
+
+    const updates = {};
+
+    updates[`${MEMBER}/${nickname}`] = null;
+    updates[`${HISTORY}/${nickname}`] = null;
+
+    await update(
+        ref(db),
+        updates
+    );
+}
