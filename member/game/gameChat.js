@@ -3,14 +3,12 @@ import {
     saveGameChat,
     listenGameChat
 } from "./gameFirebase.js";
+
 import {trim} from "../../utils.js";
 
 let stopChat = null;
 
-export function initGameChat(
-    monthKey,
-    nickname
-){
+export function initGameChat(gameKey,nickname){
     const chatInput = document.getElementById("gameChatInput");
     const chatBtn = document.getElementById("gameChatBtn");
 
@@ -19,10 +17,7 @@ export function initGameChat(
     }
 
     chatBtn.addEventListener("click",() => {
-        saveChat(
-            monthKey,
-            nickname
-        );
+        saveChat(gameKey,nickname);
     });
 
     chatInput.addEventListener("input",resizeChatInput);
@@ -30,20 +25,14 @@ export function initGameChat(
     chatInput.addEventListener("keydown",event => {
         if(event.key === "Enter"){
             event.preventDefault();
-
-            saveChat(
-                monthKey,
-                nickname
-            );
+            saveChat(gameKey,nickname);
         }
     });
 
-    startGameChat(monthKey);
+    startGameChat(gameKey);
 }
 
-export function startGameChat(
-    monthKey
-){
+export function startGameChat(gameKey){
     const chatList = document.getElementById("gameChatList");
 
     if(!chatList){
@@ -57,22 +46,16 @@ export function startGameChat(
         stopChat = null;
     }
 
-    stopChat = listenGameChat(
-        monthKey,
-        data => {
-            addGameChat(
-                data.nickname,
-                data.comment,
-                data.time
-            );
-        }
-    );
+    stopChat = listenGameChat(gameKey,data => {
+        addGameChat(
+            data.nickname,
+            data.comment,
+            data.time
+        );
+    });
 }
 
-async function saveChat(
-    monthKey,
-    nickname
-){
+async function saveChat(gameKey,nickname){
     const input = document.getElementById("gameChatInput");
     const button = document.getElementById("gameChatBtn");
 
@@ -90,14 +73,10 @@ async function saveChat(
     button.disabled = true;
 
     try{
-        await saveGameChat(
-            nickname,
-            monthKey,
-            comment
-        );
-
+        await saveGameChat(nickname,gameKey,comment);
         input.value = "";
         input.style.height = "40px";
+        input.focus();
     }catch(error){
         console.error("게임 채팅 등록 오류:",error);
     }finally{
@@ -105,16 +84,14 @@ async function saveChat(
     }
 }
 
-function addGameChat(
-    nickname,
-    comment,
-    time
-){
+function addGameChat(nickname,comment,time){
     const list = document.getElementById("gameChatList");
 
     if(!list){
         return;
     }
+
+    const nearBottom = isNearBottom(list);
 
     const item = document.createElement("div");
     const nicknameElement = document.createElement("div");
@@ -135,6 +112,14 @@ function addGameChat(
     item.appendChild(timeElement);
 
     list.appendChild(item);
+
+    if(nearBottom){
+        list.scrollTop = list.scrollHeight;
+    }
+}
+
+function isNearBottom(list){
+    return list.scrollHeight - list.scrollTop - list.clientHeight <= 60;
 }
 
 function resizeChatInput(){
@@ -145,8 +130,7 @@ function resizeChatInput(){
     }
 
     input.style.height = "auto";
-    input.style.height =
-        `${Math.max(input.scrollHeight,40)}px`;
+    input.style.height = `${Math.max(input.scrollHeight,40)}px`;
 }
 
 function formatGameTime(value){

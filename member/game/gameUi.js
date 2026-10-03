@@ -44,7 +44,10 @@ export function createGameUI(){
     miniGame.innerHTML = `
         <div class="gameTitleRow">
             <button type="button" id="gameRuleOpen" class="gameRuleOpen">?</button>
-            <div id="gameTitle" class="gameTitle"></div>
+            <div id="gameTitle" class="gameTitle">
+                <span id="gameTitleMain" class="gameTitleMain"></span>
+                <span id="gameTitleCount" class="gameTitleCount"></span>
+            </div>
         </div>
 
         <div class="gameChoiceArea">
@@ -76,14 +79,16 @@ export function createGameUI(){
     }
 }
 
-export function setGameTitle(round){
-    const gameTitle = document.getElementById("gameTitle");
+export function setGameTitle(round,count = 0){
+    const titleMain = document.getElementById("gameTitleMain");
+    const titleCount = document.getElementById("gameTitleCount");
 
-    if(!gameTitle){
+    if(!titleMain || !titleCount){
         return;
     }
 
-    gameTitle.textContent = `Round ${round} : ${roundMessages[round] || ""}`;
+    titleMain.textContent = `Round ${round} : ${roundMessages[round] || ""}`;
+    titleCount.textContent = `(${count}명 참여)`;
 }
 
 export function bindGameChoiceEvents(onChoice,onConfirm){
@@ -139,15 +144,15 @@ export function updateGameTop({
         return;
     }
 
+    pointLabel.textContent = `Round ${currentRound}`;
+
     if(!memberGame){
-        pointLabel.textContent = `Round ${currentRound}`;
         totalPoint.textContent = currentRound === 1 ? "선택 대기" : "미참가";
         return;
     }
 
     if(memberGame.alive === false){
-        if(currentRound === 1 && !memberGame.result1){
-            pointLabel.textContent = "Round 1";
+        if(currentRound === 1 && memberGame.result1 !== true){
             totalPoint.textContent = "선택 대기";
             return;
         }
@@ -158,12 +163,10 @@ export function updateGameTop({
     }
 
     if(selectedChoice){
-        pointLabel.textContent = `R${currentRound} 선택`;
-        totalPoint.textContent = selectedChoice;
+        totalPoint.textContent = `${selectedChoice} 선택`;
         return;
     }
 
-    pointLabel.textContent = `Round ${currentRound}`;
     totalPoint.textContent = "선택 대기";
 }
 

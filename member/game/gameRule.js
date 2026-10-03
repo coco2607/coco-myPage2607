@@ -20,6 +20,8 @@ export function getRoundChoices(round){
 }
 
 export function canSelectRound(memberGame,currentRound,gameEnd){
+    currentRound = Number(currentRound);
+
     if(gameEnd){
         return false;
     }
@@ -48,22 +50,21 @@ export function canSelectChoice(round,choice){
 }
 
 export async function ensurePreviousRoundResults(gameKey,currentRound){
+    currentRound = Number(currentRound);
+
     if(currentRound <= 1){
         return null;
     }
 
-    let end = await loadGameEnd(gameKey);
+    const savedEnd = await loadGameEnd(gameKey);
 
-    if(end){
-        await rewardWinners(gameKey,end);
-        return end;
+    if(savedEnd){
+        await rewardWinners(gameKey,savedEnd);
+        return savedEnd;
     }
 
     for(let round = 1; round < currentRound; round++){
-        const result = await ensureRoundResult(
-            gameKey,
-            round
-        );
+        const result = await ensureRoundResult(gameKey,round);
 
         if(result?.end){
             return result.end;
@@ -92,11 +93,7 @@ export async function ensureRoundResult(gameKey,round){
         };
     }
 
-    const roundData = await loadGameRound(
-        gameKey,
-        round
-    );
-
+    const roundData = await loadGameRound(gameKey,round);
     const players = roundData?.player || {};
     const choices = getRoundChoices(round);
 
@@ -118,23 +115,29 @@ export async function ensureRoundResult(gameKey,round){
     let die = roundData?.die || {};
 
     if(Object.keys(die).length === 0){
-        const counts = countChoices(
-            players,
-            choices
-        );
-
+        const counts = countChoices(players,choices);
         const maxCount = Math.max(
-            ...choices.map(choice => {
-                return counts[choice] || 0;
-            })
+            ...choices.map(choice => counts[choice] || 0)
         );
 
         const dieChoices = choices.filter(choice => {
-            return (
-                maxCount > 0 &&
-                counts[choice] === maxCount
-            );
+            return maxCount > 0 && counts[choice] === maxCount;
         });
+
+        if(dieChoices.length === 0){
+            const end = await saveGameEnd(
+                gameKey,
+                round,
+                "noSurvivor",
+                []
+            );
+
+            return {
+                die:{},
+                survivors:[],
+                end
+            };
+        }
 
         die = await saveRoundDie(
             gameKey,
@@ -145,10 +148,7 @@ export async function ensureRoundResult(gameKey,round){
 
     const survivors = Object.entries(players)
         .filter(([,choice]) => {
-            return (
-                choices.includes(choice) &&
-                die[choice] !== true
-            );
+            return choices.includes(choice) && die[choice] !== true;
         })
         .map(([nickname]) => nickname);
 
@@ -156,9 +156,7 @@ export async function ensureRoundResult(gameKey,round){
         const end = await saveGameEnd(
             gameKey,
             round,
-            survivors.length === 0
-                ? "noSurvivor"
-                : "survivor",
+            survivors.length === 0 ? "noSurvivor" : "survivor",
             survivors
         );
 
@@ -178,16 +176,14 @@ export async function ensureRoundResult(gameKey,round){
     };
 }
 
-export async function getRoundStatus(
-    gameKey,
-    round,
-    nickname
-){
-    const roundData = await loadGameRound(
-        gameKey,
-        round
-    );
+export async function getRoundStatus(gameKey,round,nickname){
+    round = Number(round);
 
+    if(round < 1 || round > 4){
+        return "pending";
+    }
+
+    const roundData = await loadGameRound(gameKey,round);
     const players = roundData?.player || {};
     const die = roundData?.die || {};
     const choice = players[nickname];
@@ -215,11 +211,7 @@ export async function settleFinalRound(gameKey){
         return savedEnd;
     }
 
-    const roundData = await loadGameRound(
-        gameKey,
-        5
-    );
-
+    const roundData = await loadGameRound(gameKey,5);
     const players = roundData?.player || {};
     const choices = getRoundChoices(5);
 
@@ -232,10 +224,7 @@ export async function settleFinalRound(gameKey){
         );
     }
 
-    const counts = countChoices(
-        players,
-        choices
-    );
+    const counts = countChoices(players,choices);
 
     const usedCounts = choices
         .map(choice => counts[choice])
@@ -253,16 +242,11 @@ export async function settleFinalRound(gameKey){
     const minCount = Math.min(...usedCounts);
 
     const winChoices = choices.filter(choice => {
-        return (
-            counts[choice] > 0 &&
-            counts[choice] === minCount
-        );
+        return counts[choice] > 0 && counts[choice] === minCount;
     });
 
     const winners = Object.entries(players)
-        .filter(([,choice]) => {
-            return winChoices.includes(choice);
-        })
+        .filter(([,choice]) => winChoices.includes(choice))
         .map(([nickname]) => nickname);
 
     const end = await saveGameEnd(
@@ -299,9 +283,7 @@ function countChoices(players,choices){
 }
 
 async function rewardWinners(gameKey,end){
-    const winners = Object.keys(
-        end?.winners || {}
-    );
+    const winners = Object.keys(end?.winners || {});
 
     if(winners.length === 0){
         return;
@@ -309,10 +291,7 @@ async function rewardWinners(gameKey,end){
 
     await Promise.all(
         winners.map(nickname => {
-            return rewardGamePoint(
-                nickname,
-                gameKey
-            );
+            return rewardGamePoint(nickname,gameKey);
         })
     );
 }

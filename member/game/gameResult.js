@@ -12,9 +12,7 @@ import {
     settleFinalRound
 } from "./gameRule.js";
 
-import {
-    getPreviousGameKey
-} from "./gameState.js";
+import {getPreviousGameKey} from "./gameState.js";
 
 export async function processDueGameResults(gameKey,currentRound){
     if(currentRound === 1){
@@ -34,10 +32,7 @@ export async function processDueGameResults(gameKey,currentRound){
         return await settleFinalRound(previousGameKey);
     }
 
-    return await ensurePreviousRoundResults(
-        gameKey,
-        currentRound
-    );
+    return await ensurePreviousRoundResults(gameKey,currentRound);
 }
 
 export async function processPreviousGameResult(nickname,gameKey,currentRound){
@@ -67,12 +62,7 @@ export async function processPreviousGameResult(nickname,gameKey,currentRound){
     const winner = end.winners?.[nickname] === true;
 
     if(winner){
-        await saveMemberRoundResult(
-            nickname,
-            previousGameKey,
-            round,
-            true
-        );
+        await saveMemberRoundResult(nickname,previousGameKey,round,true);
 
         return {
             type:"winner",
@@ -82,18 +72,32 @@ export async function processPreviousGameResult(nickname,gameKey,currentRound){
         };
     }
 
-    const status = await getRoundStatus(
-        previousGameKey,
-        round,
-        nickname
-    );
+    if(round === 5){
+        await saveMemberRoundResult(nickname,previousGameKey,round,false);
 
-    await saveMemberRoundResult(
-        nickname,
-        previousGameKey,
-        round,
-        false
-    );
+        const roundData = await loadGameRound(previousGameKey,5);
+        const choice = roundData?.player?.[nickname];
+
+        if(!choice){
+            return {
+                type:"miss",
+                round,
+                gameKey:previousGameKey,
+                message:"Round5 미참가로 탈락하였습니다."
+            };
+        }
+
+        return {
+            type:"finalFail",
+            round,
+            gameKey:previousGameKey,
+            message:"최종 생존에 실패했습니다."
+        };
+    }
+
+    const status = await getRoundStatus(previousGameKey,round,nickname);
+
+    await saveMemberRoundResult(nickname,previousGameKey,round,false);
 
     if(status === "miss"){
         return {
@@ -101,15 +105,6 @@ export async function processPreviousGameResult(nickname,gameKey,currentRound){
             round,
             gameKey:previousGameKey,
             message:`Round${round} 미참가로 탈락하였습니다.`
-        };
-    }
-
-    if(round === 5){
-        return {
-            type:"finalFail",
-            round,
-            gameKey:previousGameKey,
-            message:"최종 생존에 실패했습니다."
         };
     }
 
@@ -122,20 +117,16 @@ export async function processPreviousGameResult(nickname,gameKey,currentRound){
 }
 
 export async function processMemberResults(nickname,gameKey,currentRound){
-    let memberGame = await loadMemberGame(
-        nickname,
-        gameKey
-    );
+    let memberGame = await loadMemberGame(nickname,gameKey);
 
     if(!memberGame){
         return [];
     }
 
     const gameEnd = await loadGameEnd(gameKey);
-
     const lastRound = gameEnd
-        ? Math.min(Number(gameEnd.round),currentRound - 1)
-        : currentRound - 1;
+        ? Math.min(Number(gameEnd.round),currentRound - 1,4)
+        : Math.min(currentRound - 1,4);
 
     if(lastRound < 1){
         return [];
@@ -154,28 +145,16 @@ export async function processMemberResults(nickname,gameKey,currentRound){
             continue;
         }
 
-        const status = await getRoundStatus(
-            gameKey,
-            round,
-            nickname
-        );
+        const status = await getRoundStatus(gameKey,round,nickname);
 
         if(status === "pending"){
             break;
         }
 
-        const winner =
-            gameEnd &&
-            Number(gameEnd.round) === round &&
-            gameEnd.winners?.[nickname] === true;
+        const winner = gameEnd && Number(gameEnd.round) === round && gameEnd.winners?.[nickname] === true;
 
         if(winner){
-            await saveMemberRoundResult(
-                nickname,
-                gameKey,
-                round,
-                true
-            );
+            await saveMemberRoundResult(nickname,gameKey,round,true);
 
             results.push({
                 type:"winner",
@@ -183,21 +162,11 @@ export async function processMemberResults(nickname,gameKey,currentRound){
                 message:"최종 생존자로 1P 획득하였습니다."
             });
 
-            memberGame = await loadMemberGame(
-                nickname,
-                gameKey
-            );
-
             break;
         }
 
         if(status === "miss"){
-            await saveMemberRoundResult(
-                nickname,
-                gameKey,
-                round,
-                false
-            );
+            await saveMemberRoundResult(nickname,gameKey,round,false);
 
             results.push({
                 type:"miss",
@@ -209,12 +178,7 @@ export async function processMemberResults(nickname,gameKey,currentRound){
         }
 
         if(status === "die"){
-            await saveMemberRoundResult(
-                nickname,
-                gameKey,
-                round,
-                false
-            );
+            await saveMemberRoundResult(nickname,gameKey,round,false);
 
             results.push({
                 type:"die",
@@ -226,12 +190,17 @@ export async function processMemberResults(nickname,gameKey,currentRound){
         }
 
         if(status === "survive"){
-            await saveMemberRoundResult(
-                nickname,
-                gameKey,
-                round,
-                true
-            );
+            await saveMemberRoundResult(nickname,gameKey,round,true);
+
+            if(gameEnd && Number(gameEnd.round) === round){
+                results.push({
+                    type:"winner",
+                    round,
+                    message:"최종 생존자로 1P 획득하였습니다."
+                });
+
+                break;
+            }
 
             results.push({
                 type:"survive",
@@ -239,10 +208,7 @@ export async function processMemberResults(nickname,gameKey,currentRound){
                 message:`생존하셨습니다.<br>Round${round + 1}에 진출합니다.`
             });
 
-            memberGame = await loadMemberGame(
-                nickname,
-                gameKey
-            );
+            memberGame = await loadMemberGame(nickname,gameKey);
         }
     }
 

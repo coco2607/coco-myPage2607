@@ -2,7 +2,7 @@
 import {
     ensureMemberMiniGame,
     loadMemberGame,
-    loadGamePlayerChoice,
+    loadGameRound,
     loadGameEnd,
     saveGameChoice,
     setGameAlive
@@ -64,7 +64,6 @@ async function initGame(){
     gameKey = getGameKey(date);
     currentRound = getCurrentRound(date);
 
-    setGameTitle(currentRound);
     bindGameChoiceEvents(selectChoice,confirmChoice);
     initGameChat(gameKey,nickname);
     bindTabEvent();
@@ -81,7 +80,15 @@ async function initGame(){
 async function loadGameState(){
     memberGame = await loadMemberGame(nickname,gameKey);
     gameEnd = await loadGameEnd(gameKey);
-    selectedChoice = await loadGamePlayerChoice(nickname,gameKey,currentRound) || "";
+
+    const roundData = await loadGameRound(gameKey,currentRound);
+
+    selectedChoice = roundData?.player?.[nickname] || "";
+
+    setGameTitle(
+        currentRound,
+        Number(roundData?.count) || 0
+    );
 
     renderGame();
 }

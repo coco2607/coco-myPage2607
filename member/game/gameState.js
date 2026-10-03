@@ -1,5 +1,4 @@
 // gameState.js
-
 export function getGameKey(date){
     const target = parseDate(date);
     const day = target.getUTCDay();

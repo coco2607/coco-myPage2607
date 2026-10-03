@@ -11,41 +11,19 @@ import {
 
 const nickname = sessionStorage.getItem("nickname");
 
-const memberNickname =
-    document.getElementById("memberNickname");
+const memberNickname = document.getElementById("memberNickname");
+const pointLabel = document.getElementById("pointLabel");
+const totalPoint = document.getElementById("totalPoint");
+const historyList = document.getElementById("historyList");
+const boardPosition = document.getElementById("boardPosition");
+const contentTabs = document.querySelectorAll(".contentTab");
+const tabContents = document.querySelectorAll(".tabContent");
+const adminLoginBtn = document.getElementById("adminLoginBtn");
+const adminModal = document.getElementById("adminModal");
+const adminPassword = document.getElementById("adminPassword");
+const adminMessage = document.getElementById("adminMessage");
+const adminCancelBtn = document.getElementById("adminCancelBtn");
 
-const pointLabel =
-    document.getElementById("pointLabel");
-
-const totalPoint =
-    document.getElementById("totalPoint");
-
-const historyList =
-    document.getElementById("historyList");
-
-const boardPosition =
-    document.getElementById("boardPosition");
-
-const contentTabs =
-    document.querySelectorAll(".contentTab");
-
-const tabContents =
-    document.querySelectorAll(".tabContent");
-
-const adminLoginBtn =
-    document.getElementById("adminLoginBtn");
-
-const adminModal =
-    document.getElementById("adminModal");
-
-const adminPassword =
-    document.getElementById("adminPassword");
-
-const adminMessage =
-    document.getElementById("adminMessage");
-
-const adminCancelBtn =
-    document.getElementById("adminCancelBtn");
 
 let memberUser = null;
 
