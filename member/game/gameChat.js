@@ -7,6 +7,7 @@ import {
 import {trim} from "../../utils.js";
 
 let stopChat = null;
+let chatData = [];
 
 export function initGameChat(gameKey,nickname){
     const chatInput = document.getElementById("gameChatInput");
@@ -40,6 +41,7 @@ export function startGameChat(gameKey){
     }
 
     chatList.innerHTML = "";
+    chatData = [];
 
     if(stopChat){
         stopChat();
@@ -47,11 +49,8 @@ export function startGameChat(gameKey){
     }
 
     stopChat = listenGameChat(gameKey,data => {
-        addGameChat(
-            data.nickname,
-            data.comment,
-            data.time
-        );
+        chatData.push(data);
+        renderGameChat();
     });
 }
 
@@ -84,15 +83,50 @@ async function saveChat(gameKey,nickname){
     }
 }
 
-function addGameChat(nickname,comment,time){
+function renderGameChat(){
     const list = document.getElementById("gameChatList");
 
     if(!list){
         return;
     }
 
-    const nearBottom = isNearBottom(list);
+    list.innerHTML = "";
 
+    const sorted = [...chatData].sort((a,b) => {
+        return Number(b.time) - Number(a.time);
+    });
+
+    let lastDate = "";
+
+    sorted.forEach(data => {
+        const dateKey = formatGameDateKey(data.time);
+
+        if(dateKey !== lastDate){
+            addGameChatDate(list,data.time);
+            lastDate = dateKey;
+        }
+
+        addGameChat(
+            list,
+            data.nickname,
+            data.comment,
+            data.time
+        );
+    });
+
+    list.scrollTop = 0;
+}
+
+function addGameChatDate(list,time){
+    const dateElement = document.createElement("div");
+
+    dateElement.className = "gameChatDate";
+    dateElement.textContent = formatGameDate(time);
+
+    list.appendChild(dateElement);
+}
+
+function addGameChat(list,nickname,comment,time){
     const item = document.createElement("div");
     const nicknameElement = document.createElement("div");
     const commentElement = document.createElement("div");
@@ -112,14 +146,6 @@ function addGameChat(nickname,comment,time){
     item.appendChild(timeElement);
 
     list.appendChild(item);
-
-    if(nearBottom){
-        list.scrollTop = list.scrollHeight;
-    }
-}
-
-function isNearBottom(list){
-    return list.scrollHeight - list.scrollTop - list.clientHeight <= 60;
 }
 
 function resizeChatInput(){
@@ -133,18 +159,41 @@ function resizeChatInput(){
     input.style.height = `${Math.max(input.scrollHeight,40)}px`;
 }
 
-function formatGameTime(value){
-    if(!value){
-        return "";
-    }
-
+function formatGameDateKey(value){
     const date = new Date(Number(value));
 
     if(isNaN(date.getTime())){
         return "";
     }
 
-    return `${String(date.getHours()).padStart(2,"0")}:${String(date.getMinutes()).padStart(2,"0")}`;
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
+function formatGameDate(value){
+    const date = new Date(Number(value));
+
+    if(isNaN(date.getTime())){
+        return "";
+    }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2,"0");
+    const day = String(date.getDate()).padStart(2,"0");
+
+    return `${year}년 ${month}월 ${day}일`;
+}
+
+function formatGameTime(value){
+    const date = new Date(Number(value));
+
+    if(isNaN(date.getTime())){
+        return "";
+    }
+
+    const hour = String(date.getHours()).padStart(2,"0");
+    const minute = String(date.getMinutes()).padStart(2,"0");
+
+    return `${hour}:${minute}`;
 }
 
 export function stopGameChat(){
@@ -152,4 +201,6 @@ export function stopGameChat(){
         stopChat();
         stopChat = null;
     }
+
+    chatData = [];
 }
