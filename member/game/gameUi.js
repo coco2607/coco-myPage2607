@@ -18,7 +18,7 @@ const gameRules = [
     },
     {
         subtitle:"1~4 라운드",
-        text:"가장 많은 사람이 선택한 칸이 탈락합니다.<br>(동률 칸은 모두 탈락)"
+        text:"가장 많이 선택된 칸이 탈락합니다.<br>(동률 칸일 경우 모두 탈락)"
     },
     {
         subtitle:"참가 규칙1",
@@ -30,7 +30,7 @@ const gameRules = [
     },
     {
         subtitle:"최종 우승",
-        text:"5라운드 종료까지 최종 생존<br>또는 생존자 3명 이하일 경우<br>게임종료! 생존자는 1P를 획득합니다."
+        text:"5라운드 종료까지 최종 생존 또는<br>각 라운드에서 생존자 3명 이하일 경우<br>게임종료!<br>생존자는 1P를 획득합니다."
     }
 ];
 
@@ -88,7 +88,7 @@ export function setGameTitle(round,count = 0){
     }
 
     titleMain.textContent = `Round ${round} : ${roundMessages[round] || ""}`;
-    titleCount.textContent = `(${count}명 참여)`;
+    titleCount.textContent = `(${count}명 참여중)`;
 }
 
 export function bindGameChoiceEvents(onChoice,onConfirm){
