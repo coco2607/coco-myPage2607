@@ -1,47 +1,51 @@
 // gameUi.js
 const roundMessages = {
-    1:"첫 선택, 다수를 피하라!(~6일)",
-    2:"본격 눈치게임이다.(~12일)",
-    3:"살아남은 자의 선택!(~18일)",
-    4:"끝까지 몰리지 마라!(~24일)",
-    5:"최종 선택, 결국엔 소수가 승리한다.(~말일)"
+    1:"다수를 피하라!",
+    2:"본격 눈치게임이다.",
+    3:"살아남은 자의 선택!",
+    4:"끝까지 몰리지 마라!",
+    5:"결국엔 소수가 승리한다."
 };
 
 const gameRules = [
     {
         subtitle:"게임 진행",
-        text:"총 5라운드로 진행됩니다.<br>매 라운드마다 A~E 중 하나를 선택하세요.<br>(선택은 변경할 수 있습니다.)"
+        text:"매주 토요일부터 금요일까지 총 5라운드로 진행됩니다.<br>토·일·월은 1라운드이며 이후 매일 다음 라운드가 진행됩니다."
+    },
+    {
+        subtitle:"선택 방법",
+        text:"매 라운드에서 활성화된 칸 중 하나를 선택하세요.<br>라운드 종료 전까지 선택을 변경할 수 있습니다."
     },
     {
         subtitle:"1~4 라운드",
-        text:"가장 많은 사람이 선택한 칸이 탈락합니다.<br>다른 사람의 선택을 예상해 생존하세요."
+        text:"가장 많은 사람이 선택한 칸이 탈락합니다.<br>최다 선택이 동률이면 해당 칸이 모두 탈락합니다."
     },
     {
-        subtitle:"5 라운드",
-        text:"마지막 라운드는 규칙이 반대입니다.<br>가장 적게 선택한 칸이 최종 우승합니다."
+        subtitle:"선택 칸",
+        text:"1·2라운드는 A~E를 사용합니다.<br>3라운드는 E, 4·5라운드는 D·E가 비활성화됩니다."
     },
     {
-        subtitle:"참가 규칙1",
-        text:"1라운드에 참여하지 않으면<br>중간 라운드부터 참여할 수 없습니다."
+        subtitle:"참가 규칙",
+        text:"1라운드에 참여하지 않으면 이후 참여할 수 없습니다.<br>생존했더라도 다음 라운드에 참여하지 않으면 탈락합니다."
     },
     {
-        subtitle:"참가 규칙2",
-        text:"다음 라운드에 진출했더라도<br>기한 내 미참여 시 탈락합니다."
-    },
-    {
-        subtitle:"최종 보상",
-        text:"5라운드까지 생존하여<br>최종 우승 시 +1P를 지급합니다."
+        subtitle:"최종 우승",
+        text:"1~4라운드 종료 후 생존자가 3명 이하이면 즉시 공동 우승합니다.<br>5라운드는 실제 선택된 칸 중 가장 적게 선택한 칸이 우승합니다.<br>우승자는 +1P를 받습니다."
     }
 ];
 
 export function createGameUI(){
     const miniGame = document.getElementById("miniGame");
+
     if(!miniGame){
         return;
     }
 
     miniGame.innerHTML = `
-        <div id="gameTitle" class="gameTitle"></div>
+        <div class="gameTitleRow">
+            <button type="button" id="gameRuleOpen" class="gameRuleOpen">?</button>
+            <div id="gameTitle" class="gameTitle"></div>
+        </div>
 
         <div class="gameChoiceArea">
             <button type="button" class="gameChoice" data-choice="A">A</button>
@@ -53,7 +57,7 @@ export function createGameUI(){
         </div>
 
         <div class="gameChatWrite">
-            <textarea id="gameChatInput" maxlength="100" rows="1" placeholder="실시간 채팅"></textarea>
+            <textarea id="gameChatInput" maxlength="100" rows="1" placeholder="실시간 채팅창"></textarea>
             <button type="button" id="gameChatBtn">등록</button>
         </div>
 
@@ -62,32 +66,126 @@ export function createGameUI(){
 
     createGameResultModal();
     createGameRuleModal();
+
+    const ruleOpenBtn = document.getElementById("gameRuleOpen");
+
+    if(ruleOpenBtn){
+        ruleOpenBtn.addEventListener("click",() => {
+            showGameRulePopup();
+        });
+    }
 }
 
-function createGameRuleModal(){
-    if(document.getElementById("gameRuleModal")){
+export function setGameTitle(round){
+    const gameTitle = document.getElementById("gameTitle");
+
+    if(!gameTitle){
         return;
     }
 
-    const modal = document.createElement("div");
-    modal.id = "gameRuleModal";
-    modal.className = "modal hidden";
-    modal.innerHTML = `
-        <div class="modalBox gameRuleBox">
-            <div id="gameRuleStep" class="gameRuleStep"></div>
-            <h2>월간 미니 게임 설명서</h2>
-            <div id="gameRuleSubtitle" class="gameRuleSubtitle"></div>
-            <div id="gameRuleText" class="gameRuleText"></div>
+    gameTitle.textContent = `Round ${round} : ${roundMessages[round] || ""}`;
+}
 
-            <div class="gameRuleNav">
-                <button type="button" id="gameRulePrev">&lt;</button>
-                <button type="button" id="gameRuleNext">&gt;</button>
-                <button type="button" id="gameRuleStart" class="hidden">게임 시작</button>
-            </div>
-        </div>
-    `;
+export function bindGameChoiceEvents(onChoice,onConfirm){
+    const choiceButtons = document.querySelectorAll(".gameChoice");
+    const confirmBtn = document.getElementById("gameConfirmBtn");
 
-    document.body.appendChild(modal);
+    choiceButtons.forEach(button => {
+        button.addEventListener("click",() => {
+            onChoice(button.dataset.choice);
+        });
+    });
+
+    if(confirmBtn){
+        confirmBtn.addEventListener("click",onConfirm);
+    }
+}
+
+export function renderChoiceState(selectedChoice,enabled,activeChoices = []){
+    const choiceButtons = document.querySelectorAll(".gameChoice");
+    const confirmBtn = document.getElementById("gameConfirmBtn");
+
+    choiceButtons.forEach(button => {
+        const choice = button.dataset.choice;
+        const active = activeChoices.includes(choice);
+
+        button.classList.toggle("selected",choice === selectedChoice);
+        button.disabled = !enabled || !active;
+    });
+
+    if(confirmBtn){
+        confirmBtn.disabled = !enabled || !activeChoices.includes(selectedChoice);
+    }
+}
+
+export function updateGameTop({
+    currentRound,
+    memberGame,
+    selectedChoice = "",
+    eliminationRound = null,
+    gameEnd = null
+}){
+    const gameContent = document.getElementById("gameContent");
+    const pointLabel = document.getElementById("pointLabel");
+    const totalPoint = document.getElementById("totalPoint");
+
+    if(!gameContent || !pointLabel || !totalPoint || gameContent.classList.contains("hidden")){
+        return;
+    }
+
+    if(gameEnd){
+        pointLabel.textContent = `Round ${gameEnd.round}`;
+        totalPoint.textContent = gameEnd.winners ? "게임 종료" : "우승자 없음";
+        return;
+    }
+
+    if(!memberGame){
+        pointLabel.textContent = `Round ${currentRound}`;
+        totalPoint.textContent = currentRound === 1 ? "선택 대기" : "미참가";
+        return;
+    }
+
+    if(memberGame.alive === false){
+        if(currentRound === 1 && !memberGame.result1){
+            pointLabel.textContent = "Round 1";
+            totalPoint.textContent = "선택 대기";
+            return;
+        }
+
+        pointLabel.textContent = `Round ${eliminationRound || currentRound}`;
+        totalPoint.textContent = "탈락";
+        return;
+    }
+
+    if(selectedChoice){
+        pointLabel.textContent = `R${currentRound} 선택`;
+        totalPoint.textContent = selectedChoice;
+        return;
+    }
+
+    pointLabel.textContent = `Round ${currentRound}`;
+    totalPoint.textContent = "선택 대기";
+}
+
+export function showGameResultPopup(message){
+    return new Promise(resolve => {
+        const modal = document.getElementById("gameResultModal");
+        const messageElement = document.getElementById("gameResultMessage");
+        const okBtn = document.getElementById("gameResultOk");
+
+        if(!modal || !messageElement || !okBtn){
+            resolve();
+            return;
+        }
+
+        messageElement.innerHTML = message;
+        modal.classList.remove("hidden");
+
+        okBtn.onclick = () => {
+            modal.classList.add("hidden");
+            resolve();
+        };
+    });
 }
 
 export function showGameRulePopup(){
@@ -99,8 +197,9 @@ export function showGameRulePopup(){
         const prevBtn = document.getElementById("gameRulePrev");
         const nextBtn = document.getElementById("gameRuleNext");
         const startBtn = document.getElementById("gameRuleStart");
+        const closeBtn = document.getElementById("gameRuleClose");
 
-        if(!modal || !step || !subtitle || !text || !prevBtn || !nextBtn || !startBtn){
+        if(!modal || !step || !subtitle || !text || !prevBtn || !nextBtn || !startBtn || !closeBtn){
             resolve();
             return;
         }
@@ -109,6 +208,7 @@ export function showGameRulePopup(){
 
         function showRule(){
             const rule = gameRules[index];
+
             step.textContent = `${index + 1} / ${gameRules.length}`;
             subtitle.textContent = rule.subtitle;
             text.innerHTML = rule.text;
@@ -142,111 +242,41 @@ export function showGameRulePopup(){
             resolve();
         };
 
+        closeBtn.onclick = () => {
+            modal.classList.add("hidden");
+            resolve();
+        };
+
         showRule();
         modal.classList.remove("hidden");
     });
 }
 
-export function setGameTitle(round){
-    const gameTitle = document.getElementById("gameTitle");
-    if(!gameTitle){
-        return;
-    }
-    gameTitle.textContent = `Round ${round} : ${roundMessages[round] || ""}`;
-}
-
-export function bindGameChoiceEvents(onChoice,onConfirm){
-    const choiceButtons = document.querySelectorAll(".gameChoice");
-    const confirmBtn = document.getElementById("gameConfirmBtn");
-
-    choiceButtons.forEach(button => {
-        button.addEventListener("click",() => {
-            onChoice(button.dataset.choice);
-        });
-    });
-
-    if(confirmBtn){
-        confirmBtn.addEventListener("click",onConfirm);
-    }
-}
-
-export function renderChoiceState(selectedChoice,enabled){
-    const choiceButtons = document.querySelectorAll(".gameChoice");
-    const confirmBtn = document.getElementById("gameConfirmBtn");
-
-    choiceButtons.forEach(button => {
-        button.classList.toggle("selected",button.dataset.choice === selectedChoice);
-        button.disabled = !enabled;
-    });
-
-    if(confirmBtn){
-        confirmBtn.disabled = !enabled || selectedChoice === "";
-    }
-}
-
-export function updateGameTop({
-    currentRound,
-    memberGame,
-    eliminationRound
-}){
-    const gameContent = document.getElementById("gameContent");
-    const pointLabel = document.getElementById("pointLabel");
-    const totalPoint = document.getElementById("totalPoint");
-
-    if(!gameContent || !pointLabel || !totalPoint || gameContent.classList.contains("hidden")){
+function createGameRuleModal(){
+    if(document.getElementById("gameRuleModal")){
         return;
     }
 
-    if(!memberGame){
-        if(currentRound === 1){
-            pointLabel.textContent = "Round 1";
-            totalPoint.textContent = "선택 대기";
-        }else{
-            pointLabel.textContent = `Round ${currentRound}`;
-            totalPoint.textContent = "미참가";
-        }
-        return;
-    }
+    const modal = document.createElement("div");
+    modal.id = "gameRuleModal";
+    modal.className = "modal hidden";
 
-    if(memberGame.alive === false){
-        pointLabel.textContent = `Round ${eliminationRound || memberGame.round || 1}`;
-        totalPoint.textContent = "탈락";
-        return;
-    }
+    modal.innerHTML = `
+        <div class="modalBox gameRuleBox">
+            <button type="button" id="gameRuleClose" class="gameRuleClose">×</button>
+            <div id="gameRuleStep" class="gameRuleStep"></div>
+            <h2>주간 미니 게임 설명서</h2>
+            <div id="gameRuleSubtitle" class="gameRuleSubtitle"></div>
+            <div id="gameRuleText" class="gameRuleText"></div>
+            <div class="gameRuleNav">
+                <button type="button" id="gameRulePrev">&lt;</button>
+                <button type="button" id="gameRuleNext">&gt;</button>
+                <button type="button" id="gameRuleStart" class="hidden">게임 시작</button>
+            </div>
+        </div>
+    `;
 
-    const choice = memberGame[`r${currentRound}`];
-
-    if(choice){
-        pointLabel.textContent = `R${currentRound} 선택`;
-        totalPoint.textContent = choice;
-        return;
-    }
-
-    pointLabel.textContent = `Round ${currentRound}`;
-    totalPoint.textContent = "선택 대기";
-}
-
-export function showGameResultPopup(title,message){
-    return new Promise(resolve => {
-        const modal = document.getElementById("gameResultModal");
-        const titleElement = document.getElementById("gameResultTitle");
-        const messageElement = document.getElementById("gameResultMessage");
-        const okBtn = document.getElementById("gameResultOk");
-
-        if(!modal || !titleElement || !messageElement || !okBtn){
-            resolve();
-            return;
-        }
-
-        titleElement.textContent = title;
-        messageElement.textContent = message;
-        modal.classList.remove("hidden");
-
-        okBtn.onclick = () => {
-            modal.classList.add("hidden");
-            resolve();
-        };
-    });
+    document.body.appendChild(modal);
 }
 
 function createGameResultModal(){
@@ -257,9 +287,9 @@ function createGameResultModal(){
     const modal = document.createElement("div");
     modal.id = "gameResultModal";
     modal.className = "modal hidden";
+
     modal.innerHTML = `
         <div class="modalBox gameResultBox">
-            <h2 id="gameResultTitle"></h2>
             <p id="gameResultMessage"></p>
             <div class="modalButton">
                 <button type="button" id="gameResultOk">확인</button>

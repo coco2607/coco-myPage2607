@@ -1,13 +1,30 @@
 // game.js
 import {
+    ensureMemberMiniGame,
     loadMemberGame,
-    loadGameRound,
-    loadGameDie,
+    loadGamePlayerChoice,
+    loadGameEnd,
     saveGameChoice,
-    saveRoundDie,
-    saveGameResultCheck,
-    saveGameElimination
+    setGameAlive
 } from "./gameFirebase.js";
+
+import {
+    getRoundChoices,
+    canSelectRound,
+    canSelectChoice
+} from "./gameRule.js";
+
+import {
+    getGameKey,
+    getCurrentRound
+} from "./gameState.js";
+
+import {
+    processDueGameResults,
+    processPreviousGameResult,
+    processMemberResults,
+    findEliminationRound
+} from "./gameResult.js";
 
 import {
     createGameUI,
@@ -19,295 +36,116 @@ import {
     showGameRulePopup
 } from "./gameUi.js";
 
-import {
-    initGameChat
-} from "./gameChat.js";
-
+import {initGameChat} from "./gameChat.js";
 import {koDate} from "../../utils.js";
 
 const nickname = sessionStorage.getItem("nickname");
 
-let monthKey = "";
+let gameKey = "";
 let currentRound = 1;
 let memberGame = null;
+let gameEnd = null;
 let selectedChoice = "";
 let ruleShown = false;
+let gameProcessing = false;
 
 initGame();
+
 async function initGame(){
+    if(!nickname){
+        console.error("게임 사용자 정보가 없습니다.");
+        return;
+    }
+
     createGameUI();
 
     const date = koDate();
 
-    monthKey = date.substring(0,7);
+    gameKey = getGameKey(date);
     currentRound = getCurrentRound(date);
 
     setGameTitle(currentRound);
-
-    bindGameChoiceEvents(
-        selectChoice,
-        confirmChoice
-    );
-
-    initGameChat(
-        monthKey,
-        nickname
-    );
-
+    bindGameChoiceEvents(selectChoice,confirmChoice);
+    initGameChat(gameKey,nickname);
     bindTabEvent();
 
-    await loadGame();
-}
-
-async function loadGame(){
     try{
-        await ensurePreviousResults();
-
-        memberGame = await loadMemberGame(
-            nickname,
-            monthKey
-        );
-
-        await checkMemberStatus();
-
-        memberGame = await loadMemberGame(
-            nickname,
-            monthKey
-        );
-
-        selectedChoice =
-            memberGame?.[`r${currentRound}`] || "";
-
-        renderGame();
+        await ensureMemberMiniGame(nickname,gameKey);
+        await processDueGameResults(gameKey,currentRound);
+        await loadGameState();
     }catch(error){
-        console.error(
-            "게임 로딩 오류:",
-            error
-        );
+        console.error("게임 초기 로딩 오류:",error);
     }
 }
 
-function getCurrentRound(date){
-    const day =
-        Number(date.substring(8,10));
+async function loadGameState(){
+    memberGame = await loadMemberGame(nickname,gameKey);
+    gameEnd = await loadGameEnd(gameKey);
+    selectedChoice = await loadGamePlayerChoice(nickname,gameKey,currentRound) || "";
 
-    if(day <= 6){
-        return 1;
-    }
-
-    if(day <= 12){
-        return 2;
-    }
-
-    if(day <= 18){
-        return 3;
-    }
-
-    if(day <= 24){
-        return 4;
-    }
-
-    return 5;
+    renderGame();
 }
 
-async function ensurePreviousResults(){
-    for(
-        let round = 1;
-        round < currentRound;
-        round++
-    ){
-        await ensureRoundResult(round);
-    }
-}
-
-async function ensureRoundResult(round){
-    if(round > 4){
+async function processGameTab(){
+    if(gameProcessing){
         return;
     }
 
-    const savedDie =
-        await loadGameDie(
-            monthKey,
-            round
+    gameProcessing = true;
+
+    try{
+        const previousResult = await processPreviousGameResult(
+            nickname,
+            gameKey,
+            currentRound
         );
 
-    if(
-        Object.keys(savedDie).length > 0
-    ){
-        return;
-    }
-
-    const roundData =
-        await loadGameRound(
-            monthKey,
-            round
-        );
-
-    const result =
-        countChoices(roundData);
-
-    if(result.total === 0){
-        return;
-    }
-
-    const max = Math.max(
-        result.A,
-        result.B,
-        result.C,
-        result.D,
-        result.E
-    );
-
-    const dieChoices = [];
-
-    ["A","B","C","D","E"]
-        .forEach(choice => {
-            if(
-                result[choice] === max &&
-                max > 0
-            ){
-                dieChoices.push(choice);
-            }
-        });
-
-    await saveRoundDie(
-        monthKey,
-        round,
-        dieChoices
-    );
-}
-
-function countChoices(data){
-    const result = {
-        A:0,
-        B:0,
-        C:0,
-        D:0,
-        E:0,
-        total:0
-    };
-
-    Object.values(data || {})
-        .forEach(choice => {
-            if(
-                choice === "A" ||
-                choice === "B" ||
-                choice === "C" ||
-                choice === "D" ||
-                choice === "E"
-            ){
-                result[choice]++;
-                result.total++;
-            }
-        });
-
-    return result;
-}
-
-async function checkMemberStatus(){
-    if(!memberGame){
-        return;
-    }
-
-    if(memberGame.alive === false){
-        return;
-    }
-
-    for(
-        let round = 1;
-        round < currentRound;
-        round++
-    ){
-        const choice =
-            memberGame[`r${round}`];
-
-        const checked =
-            memberGame[`check${round}`];
-
-        if(checked === true){
-            continue;
+        if(previousResult?.message){
+            await showGameResultPopup(previousResult.message);
         }
 
-        if(!choice){
-            await saveGameElimination(
-                nickname,
-                monthKey
-            );
+        await processDueGameResults(
+            gameKey,
+            currentRound
+        );
 
-            await showGameResultPopup(
-                `Round ${round} 결과`,
-                `Round ${round} 미참가로 탈락하였습니다.`
-            );
+        memberGame = await loadMemberGame(
+            nickname,
+            gameKey
+        );
 
-            await saveGameResultCheck(
-                nickname,
-                monthKey,
-                round
-            );
+        gameEnd = await loadGameEnd(
+            gameKey
+        );
 
-            memberGame =
-                await loadMemberGame(
-                    nickname,
-                    monthKey
+        const results = await processMemberResults(
+            nickname,
+            gameKey,
+            currentRound
+        );
+
+        for(const result of results){
+            if(result?.message){
+                await showGameResultPopup(
+                    result.message
                 );
-
-            return;
+            }
         }
 
-        const die =
-            await loadGameDie(
-                monthKey,
-                round
-            );
+        await loadGameState();
 
         if(
-            Object.keys(die).length === 0
+            currentRound === 1 &&
+            !selectedChoice &&
+            !ruleShown
         ){
-            return;
+            ruleShown = true;
+            await showGameRulePopup();
         }
-
-        if(die[choice]){
-            await saveGameElimination(
-                nickname,
-                monthKey
-            );
-
-            await showGameResultPopup(
-                `Round ${round} 결과`,
-                "탈락하셨습니다."
-            );
-
-            await saveGameResultCheck(
-                nickname,
-                monthKey,
-                round
-            );
-
-            memberGame =
-                await loadMemberGame(
-                    nickname,
-                    monthKey
-                );
-
-            return;
-        }
-
-        await showGameResultPopup(
-            `Round ${round} 결과`,
-            `생존하셨습니다. Round ${round + 1}에 진출합니다.`
-        );
-
-        await saveGameResultCheck(
-            nickname,
-            monthKey,
-            round
-        );
-
-        memberGame =
-            await loadMemberGame(
-                nickname,
-                monthKey
-            );
+    }catch(error){
+        console.error("게임 처리 오류:",error);
+    }finally{
+        gameProcessing = false;
     }
 }
 
@@ -316,11 +154,16 @@ function selectChoice(choice){
         return;
     }
 
+    if(!canSelectChoice(currentRound,choice)){
+        return;
+    }
+
     selectedChoice = choice;
 
     renderChoiceState(
         selectedChoice,
-        true
+        true,
+        getRoundChoices(currentRound)
     );
 }
 
@@ -329,128 +172,73 @@ async function confirmChoice(){
         return;
     }
 
-    if(selectedChoice === ""){
+    if(!canSelectChoice(currentRound,selectedChoice)){
         return;
     }
 
-    const button =
-        document.getElementById(
-            "gameConfirmBtn"
-        );
+    const button = document.getElementById("gameConfirmBtn");
 
     if(button){
         button.disabled = true;
     }
 
     try{
-        await saveGameChoice(
+        const saved = await saveGameChoice(
             nickname,
-            monthKey,
+            gameKey,
             currentRound,
             selectedChoice
         );
 
-        memberGame =
-            await loadMemberGame(
-                nickname,
-                monthKey
-            );
-
-        selectedChoice =
-            memberGame?.[
-                `r${currentRound}`
-            ] || "";
-
-        renderGame();
-    }catch(error){
-        console.error(
-            "게임 선택 저장 오류:",
-            error
-        );
-    }finally{
-        if(button){
-            button.disabled = false;
+        if(!saved){
+            await loadGameState();
+            return;
         }
 
+        if(
+            currentRound === 1 &&
+            memberGame?.alive !== true
+        ){
+            await setGameAlive(
+                nickname,
+                gameKey,
+                true
+            );
+        }
+
+        await loadGameState();
+    }catch(error){
+        console.error("게임 선택 저장 오류:",error);
+    }finally{
         renderGame();
     }
 }
 
 function canSelectCurrentRound(){
-    if(
-        memberGame?.alive === false
-    ){
-        return false;
-    }
-
-    if(currentRound === 1){
-        return true;
-    }
-
-    if(!memberGame){
-        return false;
-    }
-
-    if(
-        Number(memberGame.round) <
-        currentRound - 1
-    ){
-        return false;
-    }
-
-    if(
-        memberGame[
-            `check${currentRound - 1}`
-        ] !== true
-    ){
-        return false;
-    }
-
-    return true;
+    return canSelectRound(
+        memberGame,
+        currentRound,
+        gameEnd
+    );
 }
 
 function renderGame(){
-    const enabled =
-        canSelectCurrentRound();
+    const enabled = canSelectCurrentRound();
+    const activeChoices = getRoundChoices(currentRound);
 
     renderChoiceState(
         selectedChoice,
-        enabled
+        enabled,
+        activeChoices
     );
 
     updateGameTop({
         currentRound,
         memberGame,
-        eliminationRound:
-            findEliminationRound()
+        selectedChoice,
+        eliminationRound:findEliminationRound(memberGame),
+        gameEnd
     });
-}
-
-function findEliminationRound(){
-    if(
-        !memberGame ||
-        memberGame.alive !== false
-    ){
-        return null;
-    }
-
-    for(
-        let round = 5;
-        round >= 1;
-        round--
-    ){
-        if(
-            memberGame[
-                `check${round}`
-            ] === true
-        ){
-            return round;
-        }
-    }
-
-    return (
-        Number(memberGame.round) || 1
-    );
 }
 
 function bindTabEvent(){
@@ -460,20 +248,7 @@ function bindTabEvent(){
                 return;
             }
 
-            updateGameTop({
-                currentRound,
-                memberGame,
-                eliminationRound:findEliminationRound()
-            });
-
-            if(
-                currentRound === 1 &&
-                !memberGame?.r1 &&
-                !ruleShown
-            ){
-                ruleShown = true;
-                await showGameRulePopup();
-            }
+            await processGameTab();
         });
     });
 }

@@ -14,19 +14,37 @@
     flex:1;
     min-height:0;
 }
+.gameTitleRow{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:34px;
+    margin:2px 4% 12px;
+}
+.gameRuleOpen{
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:22px;
+    height:22px;
+    padding:0;
+    border:1px solid #A65D3B;
+    border-radius:50%;
+    background:#FFF;
+    color:#A65D3B;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+}
 .gameTitle{
-    flex-shrink:0;
-    margin:2px 0 12px;
+    margin:0;
+    padding:0 42px;
     color:#A65D3B;
     font-size:16px;
     font-weight:700;
     text-align:center;
-}
-.gameRuleSubtitle{
-    margin:0 0 12px;
-    color:#A65D3B;
-    font-size:15px;
-    font-weight:700;
 }
 .gameChoiceArea{
     display:flex;
@@ -48,7 +66,7 @@
     font-weight:600;
     cursor:pointer;
 }
-.gameChoice:hover{
+.gameChoice:hover:not(:disabled){
     border-color:#A65D3B;
 }
 .gameChoice.selected{
@@ -57,15 +75,23 @@
     color:#A65D3B;
 }
 .gameChoice:disabled{
-    opacity:.55;
+    border-color:#DDD7D1;
+    background:#F4F2F0;
+    color:#B8B0A9;
+    opacity:1;
     cursor:default;
+}
+.gameChoice.selected:disabled{
+    border-color:#D8CBB9;
+    background:#EEE9E5;
+    color:#A59A8F;
 }
 #gameConfirmBtn{
     border:none;
     background:#A65D3B;
     color:#FFF;
 }
-#gameConfirmBtn:hover{
+#gameConfirmBtn:hover:not(:disabled){
     background:#8F4E31;
 }
 #gameConfirmBtn:disabled{
@@ -117,10 +143,10 @@
     color:#FFF;
     font-size:14px;
     font-weight:600;
-    letter-spacing:0.5px;
+    letter-spacing:.5px;
     cursor:pointer;
 }
-#gameChatBtn:hover{
+#gameChatBtn:hover:not(:disabled){
     background:#8F4E31;
 }
 #gameChatBtn:disabled{
@@ -170,7 +196,8 @@
     white-space:nowrap;
     font-variant-numeric:tabular-nums;
 }
-#gameResultModal{
+#gameResultModal,
+#gameRuleModal{
     width:100%;
     box-sizing:border-box;
 }
@@ -181,18 +208,13 @@
     box-sizing:border-box;
     text-align:center;
 }
-.gameResultBox h2{
-    margin:0 0 16px;
-    color:#333;
-    font-size:18px;
-    font-weight:700;
-}
 #gameResultMessage{
-    margin:0 0 30px;
+    margin:0 0 24px;
     color:#4A4038;
     font-size:15px;
     font-weight:600;
-    line-height:22px;
+    line-height:24px;
+    text-align:center;
 }
 .gameResultBox .modalButton{
     display:flex;
@@ -214,11 +236,8 @@
 #gameResultOk:hover{
     background:#8F4E31;
 }
-#gameRuleModal{
-    width:100%;
-    box-sizing:border-box;
-}
 #gameRuleModal .gameRuleBox{
+    position:relative;
     width:82%;
     max-width:320px;
     margin:0 auto;
@@ -236,6 +255,12 @@
     margin:0 0 16px;
     color:#333;
     font-size:18px;
+    font-weight:700;
+}
+.gameRuleSubtitle{
+    margin:0 0 12px;
+    color:#A65D3B;
+    font-size:15px;
     font-weight:700;
 }
 .gameRuleText{
@@ -267,11 +292,12 @@
     font-weight:700;
     cursor:pointer;
 }
-#gameRulePrev:hover,
-#gameRuleNext:hover{
+#gameRulePrev:hover:not(:disabled),
+#gameRuleNext:hover:not(:disabled){
     background:#8F4E31;
 }
-#gameRulePrev:disabled{
+#gameRulePrev:disabled,
+#gameRuleNext:disabled{
     opacity:.35;
     cursor:default;
 }
@@ -293,4 +319,22 @@
 #gameRuleStart.hidden,
 #gameRuleNext.hidden{
     display:none;
+}
+.gameRuleClose{
+    position:absolute;
+    top:10px;
+    right:12px;
+    width:28px;
+    height:28px;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:#8F4E31;
+    font-size:24px;
+    font-weight:400;
+    line-height:28px;
+    cursor:pointer;
+}
+.gameRuleClose:hover{
+    color:#A65D3B;
 }

@@ -13,16 +13,34 @@ import {
 
 const MEMBER = "으차방/member";
 const HISTORY = "으차방/history";
-const GAME = "으차방/game";
+const MINI_GAME = "으차방/miniGame";
 
-export async function loadMemberGame(
-    nickname,
-    monthKey
-){
+export async function ensureMemberMiniGame(nickname,gameKey){
+    const gameRef = ref(
+        db,
+        `${MEMBER}/${nickname}/miniGame/${gameKey}`
+    );
+
+    const result = await runTransaction(gameRef,current => {
+        if(current !== null){
+            return;
+        }
+
+        return {
+            alive:false
+        };
+    });
+
+    return result.snapshot.val() || {
+        alive:false
+    };
+}
+
+export async function loadMemberGame(nickname,gameKey){
     const snapshot = await get(
         ref(
             db,
-            `${MEMBER}/${nickname}/game/${monthKey}`
+            `${MEMBER}/${nickname}/miniGame/${gameKey}`
         )
     );
 
@@ -33,14 +51,11 @@ export async function loadMemberGame(
     return snapshot.val();
 }
 
-export async function loadGameRound(
-    monthKey,
-    round
-){
+export async function loadGameRound(gameKey,round){
     const snapshot = await get(
         ref(
             db,
-            `${GAME}/${monthKey}/round${round}`
+            `${MINI_GAME}/${gameKey}/round${round}`
         )
     );
 
@@ -51,14 +66,30 @@ export async function loadGameRound(
     return snapshot.val();
 }
 
-export async function loadGameDie(
-    monthKey,
+export async function loadGamePlayerChoice(
+    nickname,
+    gameKey,
     round
 ){
     const snapshot = await get(
         ref(
             db,
-            `${GAME}/${monthKey}/die${round}`
+            `${MINI_GAME}/${gameKey}/round${round}/player/${nickname}`
+        )
+    );
+
+    if(!snapshot.exists()){
+        return null;
+    }
+
+    return snapshot.val();
+}
+
+export async function loadGameDie(gameKey,round){
+    const snapshot = await get(
+        ref(
+            db,
+            `${MINI_GAME}/${gameKey}/round${round}/die`
         )
     );
 
@@ -69,18 +100,16 @@ export async function loadGameDie(
     return snapshot.val();
 }
 
-export async function loadGameWin(
-    monthKey
-){
+export async function loadGameEnd(gameKey){
     const snapshot = await get(
         ref(
             db,
-            `${GAME}/${monthKey}/win5`
+            `${MINI_GAME}/${gameKey}/end`
         )
     );
 
     if(!snapshot.exists()){
-        return {};
+        return null;
     }
 
     return snapshot.val();
@@ -88,171 +117,219 @@ export async function loadGameWin(
 
 export async function saveGameChoice(
     nickname,
-    monthKey,
+    gameKey,
     round,
     choice
 ){
-    const memberGameRef = ref(
-        db,
-        `${MEMBER}/${nickname}/game/${monthKey}`
-    );
-
-    const gameRoundRef = ref(
-        db,
-        `${GAME}/${monthKey}/round${round}/${nickname}`
-    );
-
-    await update(
-        memberGameRef,
-        {
-            alive:true,
-            [`r${round}`]:choice,
-            round:round
-        }
-    );
-
-    await set(
-        gameRoundRef,
-        choice
-    );
-
-    await set(
+    const endSnapshot = await get(
         ref(
             db,
-            `${MEMBER}/${nickname}/lastUpdate`
-        ),
-        serverTimestamp()
+            `${MINI_GAME}/${gameKey}/end`
+        )
     );
 
-    return true;
+    if(endSnapshot.exists()){
+        return false;
+    }
+
+    const roundRef = ref(
+        db,
+        `${MINI_GAME}/${gameKey}/round${round}`
+    );
+
+    const result = await runTransaction(roundRef,current => {
+        if(current === null || typeof current !== "object"){
+            current = {};
+        }
+
+        if(current.die){
+            return;
+        }
+
+        if(!current.player || typeof current.player !== "object"){
+            current.player = {};
+        }
+
+        const first =
+            current.player[nickname] === undefined;
+
+        current.player[nickname] = choice;
+
+        if(first){
+            current.count =
+                (Number(current.count) || 0) + 1;
+        }
+
+        return current;
+    });
+
+    return result.committed;
 }
 
 export async function setGameAlive(
     nickname,
-    monthKey,
+    gameKey,
     alive
 ){
     await set(
         ref(
             db,
-            `${MEMBER}/${nickname}/game/${monthKey}/alive`
+            `${MEMBER}/${nickname}/miniGame/${gameKey}/alive`
         ),
-        alive
+        alive === true
     );
 }
 
-export async function saveGameResultCheck(
+export async function saveMemberRoundResult(
     nickname,
-    monthKey,
-    round
+    gameKey,
+    round,
+    alive
 ){
-    await set(
+    await update(
         ref(
             db,
-            `${MEMBER}/${nickname}/game/${monthKey}/check${round}`
+            `${MEMBER}/${nickname}/miniGame/${gameKey}`
         ),
-        true
-    );
-}
-
-export async function saveGameElimination(
-    nickname,
-    monthKey
-){
-    await set(
-        ref(
-            db,
-            `${MEMBER}/${nickname}/game/${monthKey}/alive`
-        ),
-        false
+        {
+            [`result${round}`]:true,
+            alive:alive === true
+        }
     );
 }
 
 export async function saveRoundDie(
-    monthKey,
+    gameKey,
     round,
     dieChoices
 ){
     const dieRef = ref(
         db,
-        `${GAME}/${monthKey}/die${round}`
+        `${MINI_GAME}/${gameKey}/round${round}/die`
     );
 
-    const result = {};
+    const result = await runTransaction(dieRef,current => {
+        if(current !== null){
+            return;
+        }
 
-    dieChoices.forEach(choice => {
-        result[choice] = true;
+        const die = {};
+
+        dieChoices.forEach(choice => {
+            die[choice] = true;
+        });
+
+        if(Object.keys(die).length === 0){
+            return;
+        }
+
+        return die;
     });
 
-    await set(
-        dieRef,
-        result
-    );
+    if(result.committed){
+        return result.snapshot.val() || {};
+    }
 
-    return result;
+    const snapshot = await get(dieRef);
+
+    return snapshot.exists()
+        ? snapshot.val()
+        : {};
 }
 
-export async function saveRoundWin(
-    monthKey,
-    winChoices
+export async function saveGameEnd(
+    gameKey,
+    round,
+    reason,
+    winnerNicknames
 ){
-    const winRef = ref(
+    const endRef = ref(
         db,
-        `${GAME}/${monthKey}/win5`
+        `${MINI_GAME}/${gameKey}/end`
     );
 
-    const result = {};
+    const result = await runTransaction(endRef,current => {
+        if(current !== null){
+            return;
+        }
 
-    winChoices.forEach(choice => {
-        result[choice] = true;
+        const end = {
+            round:Number(round),
+            count:winnerNicknames.length
+        };
+
+        if(reason){
+            end.reason = reason;
+        }
+
+        if(winnerNicknames.length > 0){
+            end.winners = {};
+
+            winnerNicknames.forEach(nickname => {
+                end.winners[nickname] = true;
+            });
+        }
+
+        return end;
     });
 
-    await set(
-        winRef,
-        result
-    );
+    if(result.committed){
+        return result.snapshot.val();
+    }
 
-    return result;
+    const snapshot = await get(endRef);
+
+    return snapshot.exists()
+        ? snapshot.val()
+        : null;
 }
 
 export async function rewardGamePoint(
     nickname,
-    monthKey
+    gameKey
 ){
-    const rewardRef = ref(
+    const memberRef = ref(
         db,
-        `${MEMBER}/${nickname}/game/${monthKey}/reward`
+        `${MEMBER}/${nickname}`
     );
 
-    const rewardResult = await runTransaction(
-        rewardRef,
-        current => {
-            if(current !== null){
-                return;
-            }
+    let rewarded = false;
 
-            return 1;
+    const result = await runTransaction(memberRef,current => {
+        if(!current){
+            return;
         }
-    );
 
-    if(
-        !rewardResult.committed ||
-        Number(rewardResult.snapshot.val()) !== 1
-    ){
+        if(!current.miniGame){
+            current.miniGame = {};
+        }
+
+        if(!current.miniGame[gameKey]){
+            current.miniGame[gameKey] = {
+                alive:false
+            };
+        }
+
+        if(
+            Number(
+                current.miniGame[gameKey].reward
+            ) === 1
+        ){
+            return;
+        }
+
+        current.miniGame[gameKey].reward = 1;
+        current.point =
+            (Number(current.point) || 0) + 1;
+
+        rewarded = true;
+
+        return current;
+    });
+
+    if(!result.committed || !rewarded){
         return 0;
     }
-
-    const pointRef = ref(
-        db,
-        `${MEMBER}/${nickname}/point`
-    );
-
-    await runTransaction(
-        pointRef,
-        current => {
-            return (Number(current) || 0) + 1;
-        }
-    );
 
     const historyRef = push(
         ref(
@@ -261,68 +338,53 @@ export async function rewardGamePoint(
         )
     );
 
-    await set(
-        historyRef,
-        {
-            getP:1,
-            type:`${monthKey.substring(2).replace("-","")}월간 미니 게임`
-        }
-    );
+    await set(historyRef,{
+        getP:1,
+        type:"주간 게임 우승"
+    });
 
     return 1;
 }
 
 export async function saveGameChat(
     nickname,
-    monthKey,
+    gameKey,
     comment
 ){
     const chatRef = push(
         ref(
             db,
-            `${GAME}/${monthKey}/chat`
+            `${MINI_GAME}/${gameKey}/chat`
         )
     );
 
-    await set(
-        chatRef,
-        {
-            nickname:nickname,
-            comment:comment,
-            time:serverTimestamp()
-        }
-    );
+    await set(chatRef,{
+        nickname,
+        comment,
+        time:serverTimestamp()
+    });
+
+    return chatRef.key;
 }
 
-export function listenGameChat(
-    monthKey,
-    callback
-){
+export function listenGameChat(gameKey,callback){
     const chatRef = ref(
         db,
-        `${GAME}/${monthKey}/chat`
+        `${MINI_GAME}/${gameKey}/chat`
     );
 
-    const unsubscribe = onChildAdded(
-        chatRef,
-        snapshot => {
-            const data = snapshot.val();
+    return onChildAdded(chatRef,snapshot => {
+        const data = snapshot.val();
 
-            if(
-                !data ||
-                typeof data !== "object"
-            ){
-                return;
-            }
-
-            callback({
-                key:snapshot.key,
-                nickname:data.nickname ?? "",
-                comment:data.comment ?? "",
-                time:data.time ?? 0
-            });
+        if(!data || typeof data !== "object"){
+            return;
         }
-    );
 
-    return unsubscribe;
+        callback({
+            key:snapshot.key,
+            nickname:data.nickname ?? "",
+            comment:data.comment ?? "",
+            time:data.time ?? 0
+        });
+    });
 }
