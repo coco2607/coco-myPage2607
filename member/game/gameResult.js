@@ -1,4 +1,4 @@
-// gameResult.js
+ // gameResult.js
 import {
     loadMemberGame,
     loadGameRound,
@@ -15,18 +15,26 @@ import {
 import {getPreviousGameKey} from "./gameState.js";
 
 export async function processDueGameResults(gameKey,currentRound){
+    currentRound = Number(currentRound);
+
     if(currentRound === 1){
         const previousGameKey = getPreviousGameKey(gameKey);
+        const previousRound1 = await loadGameRound(previousGameKey,1);
         const previousEnd = await loadGameEnd(previousGameKey);
 
         if(previousEnd){
+            await ensurePreviousRoundResults(previousGameKey,5);
             return previousEnd;
         }
 
-        const previousRound1 = await loadGameRound(previousGameKey,1);
-
-        if(Object.keys(previousRound1).length === 0){
+        if(Object.keys(previousRound1?.player || {}).length === 0){
             return null;
+        }
+
+        const earlyEnd = await ensurePreviousRoundResults(previousGameKey,5);
+
+        if(earlyEnd){
+            return earlyEnd;
         }
 
         return await settleFinalRound(previousGameKey);
@@ -36,122 +44,107 @@ export async function processDueGameResults(gameKey,currentRound){
 }
 
 export async function processPreviousGameResult(nickname,gameKey,currentRound){
-    if(currentRound !== 1){
-        return null;
-    }
+    if(Number(currentRound) !== 1) return null;
 
     const previousGameKey = getPreviousGameKey(gameKey);
-    const previousGame = await loadMemberGame(nickname,previousGameKey);
+    let memberGame = await loadMemberGame(nickname,previousGameKey);
 
-    if(!previousGame){
-        return null;
-    }
+    if(!memberGame) return null;
+    if(findEliminationRound(memberGame) !== null) return null;
 
     const end = await loadGameEnd(previousGameKey);
 
-    if(!end){
-        return null;
-    }
+    if(!end) return null;
 
-    const round = Number(end.round);
+    const endRound = Number(end.round);
 
-    if(previousGame[`result${round}`] === true){
-        return null;
-    }
+    if(endRound < 1 || endRound > 5) return null;
 
-    const winner = end.winners?.[nickname] === true;
+    for(let round = 1; round <= endRound; round++){
+        if(memberGame[`result${round}`] === true){
+            if(memberGame.alive === false) return null;
+            continue;
+        }
 
-    if(winner){
-        await saveMemberRoundResult(nickname,previousGameKey,round,true);
-
-        return {
-            type:"winner",
-            round,
-            gameKey:previousGameKey,
-            message:"최종 생존자로 1P 획득하였습니다."
-        };
-    }
-
-    if(round === 5){
-        await saveMemberRoundResult(nickname,previousGameKey,round,false);
-
-        const roundData = await loadGameRound(previousGameKey,5);
+        const roundData = await loadGameRound(previousGameKey,round);
         const choice = roundData?.player?.[nickname];
+        const winner = round === endRound && end.winners?.[nickname] === true;
+
+        if(winner){
+            await saveMemberRoundResult(nickname,previousGameKey,round,true);
+
+            return {
+                type:"winner",
+                round,
+                gameKey:previousGameKey,
+                message:"최종 생존자로 1P 획득하였습니다."
+            };
+        }
 
         if(!choice){
+            await saveMemberRoundResult(nickname,previousGameKey,round,false);
+
             return {
                 type:"miss",
                 round,
                 gameKey:previousGameKey,
-                message:"Round5 미참가로 탈락하였습니다."
+                message:`Round${round} 미참가로 탈락하였습니다.`
             };
         }
 
-        return {
-            type:"finalFail",
-            round,
-            gameKey:previousGameKey,
-            message:"최종 생존에 실패했습니다."
-        };
+        const status = await getRoundStatus(previousGameKey,round,nickname);
+
+        if(status === "pending") return null;
+
+        if(status === "die" || round === endRound){
+            await saveMemberRoundResult(nickname,previousGameKey,round,false);
+
+            return {
+                type:round === 5 ? "finalFail" : "die",
+                round,
+                gameKey:previousGameKey,
+                message:round === 5
+                    ? "최종 생존에 실패했습니다."
+                    : `Round${round} 생존에 실패했습니다.`
+            };
+        }
+
+        if(status === "survive"){
+            await saveMemberRoundResult(nickname,previousGameKey,round,true);
+            memberGame = await loadMemberGame(nickname,previousGameKey);
+
+            if(!memberGame) return null;
+        }
     }
 
-    const status = await getRoundStatus(previousGameKey,round,nickname);
-
-    await saveMemberRoundResult(nickname,previousGameKey,round,false);
-
-    if(status === "miss"){
-        return {
-            type:"miss",
-            round,
-            gameKey:previousGameKey,
-            message:`Round${round} 미참가로 탈락하였습니다.`
-        };
-    }
-
-    return {
-        type:"die",
-        round,
-        gameKey:previousGameKey,
-        message:`Round${round} 생존에 실패했습니다.`
-    };
+    return null;
 }
 
 export async function processMemberResults(nickname,gameKey,currentRound){
+    currentRound = Number(currentRound);
+
     let memberGame = await loadMemberGame(nickname,gameKey);
 
-    if(!memberGame){
-        return [];
-    }
+    if(!memberGame) return [];
 
     const gameEnd = await loadGameEnd(gameKey);
-    const lastRound = gameEnd
-        ? Math.min(Number(gameEnd.round),currentRound - 1,4)
-        : Math.min(currentRound - 1,4);
+    const endRound = gameEnd ? Number(gameEnd.round) : 5;
+    const lastRound = Math.min(endRound,currentRound - 1,4);
 
-    if(lastRound < 1){
-        return [];
-    }
+    if(lastRound < 1) return [];
 
     const results = [];
 
     for(let round = 1; round <= lastRound; round++){
-        const resultChecked = memberGame[`result${round}`] === true;
-
-        if(resultChecked){
-            if(memberGame.alive === false){
-                break;
-            }
-
+        if(memberGame[`result${round}`] === true){
+            if(memberGame.alive === false) break;
             continue;
         }
 
-        const status = await getRoundStatus(gameKey,round,nickname);
-
-        if(status === "pending"){
-            break;
-        }
-
-        const winner = gameEnd && Number(gameEnd.round) === round && gameEnd.winners?.[nickname] === true;
+        const roundData = await loadGameRound(gameKey,round);
+        const choice = roundData?.player?.[nickname];
+        const isEndRound = gameEnd && Number(gameEnd.round) === round;
+        const winner = isEndRound && gameEnd.winners?.[nickname] === true;
 
         if(winner){
             await saveMemberRoundResult(nickname,gameKey,round,true);
@@ -165,7 +158,7 @@ export async function processMemberResults(nickname,gameKey,currentRound){
             break;
         }
 
-        if(status === "miss"){
+        if(!choice){
             await saveMemberRoundResult(nickname,gameKey,round,false);
 
             results.push({
@@ -177,7 +170,11 @@ export async function processMemberResults(nickname,gameKey,currentRound){
             break;
         }
 
-        if(status === "die"){
+        const status = await getRoundStatus(gameKey,round,nickname);
+
+        if(status === "pending") break;
+
+        if(status === "die" || isEndRound){
             await saveMemberRoundResult(nickname,gameKey,round,false);
 
             results.push({
@@ -192,16 +189,6 @@ export async function processMemberResults(nickname,gameKey,currentRound){
         if(status === "survive"){
             await saveMemberRoundResult(nickname,gameKey,round,true);
 
-            if(gameEnd && Number(gameEnd.round) === round){
-                results.push({
-                    type:"winner",
-                    round,
-                    message:"최종 생존자로 1P 획득하였습니다."
-                });
-
-                break;
-            }
-
             results.push({
                 type:"survive",
                 round,
@@ -209,6 +196,8 @@ export async function processMemberResults(nickname,gameKey,currentRound){
             });
 
             memberGame = await loadMemberGame(nickname,gameKey);
+
+            if(!memberGame) break;
         }
     }
 
@@ -216,9 +205,7 @@ export async function processMemberResults(nickname,gameKey,currentRound){
 }
 
 export function findEliminationRound(memberGame){
-    if(!memberGame || memberGame.alive !== false){
-        return null;
-    }
+    if(!memberGame || memberGame.alive !== false) return null;
 
     for(let round = 5; round >= 1; round--){
         if(memberGame[`result${round}`] === true){

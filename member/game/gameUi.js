@@ -1,4 +1,7 @@
-// gameUi.js
+
+ // gameUi.js
+import {createGamePopup,showGameRulePopup} from "./gamePopup.js";
+
 const roundMessages = {
     1:"다수를 피하라!",
     2:"본격 눈치게임이다.",
@@ -7,47 +10,17 @@ const roundMessages = {
     5:"결국엔 소수가 승리한다."
 };
 
-const gameRules = [
-    {
-        subtitle:"게임 진행",
-        text:"매주 총 5라운드로 진행됩니다.<br>토~월은 1라운드로 진행되며,<br>이후 매일 다음 라운드가 진행됩니다."
-    },
-    {
-        subtitle:"참가 방법",
-        text:"A~E 중 하나를 선택하세요.<br>(선택을 변경할 수 있습니다.)"
-    },
-    {
-        subtitle:"1~4 라운드",
-        text:"가장 많이 선택된 칸이 탈락합니다.<br>(동률 칸일 경우 모두 탈락)"
-    },
-    {
-        subtitle:"참가 규칙1",
-        text:"1라운드에 미참여 시<br>해당 주에는 참여할 수 없습니다."
-    },
-    {
-        subtitle:"참가 규칙2",
-        text:"이전 라운드에서 생존했더라도<br>다음 라운드에 미참여 시 탈락합니다."
-    },
-    {
-        subtitle:"최종 우승",
-        text:"5라운드 종료까지 최종 생존 또는<br>각 라운드에서 생존자 3명 이하일 경우<br>게임종료!<br>생존자는 1P를 획득합니다."
-    }
-];
-
 export function createGameUI(){
     const miniGame = document.getElementById("miniGame");
-
-    if(!miniGame){
-        return;
-    }
+    if(!miniGame) return;
 
     miniGame.innerHTML = `
         <div class="gameTitleRow">
             <button type="button" id="gameRuleOpen" class="gameRuleOpen">?</button>
             <div id="gameTitle" class="gameTitle">
                 <span id="gameTitleMain" class="gameTitleMain"></span>
-                <span id="gameTitleCount" class="gameTitleCount"></span>
             </div>
+            <button type="button" id="gamePlayerOpen" class="gamePlayerOpen">생존자</button>
         </div>
 
         <div class="gameChoiceArea">
@@ -69,7 +42,7 @@ export function createGameUI(){
 
     createGameResultModal();
     createGameRoundResultModal();
-    createGameRuleModal();
+    createGamePopup();
 
     const ruleOpenBtn = document.getElementById("gameRuleOpen");
 
@@ -80,16 +53,11 @@ export function createGameUI(){
     }
 }
 
-export function setGameTitle(round,count = 0){
+export function setGameTitle(round){
     const titleMain = document.getElementById("gameTitleMain");
-    const titleCount = document.getElementById("gameTitleCount");
-
-    if(!titleMain || !titleCount){
-        return;
-    }
+    if(!titleMain) return;
 
     titleMain.textContent = `Round ${round} : ${roundMessages[round] || ""}`;
-    titleCount.textContent = `(${count}명 참여중)`;
 }
 
 export function bindGameChoiceEvents(onChoice,onConfirm){
@@ -129,7 +97,8 @@ export function updateGameTop({
     memberGame,
     selectedChoice = "",
     eliminationRound = null,
-    gameEnd = null
+    gameEnd = null,
+    nickname = ""
 }){
     const gameContent = document.getElementById("gameContent");
     const pointLabel = document.getElementById("pointLabel");
@@ -141,7 +110,19 @@ export function updateGameTop({
 
     if(gameEnd){
         pointLabel.textContent = `Round ${gameEnd.round}`;
-        totalPoint.textContent = gameEnd.winners ? "게임 종료" : "우승자 없음";
+
+        const winners = gameEnd.winners || {};
+        const winnerNames = Object.keys(winners);
+
+        if(winnerNames.length === 0){
+            totalPoint.textContent = "우승자 없음";
+        }else if(nickname && winners[nickname] === true){
+            totalPoint.textContent = "우승";
+        }else if(nickname){
+            totalPoint.textContent = "탈락";
+        }else{
+            totalPoint.textContent = "게임 종료";
+        }
         return;
     }
 
@@ -196,11 +177,13 @@ export function showGameResultPopup(message,round,onViewResult){
         resultBtn.onclick = async () => {
             modal.classList.add("hidden");
 
-            if(typeof onViewResult === "function"){
-                await onViewResult(round);
+            try{
+                if(typeof onViewResult === "function"){
+                    await onViewResult(round);
+                }
+            }finally{
+                resolve();
             }
-
-            resolve();
         };
     });
 }
@@ -218,7 +201,7 @@ export function showGameRoundResultPopup(round,players,choices){
         }
 
         title.textContent = `Round${round} 결과`;
-        list.innerHTML = "";
+        list.replaceChildren();
 
         choices.forEach(choice => {
             const column = document.createElement("div");
@@ -228,13 +211,10 @@ export function showGameRoundResultPopup(round,players,choices){
             column.className = "gameRoundResultColumn";
             choiceTitle.className = "gameRoundResultChoice";
             names.className = "gameRoundResultNames";
-
             choiceTitle.textContent = choice;
 
             Object.entries(players || {}).forEach(([nickname,selected]) => {
-                if(selected !== choice){
-                    return;
-                }
+                if(selected !== choice) return;
 
                 const name = document.createElement("div");
                 name.textContent = nickname;
@@ -255,74 +235,8 @@ export function showGameRoundResultPopup(round,players,choices){
     });
 }
 
-export function showGameRulePopup(){
-    return new Promise(resolve => {
-        const modal = document.getElementById("gameRuleModal");
-        const step = document.getElementById("gameRuleStep");
-        const subtitle = document.getElementById("gameRuleSubtitle");
-        const text = document.getElementById("gameRuleText");
-        const prevBtn = document.getElementById("gameRulePrev");
-        const nextBtn = document.getElementById("gameRuleNext");
-        const startBtn = document.getElementById("gameRuleStart");
-        const closeBtn = document.getElementById("gameRuleClose");
-
-        if(!modal || !step || !subtitle || !text || !prevBtn || !nextBtn || !startBtn || !closeBtn){
-            resolve();
-            return;
-        }
-
-        let index = 0;
-
-        function showRule(){
-            const rule = gameRules[index];
-
-            step.textContent = `${index + 1} / ${gameRules.length}`;
-            subtitle.textContent = rule.subtitle;
-            text.innerHTML = rule.text;
-            prevBtn.disabled = index === 0;
-
-            if(index === gameRules.length - 1){
-                nextBtn.classList.add("hidden");
-                startBtn.classList.remove("hidden");
-            }else{
-                nextBtn.classList.remove("hidden");
-                startBtn.classList.add("hidden");
-            }
-        }
-
-        prevBtn.onclick = () => {
-            if(index > 0){
-                index--;
-                showRule();
-            }
-        };
-
-        nextBtn.onclick = () => {
-            if(index < gameRules.length - 1){
-                index++;
-                showRule();
-            }
-        };
-
-        startBtn.onclick = () => {
-            modal.classList.add("hidden");
-            resolve();
-        };
-
-        closeBtn.onclick = () => {
-            modal.classList.add("hidden");
-            resolve();
-        };
-
-        showRule();
-        modal.classList.remove("hidden");
-    });
-}
-
 function createGameResultModal(){
-    if(document.getElementById("gameResultModal")){
-        return;
-    }
+    if(document.getElementById("gameResultModal")) return;
 
     const modal = document.createElement("div");
     modal.id = "gameResultModal";
@@ -340,9 +254,7 @@ function createGameResultModal(){
 }
 
 function createGameRoundResultModal(){
-    if(document.getElementById("gameRoundResultModal")){
-        return;
-    }
+    if(document.getElementById("gameRoundResultModal")) return;
 
     const modal = document.createElement("div");
     modal.id = "gameRoundResultModal";
@@ -353,33 +265,6 @@ function createGameRoundResultModal(){
             <button type="button" id="gameRoundResultClose" class="gameResultClose">×</button>
             <h2 id="gameRoundResultTitle"></h2>
             <div id="gameRoundResultList" class="gameRoundResultList"></div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-}
-
-function createGameRuleModal(){
-    if(document.getElementById("gameRuleModal")){
-        return;
-    }
-
-    const modal = document.createElement("div");
-    modal.id = "gameRuleModal";
-    modal.className = "modal hidden";
-
-    modal.innerHTML = `
-        <div class="modalBox gameRuleBox">
-            <button type="button" id="gameRuleClose" class="gameRuleClose">×</button>
-            <div id="gameRuleStep" class="gameRuleStep"></div>
-            <h2>주간 미니 게임 설명서</h2>
-            <div id="gameRuleSubtitle" class="gameRuleSubtitle"></div>
-            <div id="gameRuleText" class="gameRuleText"></div>
-            <div class="gameRuleNav">
-                <button type="button" id="gameRulePrev">&lt;</button>
-                <button type="button" id="gameRuleNext">&gt;</button>
-                <button type="button" id="gameRuleStart" class="hidden">게임 시작</button>
-            </div>
         </div>
     `;
 

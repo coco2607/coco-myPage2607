@@ -1,0 +1,288 @@
+/* gamePopop.css */
+#gameResultModal,
+#gameRoundResultModal,
+#gameRuleModal,
+#gamePlayerModal{
+    width:100%;
+    box-sizing:border-box;
+}
+
+#gameResultModal .gameResultBox{
+    position:relative;
+    width:80%;
+    max-width:280px;
+    margin:0 auto;
+    padding:28px 20px 20px;
+    box-sizing:border-box;
+    text-align:center;
+}
+
+#gameResultMessage{
+    margin:0 0 20px;
+    color:#4A4038;
+    font-size:15px;
+    font-weight:600;
+    line-height:24px;
+    text-align:center;
+}
+
+.gameResultClose{
+    position:absolute;
+    top:8px;
+    right:10px;
+    width:28px;
+    height:28px;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:#8F4E31;
+    font-size:24px;
+    font-weight:400;
+    line-height:28px;
+    cursor:pointer;
+}
+
+.gameResultClose:hover{
+    color:#A65D3B;
+}
+
+#gameResultView{
+    width:100%;
+    height:40px;
+    padding:0;
+    border:none;
+    border-radius:8px;
+    background:#A65D3B;
+    color:#FFF;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+#gameResultView:hover{
+    background:#8F4E31;
+}
+
+#gameResultView.hidden{
+    display:none;
+}
+
+#gameRoundResultModal .gameRoundResultBox{
+    position:relative;
+    width:92%;
+    max-width:380px;
+    margin:0 auto;
+    padding:26px 14px 22px;
+    box-sizing:border-box;
+    text-align:center;
+}
+
+.gameRoundResultBox h2{
+    margin:0 0 18px;
+    color:#A65D3B;
+    font-size:17px;
+    font-weight:700;
+}
+
+.gameRoundResultList{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:4px;
+    width:100%;
+}
+
+.gameRoundResultColumn{
+    min-width:0;
+    text-align:center;
+}
+
+.gameRoundResultChoice{
+    margin:0 0 8px;
+    padding:6px 0;
+    border-bottom:1px solid #D8CBB9;
+    color:#A65D3B;
+    font-size:15px;
+    font-weight:700;
+}
+
+.gameRoundResultNames{
+    color:#4A4038;
+    font-size:12.5px;
+    font-weight:500;
+    line-height:22px;
+}
+
+.gameRoundResultNames div{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+#gameRuleModal .gameRuleBox{
+    position:relative;
+    width:82%;
+    max-width:320px;
+    margin:0 auto;
+    padding:22px 20px 20px;
+    box-sizing:border-box;
+    text-align:center;
+}
+
+.gameRuleStep{
+    margin:0 0 8px;
+    color:#9A8C7D;
+    font-size:12.5px;
+    font-weight:500;
+}
+
+.gameRuleBox h2{
+    margin:0 0 16px;
+    color:#333;
+    font-size:18px;
+    font-weight:700;
+}
+
+.gameRuleSubtitle{
+    margin:0 0 12px;
+    color:#A65D3B;
+    font-size:15px;
+    font-weight:700;
+}
+
+.gameRuleText{
+    min-height:56px;
+    margin:0 0 20px;
+    color:#4A4038;
+    font-size:14px;
+    font-weight:500;
+    line-height:22px;
+    text-align:center;
+}
+
+.gameRuleNav{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    width:100%;
+}
+
+#gameRulePrev,
+#gameRuleNext{
+    width:52px;
+    height:40px;
+    padding:0;
+    border:none;
+    border-radius:8px;
+    background:#A65D3B;
+    color:#FFF;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+#gameRulePrev:hover:not(:disabled),
+#gameRuleNext:hover:not(:disabled){
+    background:#8F4E31;
+}
+
+#gameRulePrev:disabled,
+#gameRuleNext:disabled{
+    opacity:.35;
+    cursor:default;
+}
+
+#gameRuleStart{
+    width:110px;
+    height:40px;
+    padding:0 14px;
+    border:none;
+    border-radius:8px;
+    background:#A65D3B;
+    color:#FFF;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+#gameRuleStart:hover{
+    background:#8F4E31;
+}
+
+#gameRuleStart.hidden,
+#gameRuleNext.hidden{
+    display:none;
+}
+
+.gameRuleClose{
+    position:absolute;
+    top:10px;
+    right:12px;
+    width:28px;
+    height:28px;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:#8F4E31;
+    font-size:24px;
+    font-weight:400;
+    line-height:28px;
+    cursor:pointer;
+}
+
+.gameRuleClose:hover{
+    color:#A65D3B;
+}
+
+#gamePlayerModal .gamePlayerBox{
+    position:relative;
+    width:90%;
+    max-width:400px;
+    max-height:85dvh;
+    margin:0 auto;
+    padding:25px 12px 20px;
+    box-sizing:border-box;
+    overflow-y:auto;
+    text-align:center;
+}
+
+.gamePlayerBox h2{
+    margin:0 0 12px;
+    color:#A65D3B;
+    font-size:18px;
+    font-weight:700;
+}
+
+.gamePlayerList{
+    display:grid;
+    grid-template-rows:repeat(15,auto);
+    grid-auto-flow:column;
+    grid-auto-columns:minmax(65px,1fr);
+    gap:0 8px;
+    width:max-content;
+    max-width:100%;
+    margin:0 auto;
+    overflow-x:auto;
+}
+
+.gamePlayerItem{
+    min-width:0;
+    padding:5px 6px;
+    border:none;
+    background:transparent;
+    color:#4A4038;
+    font-size:13px;
+    font-weight:500;
+    line-height:20px;
+    text-align:center;
+    white-space:nowrap;
+}
+
+.gamePlayerEmpty{
+    grid-column:1/-1;
+    padding:20px 0;
+    color:#9A8C7D;
+    font-size:13px;
+    text-align:center;
+}

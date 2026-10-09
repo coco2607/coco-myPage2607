@@ -1,4 +1,5 @@
-// game.js
+
+ // game.js
 import {
     ensureMemberMiniGame,
     loadMemberGame,
@@ -33,9 +34,13 @@ import {
     renderChoiceState,
     updateGameTop,
     showGameResultPopup,
-    showGameRoundResultPopup,
-    showGameRulePopup
+    showGameRoundResultPopup
 } from "./gameUi.js";
+
+import {
+    showGameRulePopup,
+    showGamePlayerPopup
+} from "./gamePopup.js";
 
 import {initGameChat} from "./gameChat.js";
 import {koDate} from "../../utils.js";
@@ -61,11 +66,11 @@ async function initGame(){
     createGameUI();
 
     const date = koDate();
-
     gameKey = getGameKey(date);
     currentRound = getCurrentRound(date);
 
     bindGameChoiceEvents(selectChoice,confirmChoice);
+    bindPlayerEvent();
     initGameChat(gameKey,nickname);
     bindTabEvent();
 
@@ -83,26 +88,23 @@ async function loadGameState(){
     gameEnd = await loadGameEnd(gameKey);
 
     const roundData = await loadGameRound(gameKey,currentRound);
-
     selectedChoice = roundData?.player?.[nickname] || "";
 
-    setGameTitle(
-        currentRound,
-        Number(roundData?.count) || 0
-    );
-
+    setGameTitle(currentRound);
     renderGame();
 }
 
 async function processGameTab(){
-    if(gameProcessing){
-        return;
-    }
+    if(gameProcessing) return;
 
     gameProcessing = true;
 
     try{
-        const previousResult = await processPreviousGameResult(nickname,gameKey,currentRound);
+        const previousResult = await processPreviousGameResult(
+            nickname,
+            gameKey,
+            currentRound
+        );
 
         if(previousResult?.message){
             await showGameResultPopup(
@@ -117,7 +119,11 @@ async function processGameTab(){
         memberGame = await loadMemberGame(nickname,gameKey);
         gameEnd = await loadGameEnd(gameKey);
 
-        const results = await processMemberResults(nickname,gameKey,currentRound);
+        const results = await processMemberResults(
+            nickname,
+            gameKey,
+            currentRound
+        );
 
         for(const result of results){
             if(result?.message){
@@ -148,24 +154,15 @@ async function showRoundResult(targetGameKey,round){
         const players = roundData?.player || {};
         const choices = getRoundChoices(round);
 
-        await showGameRoundResultPopup(
-            round,
-            players,
-            choices
-        );
+        await showGameRoundResultPopup(round,players,choices);
     }catch(error){
         console.error("라운드 결과 불러오기 오류:",error);
     }
 }
 
 function selectChoice(choice){
-    if(!canSelectCurrentRound()){
-        return;
-    }
-
-    if(!canSelectChoice(currentRound,choice)){
-        return;
-    }
+    if(!canSelectCurrentRound()) return;
+    if(!canSelectChoice(currentRound,choice)) return;
 
     selectedChoice = choice;
 
@@ -177,13 +174,8 @@ function selectChoice(choice){
 }
 
 async function confirmChoice(){
-    if(!canSelectCurrentRound()){
-        return;
-    }
-
-    if(!canSelectChoice(currentRound,selectedChoice)){
-        return;
-    }
+    if(!canSelectCurrentRound()) return;
+    if(!canSelectChoice(currentRound,selectedChoice)) return;
 
     const button = document.getElementById("gameConfirmBtn");
 
@@ -239,17 +231,70 @@ function renderGame(){
         memberGame,
         selectedChoice,
         eliminationRound:findEliminationRound(memberGame),
-        gameEnd
+        gameEnd,
+        nickname
+    });
+
+    updatePlayerButton();
+}
+
+function updatePlayerButton(){
+    const playerBtn = document.getElementById("gamePlayerOpen");
+    if(!playerBtn) return;
+
+    if(gameEnd){
+        const winners = Object.keys(gameEnd.winners || {});
+        playerBtn.textContent = winners.length > 0 ? "우승자" : "결과";
+        return;
+    }
+
+    playerBtn.textContent = "생존자";
+}
+
+function bindPlayerEvent(){
+    const playerBtn = document.getElementById("gamePlayerOpen");
+    if(!playerBtn) return;
+
+    playerBtn.addEventListener("click",async () => {
+        if(playerBtn.disabled) return;
+        playerBtn.disabled = true;
+
+        try{
+            const latestEnd = await loadGameEnd(gameKey);
+            gameEnd = latestEnd;
+
+            if(gameEnd){
+                const winners = gameEnd.winners || {};
+                const hasWinners = Object.keys(winners).length > 0;
+
+                updatePlayerButton();
+                showGamePlayerPopup(
+                    winners,
+                    hasWinners ? "우승자 목록" : "우승자 없음"
+                );
+                return;
+            }
+
+            const targetRound = currentRound === 1 ? 1 : currentRound - 1;
+            const roundData = await loadGameRound(gameKey,targetRound);
+
+            const players = currentRound === 1
+                ? roundData?.player || {}
+                : roundData?.live || {};
+
+            showGamePlayerPopup(players,"생존자 목록");
+        }catch(error){
+            console.error("생존자 목록 불러오기 오류:",error);
+        }finally{
+            playerBtn.disabled = false;
+        }
     });
 }
 
 function bindTabEvent(){
     document.querySelectorAll(".contentTab").forEach(button => {
         button.addEventListener("click",async () => {
-            if(button.dataset.tab !== "game"){
-                return;
-            }
-
+            if(button.dataset.tab !== "game") return;
             await processGameTab();
         });
     });
