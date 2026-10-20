@@ -1,5 +1,8 @@
 // admin.js
-import {loadMembers} from "./adminFirebase.js";
+import {
+    loadMembers,
+    deleteMember
+} from "./adminFirebase.js";
 import {openHistory} from "./adminHistory.js";
 import {setNicknameTarget} from "./changenm.js";
 import {openStateSelect} from "./mstate/mstate.js";
@@ -93,7 +96,7 @@ function render(list){
                     class="memberDeleteBtn"
                     data-key="${nickname}">
                     삭제
-                </button>                
+                </button>
             </div>
         `;
     });
@@ -120,6 +123,30 @@ function bindMemberEvents(){
                 nickname,
                 state
             );
+        });
+    });
+
+    document.querySelectorAll(".memberDeleteBtn").forEach(button => {
+        button.addEventListener("click",async () => {
+            const nickname = button.dataset.key;
+
+            const ok = confirm(
+                `${nickname} 회원을 삭제할까요?\n회원정보와 히스토리가 모두 삭제됩니다.`
+            );
+
+            if(!ok){
+                return;
+            }
+
+            try{
+                await deleteMember(nickname);
+                document.dispatchEvent(
+                    new Event("memberUpdated")
+                );
+            }catch(error){
+                console.error("회원 삭제 실패:",error);
+                alert("회원 삭제에 실패했습니다.");
+            }
         });
     });
 }

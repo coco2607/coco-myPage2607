@@ -1,5 +1,5 @@
 // utils.js
-export const appVersion = "2.3.0";
+export const appVersion = "2.4.0";
 export const adminName = "코코";
 
 function koTime(){

@@ -1,0 +1,260 @@
+/* game.css */
+#gameContent{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-height:0;
+}
+#gameContent.hidden{
+    display:none;
+}
+#miniGame{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-height:0;
+}
+.gameTitleRow{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:34px;
+    margin:2px 6% 12px;
+}
+.gameRuleOpen{
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:22px;
+    height:22px;
+    padding:0;
+    border:1px solid #A65D3B;
+    border-radius:50%;
+    background:#FFF;
+    color:#A65D3B;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+}
+.gamePlayerOpen{
+    position:absolute;
+    right:0;
+    top:50%;
+    transform:translateY(-50%);
+    height:26px;
+    padding:0 9px;
+    border:1px solid #A65D3B;
+    border-radius:5px;
+    background:#FFF;
+    color:#A65D3B;
+    font-size:12px;
+    font-weight:600;
+    white-space:nowrap;
+    cursor:pointer;
+}
+.gamePlayerOpen:hover:not(:disabled){
+    background:#F7EEE9;
+}
+.gamePlayerOpen:disabled{
+    opacity:.5;
+    cursor:default;
+}
+.gameTitle{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:5px;
+    margin:0;
+    padding:0 65px 0 34px;
+    text-align:center;
+}
+.gameTitleMain{
+    color:#A65D3B;
+    font-size:16px;
+    font-weight:700;
+    white-space:normal;
+    overflow-wrap:break-word;
+}
+.gameChoiceArea{
+    display:flex;
+    flex-shrink:0;
+    gap:6px;
+    margin:2px 6% 14px;
+}
+.gameChoice,
+#gameConfirmBtn{
+    flex:1;
+    height:40px;
+    min-width:0;
+    padding:0;
+    border:1px solid #D8CBB9;
+    border-radius:8px;
+    background:#FFF;
+    color:#4A4038;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+.gameChoice:hover:not(:disabled){
+    border-color:#A65D3B;
+}
+.gameChoice.selected{
+    border-color:#A65D3B;
+    background:#F7EEE9;
+    color:#A65D3B;
+}
+.gameChoice:disabled{
+    border-color:#DDD7D1;
+    background:#F4F2F0;
+    color:#B8B0A9;
+    opacity:1;
+    cursor:default;
+}
+.gameChoice.selected:disabled{
+    border-color:#D8CBB9;
+    background:#EEE9E5;
+    color:#A59A8F;
+}
+#gameConfirmBtn{
+    border:none;
+    background:#A65D3B;
+    color:#FFF;
+}
+#gameConfirmBtn:hover:not(:disabled){
+    background:#8F4E31;
+}
+#gameConfirmBtn:disabled{
+    opacity:.6;
+    cursor:default;
+}
+.gameChatWrite{
+    display:flex;
+    flex-shrink:0;
+    align-items:flex-end;
+    gap:8px;
+    margin:2px 6%;
+}
+#gameChatInput{
+    display:block;
+    flex:1;
+    width:100%;
+    height:40px;
+    min-width:0;
+    min-height:40px;
+    padding:9px 8px;
+    border:1px solid #D8CBB9;
+    border-radius:8px;
+    outline:none;
+    background:#FFF;
+    color:#4A4038;
+    font-family:inherit;
+    font-size:13px;
+    line-height:20px;
+    resize:none;
+    overflow:hidden;
+    vertical-align:top;
+}
+#gameChatInput::placeholder{
+    color:#A59A8F;
+}
+#gameChatInput:focus{
+    border-color:#A65D3B;
+    box-shadow:0 0 0 2px rgba(166,93,59,.08);
+}
+#gameChatBtn{
+    flex-shrink:0;
+    width:52px;
+    height:40px;
+    padding:0;
+    border:none;
+    border-radius:8px;
+    background:#A65D3B;
+    color:#FFF;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.5px;
+    cursor:pointer;
+}
+#gameChatBtn:hover:not(:disabled){
+    background:#8F4E31;
+}
+#gameChatBtn:disabled{
+    opacity:.6;
+    cursor:default;
+}
+.gameChatList{
+    flex:1;
+    min-height:0;
+    padding:4px 8%;
+    overflow-y:auto;
+}
+.gameChatDate{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:8px 0 6px;
+    color:#A59A8F;
+    font-size:10.5px;
+    font-weight:500;
+    line-height:18px;
+    white-space:nowrap;
+}
+.gameChatDate::before,
+.gameChatDate::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:#E8E1DA;
+}
+.gameChatItem{
+    display:grid;
+    grid-template-columns:46px minmax(0,1fr) 42px;
+    align-items:baseline;
+    column-gap:2px;
+    min-height:24px;
+    padding:2px 0;
+}
+.gameChatNickname{
+    min-width:0;
+    overflow:hidden;
+    color:#4A4038;
+    font-size:13.5px;
+    font-weight:600;
+    line-height:20px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.gameChatComment{
+    min-width:0;
+    color:#5A514A;
+    font-size:13.5px;
+    font-weight:400;
+    line-height:20px;
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:normal;
+}
+.gameChatTime{
+    color:#9A8C7D;
+    font-size:10.5px;
+    font-weight:400;
+    line-height:20px;
+    text-align:right;
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+}
+@media(max-width:390px){
+    .gameTitleMain{
+        font-size:13px;
+    }
+    .gamePlayerOpen{
+        padding:0 6px;
+        font-size:11px;
+    }
+    .gameTitle{
+        padding:0 58px 0 28px;
+    }
+}

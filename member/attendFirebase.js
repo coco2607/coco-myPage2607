@@ -4,6 +4,7 @@ import {
     ref,
     get,
     set,
+    update,
     serverTimestamp,
     runTransaction,
     push
@@ -14,16 +15,21 @@ const HISTORY = "으차방/history";
 const ATTEND = "으차방/attend";
 
 export async function loadTodayAttendance(date){
-    const snapshot = await get(ref(db, `${ATTEND}/${date}`));
+    const snapshot = await get(ref(db,`${ATTEND}/${date}`));
+
     if(!snapshot.exists()){
         return [];
     }
+
     const list = [];
+
     snapshot.forEach(child => {
         const data = child.val();
+
         if(!data || typeof data !== "object"){
             return;
         }
+
         list.push({
             key:child.key,
             nickname:data.nickname ?? "",
@@ -31,17 +37,27 @@ export async function loadTodayAttendance(date){
             time:data.time ?? 0
         });
     });
+
     return list;
 }
 
 export async function saveTodayAttendance(nickname,date,comment){
     const monthKey = date.substring(0,7);
-    const attendanceRef = push(ref(db, `${ATTEND}/${date}`));
+    const todayRef = ref(db,`${ATTEND}/${date}`);
+    const todaySnapshot = await get(todayRef);
+    const firstTodayAttendance = !todaySnapshot.exists();
+
+    const attendanceRef = push(todayRef);
+
     await set(attendanceRef,{
         nickname:nickname,
         comment:comment,
         time:serverTimestamp()
     });
+
+    if(firstTodayAttendance){
+        await cleanupOldAttendance(date);
+    }
 
     const checkRef = ref(
         db,
@@ -52,6 +68,7 @@ export async function saveTodayAttendance(nickname,date,comment){
         if(current !== null){
             return;
         }
+
         return true;
     });
 
@@ -70,7 +87,7 @@ export async function saveTodayAttendance(nickname,date,comment){
         });
 
         await set(
-            ref(db, `${MEMBER}/${nickname}/lastUpdate`),
+            ref(db,`${MEMBER}/${nickname}/lastUpdate`),
             serverTimestamp()
         );
     }
@@ -80,6 +97,26 @@ export async function saveTodayAttendance(nickname,date,comment){
     };
 }
 
+async function cleanupOldAttendance(currentDate){
+    const snapshot = await get(ref(db,ATTEND));
+
+    if(!snapshot.exists()){
+        return;
+    }
+
+    const updates = {};
+
+    snapshot.forEach(child => {
+        if(child.key !== currentDate){
+            updates[child.key] = null;
+        }
+    });
+
+    if(Object.keys(updates).length > 0){
+        await update(ref(db,ATTEND),updates);
+    }
+}
+
 export async function saveAttendanceCardResult(
     nickname,
     date,
@@ -87,6 +124,7 @@ export async function saveAttendanceCardResult(
 ){
     const monthKey = date.substring(0,7);
     const finalReward = Number(rewardPoint) > 0 ? 1 : 0;
+
     const checkRef = ref(
         db,
         `${MEMBER}/${nickname}/attend/${monthKey}/check/${date}`
@@ -127,7 +165,7 @@ export async function saveAttendanceCardResult(
     });
 
     const historyRef = push(
-        ref(db, `${HISTORY}/${nickname}`)
+        ref(db,`${HISTORY}/${nickname}`)
     );
 
     await set(historyRef,{
@@ -179,6 +217,7 @@ export async function rewardAttendancePoint(
             if(current !== null){
                 return;
             }
+
             return date;
         }
     );
@@ -200,7 +239,7 @@ export async function rewardAttendancePoint(
     });
 
     const historyRef = push(
-        ref(db, `${HISTORY}/${nickname}`)
+        ref(db,`${HISTORY}/${nickname}`)
     );
 
     await set(historyRef,{
