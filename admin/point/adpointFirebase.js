@@ -30,15 +30,6 @@ export async function applyPoint(mode,pointData){
             continue;
         }
 
-        if(
-            mode === "minus" &&
-            currentPoint < point
-        ){
-            throw new Error(
-                `${item.nickname}님의 포인트가 부족합니다.`
-            );
-        }
-
         const totalPoint = mode === "plus"
             ? currentPoint + point
             : currentPoint - point;
