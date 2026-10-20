@@ -2,7 +2,6 @@
 
 import {loadMembers} from "./adminFirebase.js";
 import {openHistory} from "./adminHistory.js";
-import {setNicknameTarget} from "./changenm.js";
 import {openStateSelect} from "./mstate/mstate.js";
 import "./point/adpoint.js";
 import {
@@ -106,8 +105,6 @@ function bindMemberEvents(){
     document.querySelectorAll(".memberNick").forEach(nick => {
         nick.addEventListener("click",async () => {
             const nickname = nick.dataset.key;
-
-            setNicknameTarget(nickname);
             await openHistory(nickname);
         });
     });
