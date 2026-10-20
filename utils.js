@@ -1,5 +1,5 @@
 // utils.js
-export const appVersion = "2.4.0";
+export const appVersion = "2.5.5";
 export const adminName = "코코";
 
 function koTime(){
@@ -66,8 +66,8 @@ export function getDeviceId(){
 export function specialDayPeriod(){
     const now = koDateTime();
 
-    const start = "2026-10-08 00:00:00";
-    const end = "2026-10-09 23:59:00";
+    const start = "2026-10-21 00:00:00";
+    const end = "2026-10-31 23:59:30";
 
     return now >= start && now <= end;
 }
