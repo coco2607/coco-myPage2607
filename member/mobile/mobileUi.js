@@ -179,7 +179,7 @@ export function renderMobileList(list){
 
         const mail = document.createElement("span");
         mail.className = "mobileMailIcon";
-        mail.textContent = "✉️";
+        mail.textContent = "📧";
 
         const arrow2 = document.createElement("span");
         arrow2.className = "mobileArrow";
