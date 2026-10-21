@@ -179,7 +179,7 @@ export function renderMobileList(list){
 
         const receiver = document.createElement("span");
         receiver.className = "mobileReceiver";
-        receiver.textContent = "비공개";
+        receiver.textContent = data.receiver || "비공개";
 
         detail.append(
             sender,

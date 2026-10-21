@@ -37,6 +37,35 @@ export async function loadMobileList(){
     return list;
 }
 
+
+export function watchMobileList(callback){
+    const listRef = ref(db,`${MOBILE}/list`);
+
+    return onValue(
+        listRef,
+        snapshot => {
+            const list = [];
+
+            if(snapshot.exists()){
+                snapshot.forEach(child => {
+                    list.push({
+                        key:child.key,
+                        ...child.val()
+                    });
+                });
+            }
+
+            callback(list);
+        },
+        error => {
+            console.error(
+                "전번교환 목록 실시간 조회 실패:",
+                error
+            );
+        }
+    );
+}
+
 export function loadMobileMail(nickname,callback){
     let version = 0;
 
@@ -224,6 +253,7 @@ export async function sendMobile({
 
     updates[`${MOBILE}/list/${id}`] = {
         sender,
+        receiver,
         timestamp:now
     };
 
