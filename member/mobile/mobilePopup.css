@@ -1,0 +1,179 @@
+
+/* mobile/mobilePopup.css */
+.mobileModal{
+    position:fixed;
+    inset:0;
+    z-index:1100;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:rgba(0,0,0,.45);
+}
+.mobileModal.hidden{
+    display:none;
+}
+.mobileModalBox{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    width:100%;
+    max-width:350px;
+    max-height:85dvh;
+    padding:24px 20px 20px;
+    border-radius:14px;
+    background:#FFF;
+    color:#4A4038;
+    box-shadow:0 4px 20px rgba(0,0,0,.15);
+    overflow-y:auto;
+}
+.mobileModalBox h2{
+    margin:0 0 8px;
+    color:#A65D3B;
+    font-size:19px;
+    font-weight:700;
+    text-align:center;
+}
+.mobileModalBox label{
+    color:#4A4038;
+    font-size:14px;
+    font-weight:600;
+    line-height:19px;
+}
+.mobileModalBox>p{
+    color:#4A4038;
+    font-size:14px;
+    line-height:22px;
+    text-align:center;
+    overflow-wrap:anywhere;
+}
+.mobileModalBox input{
+    width:100%;
+    height:40px;
+    margin-bottom:8px;
+    padding:0 12px;
+    border:1px solid #D8CBB9;
+    border-radius:8px;
+    outline:none;
+    background:#FFF;
+    color:#4A4038;
+    font-size:15px;
+}
+.mobileModalBox input::placeholder{
+    color:#A59A8F;
+}
+.mobileModalBox input:focus{
+    border-color:#A65D3B;
+    box-shadow:0 0 0 2px rgba(166,93,59,.08);
+}
+.mobileNotice{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    padding:12px;
+    border-radius:8px;
+    background:#F6EFE3;
+}
+.mobileNotice strong{
+    margin-bottom:4px;
+    color:#A65D3B;
+    font-size:14px;
+    font-weight:700;
+}
+.mobileNotice p{
+    color:#786B5F;
+    font-size:12px;
+    line-height:17px;
+    overflow-wrap:anywhere;
+}
+.mobileModalButtons{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:8px;
+}
+.mobileModalButtons button{
+    flex:1;
+    min-width:0;
+    min-height:44px;
+    padding:0 8px;
+    border:none;
+    border-radius:8px;
+    background:#A65D3B;
+    color:#FFF;
+    font-size:13.5px;
+    font-weight:600;
+    white-space:nowrap;
+    cursor:pointer;
+}
+.mobileModalButtons button:hover:not(:disabled){
+    background:#8F4E31;
+}
+.mobileModalButtons button:disabled{
+    background:#D8CBB9;
+    color:#A59A8F;
+    opacity:1;
+    cursor:default;
+}
+#mobileRequestCancel,
+#mobileLaterBtn{
+    background:#E8E0D5;
+    color:#4A4038;
+}
+#mobileRequestCancel:hover:not(:disabled),
+#mobileLaterBtn:hover:not(:disabled){
+    background:#D8CBB9;
+}
+#mobileRejectBtn{
+    background:#786B5F;
+}
+#mobileRejectBtn:hover:not(:disabled){
+    background:#62574D;
+}
+
+.mobilePhoneArea{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    padding:14px 8px;
+}
+
+.mobilePhoneArea.hidden{
+    display:none;
+}
+#mobileResultPhone{
+    color:#4A4038;
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:.3px;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+}
+#mobileCopyBtn{
+    flex-shrink:0;
+    padding:5px 8px;
+    border:1px solid #A65D3B;
+    border-radius:6px;
+    background:#FFF;
+    color:#A65D3B;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+#mobileCopyBtn:hover{
+    background:#F6EFE3;
+}
+.mobileAlertBox{
+    width:80%;
+    max-width:280px;
+    padding:26px 18px;
+    text-align:center;
+}
+#mobileAlertMessage{
+    color:#4A4038;
+    font-size:16px;
+    font-weight:600;
+    line-height:23px;
+    white-space:pre-line;
+}

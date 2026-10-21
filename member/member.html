@@ -1,4 +1,4 @@
-<!-- member.html -->
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="pwChange.css">
     <link rel="stylesheet" href="game/game.css">
     <link rel="stylesheet" href="game/gamePopup.css">
+    <link rel="stylesheet" href="mobile/mobile.css">
+    <link rel="stylesheet" href="mobile/mobilePopup.css">
 </head>
 <body>
     <div class="layout">
@@ -57,6 +59,13 @@
                 <button
                     type="button"
                     class="contentTab"
+                    data-tab="mobile">
+                    전번교환권
+                    <span id="mobileNew" class="mobileNew hidden">NEW</span>
+                </button>
+                <button
+                    type="button"
+                    class="contentTab"
                     data-tab="game">
                     주간 미니 게임
                 </button>
@@ -92,9 +101,7 @@
                     </div>
                 </div>
 
-                <div
-                    id="pointContent"
-                    class="tabContent hidden">
+                <div id="pointContent" class="tabContent hidden">
                     <div class="historyTitle">
                         포인트 상세내역
                     </div>
@@ -102,9 +109,17 @@
                     <div id="historyList"></div>
                 </div>
 
-                <div
-                    id="gameContent"
-                    class="tabContent hidden">
+                <div id="mobileContent" class="tabContent hidden">
+                    <div class="mobileHeader">
+                        <!--<div class="mobileTitle"></div>-->
+                        <button type="button" id="mobileUseBtn">
+                            전번교환권 사용하기
+                        </button>
+                    </div>
+                    <div id="mobileList" class="mobileList"></div>
+                </div>
+
+                <div id="gameContent" class="tabContent hidden">
                     <div id="miniGame"></div>
                 </div>
             </div>
@@ -218,6 +233,7 @@
     <script type="module" src="attend.js"></script>
     <script type="module" src="pwChange.js"></script>
     <script type="module" src="game/game.js"></script>
+    <script type="module" src="mobile/mobile.js"></script>
     <script type="module" src="../admin/adminLogin.js"></script>
 </body>
 </html>

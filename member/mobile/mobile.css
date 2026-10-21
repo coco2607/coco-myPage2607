@@ -1,0 +1,125 @@
+
+/* mobile/mobile.css */
+#mobileContent{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-height:0;
+}
+#mobileContent.hidden{
+    display:none;
+}
+.mobileHeader{
+    display:flex;
+    flex-shrink:0;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    padding:2px 18px 14px;
+}
+.mobileTitle{
+    color:#A65D3B;
+    font-size:18px;
+    font-weight:700;
+    text-align:center;
+}
+#mobileUseBtn{
+    width:100%;
+    max-width:280px;
+    height:42px;
+    padding:0 12px;
+    border:none;
+    border-radius:8px;
+    background:#A65D3B;
+    color:#FFF;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+#mobileUseBtn:hover{
+    background:#8F4E31;
+}
+#mobileUseBtn:disabled{
+    opacity:.6;
+    cursor:default;
+}
+.mobileList{
+    flex:1;
+    min-height:0;
+    padding:10px 6% 16px;
+    border-top:1px solid #D8CBB9;
+    overflow-y:auto;
+}
+.mobileItem{
+    display:grid;
+    grid-template-columns:76px minmax(0,1fr);
+    align-items:center;
+    gap:8px;
+    min-height:38px;
+    padding:7px 0;
+}
+.mobileDate{
+    color:#9A8C7D;
+    font-size:12px;
+    font-weight:400;
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+}
+.mobileDetail{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-width:0;
+    gap:6px;
+}
+.mobileSender{
+    min-width:0;
+    max-width:100px;
+    overflow:hidden;
+    color:#4A4038;
+    font-size:13.5px;
+    font-weight:600;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.mobileArrow{
+    flex-shrink:0;
+    color:#A59A8F;
+    font-size:13px;
+}
+.mobileMailIcon{
+    flex-shrink:0;
+    font-size:17px;
+    line-height:1;
+}
+.mobileReceiver{
+    flex-shrink:0;
+    color:#786B5F;
+    font-size:13.5px;
+    font-weight:500;
+    white-space:nowrap;
+}
+.mobileEmpty{
+    padding:24px 0;
+    color:#A59A8F;
+    font-size:13px;
+    text-align:center;
+}
+.mobileItem,
+.mobileDetail{
+    cursor:default;
+    user-select:none;
+}
+.mobileNew{
+    position:absolute;
+    top:2px;
+    right:2px;
+    color:#D9534F;
+    font-size:8px;
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.3px;
+}
+.mobileNew.hidden{
+    display:none;
+}

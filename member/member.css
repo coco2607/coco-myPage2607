@@ -110,15 +110,19 @@ body{
     border-bottom:1px solid #D8CBB9;
 }
 .contentTab{
+    position:relative;
     flex:1;
-    height:38px;
-    padding:0;
+    min-width:0;
+    height:40px;
+    padding:0 2px;
     border:none;
     border-bottom:2px solid transparent;
     background:transparent;
     color:#9A8C7D;
-    font-size:15px;
+    font-size:12px;
     font-weight:500;
+    letter-spacing:-0.5px;
+    white-space:nowrap;
     cursor:pointer;
 }
 .contentTab:hover{
@@ -126,9 +130,9 @@ body{
 }
 .contentTab.active{
     color:#A65D3B;
-    font-size:17px;
+    font-size:13.7px;
     font-weight:700;
-    letter-spacing:0.5px;
+    letter-spacing:-0.5px;
     border-bottom-color:#A65D3B;
 }
 #contentArea{
@@ -165,7 +169,7 @@ body{
     flex-shrink:0;
     padding:0 18px;
     color:#A65D3B;
-    font-size:18px;
+    font-size:16px;
     font-weight:700;
     text-align:center;
 }

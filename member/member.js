@@ -1,4 +1,4 @@
-// member.js
+
 import {
     loadUser,
     loadHistory
@@ -23,7 +23,6 @@ const adminModal = document.getElementById("adminModal");
 const adminPassword = document.getElementById("adminPassword");
 const adminMessage = document.getElementById("adminMessage");
 const adminCancelBtn = document.getElementById("adminCancelBtn");
-
 
 let memberUser = null;
 
@@ -57,6 +56,21 @@ contentTabs.forEach(tab => {
     tab.addEventListener("click",() => {
         changeTab(tab);
     });
+});
+
+document.addEventListener("memberUpdated",() => {
+    const activeTab =
+        document.querySelector(".contentTab.active");
+
+    if(!activeTab){
+        return;
+    }
+
+    if(activeTab.dataset.tab === "mobile"){
+        showMobile();
+    }else if(activeTab.dataset.tab === "point"){
+        showPointHistory();
+    }
 });
 
 function checkManager(){
@@ -134,6 +148,11 @@ async function changeTab(tab){
         return;
     }
 
+    if(tabName === "mobile"){
+        await showMobile();
+        return;
+    }
+
     if(tabName === "game"){
         showGame();
     }
@@ -171,8 +190,34 @@ async function showPointHistory(){
     );
 
     pointLabel.textContent =
-        "누적포인트";
+        "보유포인트";
 
+    await updatePoint();
+
+    await loadPointHistory();
+}
+
+async function showMobile(){
+    const mobileContent =
+        document.getElementById(
+            "mobileContent"
+        );
+
+    mobileContent.classList.remove(
+        "hidden"
+    );
+
+    pointLabel.textContent =
+        "보유포인트";
+
+    await updatePoint();
+
+    document.dispatchEvent(
+        new Event("showMobile")
+    );
+}
+
+async function updatePoint(){
     try{
         memberUser =
             await loadUser(nickname);
@@ -185,8 +230,6 @@ async function showPointHistory(){
             error
         );
     }
-
-    await loadPointHistory();
 }
 
 function showGame(){
