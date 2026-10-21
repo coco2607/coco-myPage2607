@@ -147,6 +147,7 @@ export function initMobilePopup(handlers = {}){
                 title:"연락처 교환 완료",
                 message:"상대방의 연락처입니다.",
                 phone:result?.phone || "",
+                rejected:false,
                 onConfirm:result?.onConfirm,
                 onClosed:result?.onClosed
             });
@@ -298,6 +299,7 @@ export function openMobileResult({
     title = "연락처 교환 결과",
     message = "",
     phone = "",
+    rejected = false,
     onConfirm = null,
     onClosed = null
 } = {}){
@@ -311,6 +313,21 @@ export function openMobileResult({
     document.getElementById("mobilePhoneArea").classList.toggle(
         "hidden",
         !phone
+    );
+
+    document.getElementById("mobileResultNotice").classList.toggle(
+        "hidden",
+        !phone && !rejected
+    );
+
+    document.getElementById("mobileAcceptNotice").classList.toggle(
+        "hidden",
+        !phone
+    );
+
+    document.getElementById("mobileRejectNotice").classList.toggle(
+        "hidden",
+        !rejected
     );
 
     resetCopyButton();

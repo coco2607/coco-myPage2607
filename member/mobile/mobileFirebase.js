@@ -37,9 +37,11 @@ export async function loadMobileList(){
     return list;
 }
 
-
 export function watchMobileList(callback){
-    const listRef = ref(db,`${MOBILE}/list`);
+    const listRef = ref(
+        db,
+        `${MOBILE}/list`
+    );
 
     return onValue(
         listRef,
@@ -203,9 +205,11 @@ export async function sendMobile({
     }
 
     const now = Date.now();
-    const id = `${getDateKey(now)}-${push(
+    const uniqueKey = push(
         ref(db,`${MOBILE}/list`)
-    ).key}`;
+    ).key;
+
+    const id = `${getDateKey(now)}-${uniqueKey}`;
 
     const pointRef = ref(
         db,
@@ -292,7 +296,16 @@ async function answerMobile({
         `${MOBILE}/${id}`
     );
 
-    const snapshot = await get(mobileRef);
+    const snapshot = await new Promise((resolve,reject) => {
+        onValue(
+            mobileRef,
+            resolve,
+            reject,
+            {
+                onlyOnce:true
+            }
+        );
+    });
 
     if(!snapshot.exists()){
         throw new Error("신청 내역이 없습니다.");
@@ -311,19 +324,19 @@ async function answerMobile({
     const result = await runTransaction(
         mobileRef,
         current => {
-            if(current === null){
-                return;
-            }
+            const value = current === null
+                ? data
+                : current;
 
             if(
-                current.receiver !== receiver ||
-                typeof current.exchange === "boolean"
+                value.receiver !== receiver ||
+                typeof value.exchange === "boolean"
             ){
                 return;
             }
 
             return {
-                ...current,
+                ...value,
                 receiverPhone:accepted ? receiverPhone : "",
                 exchange:accepted
             };
@@ -334,7 +347,30 @@ async function answerMobile({
     );
 
     if(!result.committed){
-        throw new Error("이미 처리된 신청입니다.");
+        const latest = await get(mobileRef);
+
+        if(
+            latest.exists() &&
+            typeof latest.val().exchange === "boolean"
+        ){
+            throw new Error("이미 처리된 신청입니다.");
+        }
+
+        throw new Error(
+            "처리에 실패했습니다.\n잠시 후 다시 시도해주세요."
+        );
+    }
+
+    const saved = result.snapshot.val();
+
+    if(
+        !saved ||
+        saved.receiver !== receiver ||
+        saved.exchange !== accepted
+    ){
+        throw new Error(
+            "처리 결과를 확인하지 못했습니다.\n신청 상태를 확인해주세요."
+        );
     }
 
     const updates = {};
@@ -345,7 +381,7 @@ async function answerMobile({
     await update(ref(db),updates);
 
     return {
-        senderPhone:data.senderPhone
+        senderPhone:saved.senderPhone
     };
 }
 

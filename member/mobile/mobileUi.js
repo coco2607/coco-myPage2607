@@ -106,7 +106,15 @@ export function initMobileUi(){
 
                 <div id="mobileResultNotice" class="mobileNotice hidden">
                     <strong>주의</strong>
-                    <p>연락처는 재조회 및 재발송이 불가합니다.</p>
+
+                    <div id="mobileAcceptNotice" class="hidden">
+                        <p>연락처는 재조회 및 재발송이 불가합니다.</p>
+                    </div>
+
+                    <div id="mobileRejectNotice" class="hidden">
+                        <p>상대방의 거절 의사를 존중해 주세요.</p>
+                        <p>불필요한 개인정보 요구는 강퇴 사유입니다.</p>
+                    </div>
                 </div>
 
                 <div class="mobileModalButtons">

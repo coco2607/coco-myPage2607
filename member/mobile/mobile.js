@@ -115,6 +115,7 @@ function showNextMail(){
             phone:accepted
                 ? mail.receiverPhone
                 : "",
+            rejected:!accepted,
             onConfirm:async () => {
                 await confirmMobile(
                     nickname,
