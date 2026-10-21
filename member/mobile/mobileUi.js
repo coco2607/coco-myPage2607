@@ -35,7 +35,7 @@ export function initMobileUi(){
                     type="text"
                     id="mobileTarget"
                     autocomplete="off"
-                    placeholder="받는 이">
+                    placeholder="닉네임 2자 입력">
 
                 <div class="mobileNotice">
                     <strong>안내</strong>
