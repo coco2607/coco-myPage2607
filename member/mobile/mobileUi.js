@@ -46,7 +46,7 @@ export function initMobileUi(){
 
                 <div class="mobileModalButtons">
                     <button type="button" id="mobileSendBtn">
-                        연락처 전달하기
+                        연락처 전달하기(-30P)
                     </button>
                     <button type="button" id="mobileRequestCancel">
                         취소
