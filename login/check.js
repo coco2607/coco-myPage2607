@@ -1,26 +1,16 @@
-// check.js
+
+/* check.js */
 import {
     appVersion,
-    adminName,
-    specialDayPeriod
+    adminName
 } from "../utils.js";
 import {findMemberByDeviceId} from "./checkFirebase.js";
 
-const pageStyle = document.getElementById("pageStyle");
-
-if(specialDayPeriod()){
-    pageStyle.addEventListener("load",() => {
-        document.documentElement.style.visibility = "visible";
-    },{
-        once:true
-    });
-
-    pageStyle.href = "check할로윈.css";
-}else{
-    document.documentElement.style.visibility = "visible";
-}
-
 const minimumDisplayTime = 2400;
+
+window.addEventListener("load",() => {
+    document.documentElement.style.visibility = "visible";
+});
 
 document.getElementById("version").textContent = `Ver ${appVersion}`;
 document.getElementById("admin").textContent = `관리자 ${adminName}`;

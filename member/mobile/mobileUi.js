@@ -41,7 +41,7 @@ export function initMobileUi(){
                     <strong>안내</strong>
                     <p>발송 후 30포인트가 즉시 차감됩니다.</p>
                     <p>어떤 경우라도 포인트는 환불이 불가합니다.</p>
-                    <p>상대방이 거절할 경우 내 연락처를 알 수 없습니다.</p>
+                    <p>상대방이 거절할 경우 상대방도 내 연락처를 알 수 없습니다.</p>
                 </div>
 
                 <div class="mobileModalButtons">

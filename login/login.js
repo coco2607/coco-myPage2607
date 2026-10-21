@@ -2,8 +2,7 @@
 import {
     trim,
     appVersion,
-    adminName,
-    specialDayPeriod
+    adminName
 } from "../utils.js";
 import {
     getMember,
@@ -30,20 +29,9 @@ const warningModal = document.getElementById("warningModal");
 const warningText = document.getElementById("warningText");
 const warningOk = document.getElementById("warningOk");
 
-const pageStyle = document.getElementById("pageStyle");
-
-if(specialDayPeriod()){
-    pageStyle.addEventListener("load",() => {
-        document.documentElement.style.visibility = "visible";
-    },{
-        once:true
-    });
-
-    pageStyle.href = "login할로윈.css";
-}else{
+window.addEventListener("load",() => {
     document.documentElement.style.visibility = "visible";
-}
-
+});
 
 let loginNickname = "";
 
