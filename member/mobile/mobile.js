@@ -150,7 +150,8 @@ function removeMail(id){
 
 async function handleSend({
     phone,
-    receiver
+    receiver,
+    anonymous
 }){
     if(receiver === nickname){
         throw new Error(
@@ -161,7 +162,8 @@ async function handleSend({
     await sendMobile({
         sender:nickname,
         receiver,
-        senderPhone:phone
+        senderPhone:phone,
+        anonymous
     });
 
     document.dispatchEvent(

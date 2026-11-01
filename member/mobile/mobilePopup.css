@@ -182,3 +182,33 @@
     line-height:23px;
     white-space:pre-line;
 }
+.mobileTargetRow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.mobileTargetRow #mobileTarget{
+    flex:0 0 155px;
+    width:155px;
+    min-width:0;
+    padding:0 10px;
+    text-align:left;
+}
+.mobileModalBox .mobilePrivateLabel{
+    display:flex;
+    flex:1;
+    align-items:center;
+    gap:5px;
+    margin-bottom:8px;
+    font-size:14px;
+    white-space:nowrap;
+    cursor:pointer;
+}
+.mobileModalBox #mobilePrivate{
+    flex-shrink:0;
+    width:17px;
+    height:17px;
+    margin:0;
+    padding:0;
+    accent-color:#A65D3B;
+}

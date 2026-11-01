@@ -19,6 +19,8 @@ export function initMobilePopup(handlers = {}){
     const myPhone = document.getElementById("mobileMyPhone");
     const replyPhone = document.getElementById("mobileReplyPhone");
     const target = document.getElementById("mobileTarget");
+    const privateCheck = document.getElementById("mobilePrivate");
+    const costNotice = document.getElementById("mobileCostNotice");
 
     const sendBtn = document.getElementById("mobileSendBtn");
     const acceptBtn = document.getElementById("mobileAcceptBtn");
@@ -27,6 +29,9 @@ export function initMobilePopup(handlers = {}){
     const resultOk = document.getElementById("mobileResultOk");
 
     function updateSendButton(){
+        const cost = privateCheck.checked ? 30 : 25;
+        sendBtn.textContent = `연락처 전달하기(-${cost}P)`;
+        costNotice.textContent = `발송 후 ${cost}포인트가 즉시 차감됩니다.`;
         sendBtn.disabled = busy ||
             !validPhone(myPhone.value) ||
             !target.value.trim();
@@ -45,6 +50,7 @@ export function initMobilePopup(handlers = {}){
     });
 
     target.addEventListener("input",updateSendButton);
+    privateCheck.addEventListener("change",updateSendButton);
 
     replyPhone.addEventListener("input",() => {
         replyPhone.value = formatPhone(replyPhone.value);
@@ -102,7 +108,8 @@ export function initMobilePopup(handlers = {}){
         try{
             await handlers.onSend({
                 phone,
-                receiver
+                receiver,
+                anonymous:privateCheck.checked
             });
 
             closeModal(requestModal);
@@ -268,6 +275,9 @@ export function openMobileRequest(){
 
     myPhone.value = "";
     target.value = "";
+    document.getElementById("mobilePrivate").checked = false;
+    document.getElementById("mobileCostNotice").textContent = "발송 후 25포인트가 즉시 차감됩니다.";
+    sendBtn.textContent = "연락처 전달하기(-25P)";
     sendBtn.disabled = true;
 
     openModal(document.getElementById("mobileRequestModal"));

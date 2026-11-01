@@ -31,22 +31,28 @@ export function initMobileUi(){
                 <label for="mobileTarget">
                     연락처를 교환할 상대방을 알려주세요.
                 </label>
-                <input
-                    type="text"
-                    id="mobileTarget"
-                    autocomplete="off"
-                    placeholder="닉네임 2자 입력">
+                <div class="mobileTargetRow">
+                    <input
+                        type="text"
+                        id="mobileTarget"
+                        autocomplete="off"
+                        placeholder="닉네임 2자 입력">
+                    <label class="mobilePrivateLabel" for="mobilePrivate">
+                        <input type="checkbox" id="mobilePrivate">
+                        <span>상대방 비공개(5P)</span>
+                    </label>
+                </div>
 
                 <div class="mobileNotice">
                     <strong>안내</strong>
-                    <p>발송 후 30포인트가 즉시 차감됩니다.</p>
+                    <p id="mobileCostNotice">발송 후 25포인트가 즉시 차감됩니다.</p>
                     <p>어떤 경우라도 포인트는 환불이 불가합니다.</p>
                     <p>상대방이 거절할 경우 상대방도 내 연락처를 알 수 없습니다.</p>
                 </div>
 
                 <div class="mobileModalButtons">
                     <button type="button" id="mobileSendBtn">
-                        연락처 전달하기(-30P)
+                        사용하기(-25P)
                     </button>
                     <button type="button" id="mobileRequestCancel">
                         취소

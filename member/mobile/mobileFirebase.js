@@ -14,7 +14,8 @@ const ROOT = "으차방";
 const MEMBER = `${ROOT}/member`;
 const MOBILE = `${ROOT}/mobile`;
 const HISTORY = `${ROOT}/history`;
-const COST = 30;
+const BASE_COST = 25;
+const PRIVATE_COST = 5;
 
 export async function loadMobileList(){
     const snapshot = await get(
@@ -163,7 +164,8 @@ export function loadMobileMail(nickname,callback){
 export async function sendMobile({
     sender,
     receiver,
-    senderPhone
+    senderPhone,
+    anonymous = false
 }){
     sender = String(sender || "").trim();
     receiver = String(receiver || "").trim();
@@ -196,11 +198,12 @@ export async function sendMobile({
         throw new Error("회원정보를 찾을 수 없습니다.");
     }
 
+    const cost = BASE_COST + (anonymous === true ? PRIVATE_COST : 0);
     const currentPoint = Number(
         senderSnapshot.val().point || 0
     );
 
-    if(currentPoint < COST){
+    if(currentPoint < cost){
         throw new Error("포인트가 부족합니다.");
     }
 
@@ -225,11 +228,11 @@ export async function sendMobile({
 
             const point = Number(current);
 
-            if(!Number.isFinite(point) || point < COST){
+            if(!Number.isFinite(point) || point < cost){
                 return;
             }
 
-            return point - COST;
+            return point - cost;
         },
         {
             applyLocally:false
@@ -257,7 +260,7 @@ export async function sendMobile({
 
     updates[`${MOBILE}/list/${id}`] = {
         sender,
-        receiver,
+        receiver:anonymous === true ? "비공개" : receiver,
         timestamp:now
     };
 
@@ -266,7 +269,7 @@ export async function sendMobile({
 
     updates[`${HISTORY}/${sender}/${historyKey}`] = {
         type:"전번교환권 사용",
-        useP:COST
+        useP:cost
     };
 
     try{
