@@ -277,7 +277,7 @@ export function openMobileRequest(){
     target.value = "";
     document.getElementById("mobilePrivate").checked = false;
     document.getElementById("mobileCostNotice").textContent = "발송 후 25포인트가 즉시 차감됩니다.";
-    sendBtn.textContent = "연락처 전달하기(-25P)";
+    sendBtn.textContent = "사용하기(-25P)";
     sendBtn.disabled = true;
 
     openModal(document.getElementById("mobileRequestModal"));
