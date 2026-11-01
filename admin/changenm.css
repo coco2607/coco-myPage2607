@@ -1,0 +1,113 @@
+/* changenm.css */
+#nicknameModal,
+#nicknameConfirmModal{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:22px 8%;
+    background:rgba(0,0,0,.35);
+}
+
+#nicknameModal.hidden,
+#nicknameConfirmModal.hidden{
+    display:none;
+}
+
+.nicknameBox,
+.nicknameConfirmBox{
+    width:100%;
+    max-width:320px;
+    padding:26px 10%;
+    border-radius:18px;
+    background:#FFF;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+
+.nicknameBox h3{
+    margin-bottom:22px;
+    color:#333;
+    font-size:20px;
+    font-weight:700;
+    text-align:center;
+}
+
+#nicknameInput{
+    width:100%;
+    height:40px;
+    margin-bottom:26px;
+    padding:0 10px;
+    border:1px solid #D8D8D8;
+    border-radius:9px;
+    outline:none;
+    background:#FFF;
+    color:#333;
+    font-size:16px;
+    text-align:center;
+}
+
+#nicknameInput:focus{
+    border-color:#43A047;
+}
+
+.nicknameConfirmText{
+    margin-bottom:28px;
+    color:#333;
+    font-size:16px;
+    line-height:1.6;
+    text-align:center;
+    white-space:pre-line;
+    word-break:keep-all;
+}
+
+.nicknameConfirmText .newNickname{
+    color:#2E7D32;
+    font-weight:700;
+}
+
+.nicknameBtnBox,
+.nicknameConfirmBtnBox{
+    display:flex;
+    gap:10px;
+}
+
+.nicknameBtnBox button,
+.nicknameConfirmBtnBox button{
+    flex:1;
+    min-width:0;
+    height:40px;
+    padding:0;
+    border:none;
+    border-radius:9px;
+    color:#FFF;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:background .2s;
+}
+
+#nicknameSaveBtn,
+#nicknameConfirmBtn{
+    background:#43A047;
+}
+
+#nicknameSaveBtn:hover,
+#nicknameConfirmBtn:hover{
+    background:#388E3C;
+}
+
+#nicknameCancelBtn,
+#nicknameConfirmCancelBtn{
+    background:#BDBDBD;
+}
+
+#nicknameCancelBtn:hover,
+#nicknameConfirmCancelBtn:hover{
+    background:#9E9E9E;
+}
+
+#nicknameConfirmCancelBtn.hidden{
+    display:none;
+}
