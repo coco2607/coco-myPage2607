@@ -45,17 +45,17 @@
 .mobileList{
     flex:1;
     min-height:0;
-    padding:10px 6% 16px;
+    padding:10px 24px;
     border-top:1px solid #D8CBB9;
     overflow-y:auto;
 }
 .mobileItem{
     display:grid;
-    grid-template-columns:76px minmax(0,1fr);
+    grid-template-columns:104px minmax(0,1fr);
     align-items:center;
     gap:8px;
-    min-height:38px;
-    padding:7px 0;
+    min-height:28px;
+    padding:4px 0;
 }
 .mobileDate{
     color:#9A8C7D;
@@ -66,10 +66,10 @@
 }
 .mobileDetail{
     display:grid;
-    grid-template-columns:50px 12px 24px 12px 50px;
-    justify-content:center;
+    grid-template-columns:40px 10px 24px 10px minmax(0,1fr);
     align-items:center;
-    column-gap:6px;
+    column-gap:5px;
+    width:100%;
     min-width:0;
 }
 .mobileSender{
@@ -96,13 +96,12 @@
 }
 .mobileReceiver{
     min-width:0;
-    overflow:hidden;
     color:#786B5F;
     font-size:13.5px;
     font-weight:500;
-    text-align:center;
-    text-overflow:ellipsis;
+    text-align:left;
     white-space:nowrap;
+    overflow:visible;
 }
 .mobileEmpty{
     padding:24px 0;

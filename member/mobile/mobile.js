@@ -1,13 +1,15 @@
-
 /* mobile/mobile.js */
 import {
     watchMobileList,
-    loadMobileMail,
+    loadMobileMail
+} from "./mobileFirebase.js";
+
+import {
     sendMobile,
     acceptMobile,
     rejectMobile,
     confirmMobile
-} from "./mobileFirebase.js";
+} from "./mobileProcess.js";
 
 import {
     initMobileUi,
