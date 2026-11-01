@@ -30,7 +30,7 @@ export function initMobilePopup(handlers = {}){
 
     function updateSendButton(){
         const cost = privateCheck.checked ? 30 : 25;
-        sendBtn.textContent = `연락처 전달하기(-${cost}P)`;
+        sendBtn.textContent = `사용하기(-${cost}P)`;
         costNotice.textContent = `발송 후 ${cost}포인트가 즉시 차감됩니다.`;
         sendBtn.disabled = busy ||
             !validPhone(myPhone.value) ||
