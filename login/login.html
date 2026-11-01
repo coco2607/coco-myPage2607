@@ -5,21 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>으차방 MyPage</title>
-    <script>
-        const now = new Date();
-        const korea = new Date(
-            now.toLocaleString("en-US",{timeZone:"Asia/Seoul"})
-        );
-
-        const start = new Date(2026,9,21,0,0,0);
-        const end = new Date(2026,9,31,23,59,59);
-
-        const halloween = korea >= start && korea <= end;
+    <script type="module">
+        import {specialDayPeriod} from "../utils.js";
 
         const style = document.createElement("link");
         style.id = "pageStyle";
         style.rel = "stylesheet";
-        style.href = halloween ? "login할로윈.css" : "login.css";
+        style.href = specialDayPeriod()
+            ? "login크리스마스.css"
+            : "login.css";
+
+        style.onload = () => {
+            document.documentElement.style.visibility = "visible";
+        };
 
         document.head.appendChild(style);
     </script>

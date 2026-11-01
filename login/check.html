@@ -7,29 +7,19 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0">
     <title>으차방 MyPage</title>
-    <script>
-        const parts = new Intl.DateTimeFormat("en-CA",{
-            timeZone:"Asia/Seoul",
-            year:"numeric",
-            month:"2-digit",
-            day:"2-digit"
-        }).formatToParts(new Date());
-
-        const date = {};
-        parts.forEach(part => {
-            if(part.type !== "literal"){
-                date[part.type] = part.value;
-            }
-        });
-
-        const today = `${date.year}-${date.month}-${date.day}`;
-        const halloween = today >= "2026-10-21" &&
-            today <= "2026-10-31";
+    <script type="module">
+        import {specialDayPeriod} from "../utils.js";
 
         const style = document.createElement("link");
         style.id = "pageStyle";
         style.rel = "stylesheet";
-        style.href = halloween ? "check할로윈.css" : "check.css";
+        style.href = specialDayPeriod()
+            ? "check크리스마스.css"
+            : "check.css";
+
+        style.onload = () => {
+            document.documentElement.style.visibility = "visible";
+        };
 
         document.head.appendChild(style);
     </script>

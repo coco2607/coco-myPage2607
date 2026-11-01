@@ -66,8 +66,8 @@ export function getDeviceId(){
 export function specialDayPeriod(){
     const now = koDateTime();
 
-    const start = "2026-10-21 00:00:00";
-    const end = "2026-10-31 23:59:59";
+    const start = "2026-12-23 00:00:00";
+    const end = "2026-12-25 23:59:59";
 
     return now >= start && now <= end;
 }
